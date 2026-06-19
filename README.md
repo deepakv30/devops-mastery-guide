@@ -6,6 +6,10 @@ A complete, practical, hands-on learning repository covering **all essential Dev
 
 > Built for self-learners, career switchers, and professionals who want a structured path with actionable content that meets **enterprise standards**.
 
+![License](https://img.shields.io/badge/License-MIT-blue.svg)
+![Last Updated](https://img.shields.io/badge/Last%20Updated-2026--06--19-brightgreen)
+![Contributions Welcome](https://img.shields.io/badge/Contributions-Welcome-brightgreen.svg)
+
 [![GitHub stars](https://img.shields.io/github/stars/deepakv30/devops-mastery-guide?style=social)](https://github.com/deepakv30/devops-mastery-guide/stargazers)
 
 ## 🌟 Why This Repository?
@@ -131,11 +135,14 @@ A recommended learning path. Follow in order for best results, but modules are s
 
 - ✅ Main README with full roadmap + Maintenance Agenda
 - ✅ **`AGENTS.md`** — Instructions for consistent AI/human maintenance
-- ✅ `CONTRIBUTING.md` and `LICENSE`
-- ✅ Detailed **Ansible Fundamentals** module
-- ✅ Core Foundations overview
-- ✅ Project structure & .gitignore
-- 🔄 More modules being added progressively following the `AGENTS.md` standard
+- ✅ `CONTRIBUTING.md`, `LICENSE`, and `CHANGELOG.md`
+- ✅ `docs/MODULE_TEMPLATE.md` for consistent module creation
+- ✅ **Docker module** started with full structure + examples
+- ✅ Kubernetes and Terraform module structures created
+- ✅ `projects/` folder with capstone ideas
+- ✅ GitHub Issue Templates added
+- ✅ Core Foundations + detailed Ansible modules
+- 🔄 More modules and examples being added progressively following `AGENTS.md` standards
 
 This is a living repository. Check back often or star it to follow updates.
 
@@ -200,173 +207,77 @@ See the complete detailed guide: [02-ansible/README.md](./02-ansible/README.md)
 
 **Location**: `03-docker/`
 
-**Planned content**:
+**Status**: ✅ **Started with full structure**
+
+**What you'll learn**:
 - Docker architecture, images, containers, layers
-- Dockerfile best practices (multi-stage, non-root, .dockerignore)
-- Docker Compose for multi-container apps
-- Docker networking, volumes, security scanning (Trivy)
-- Registry (Docker Hub, ECR, Harbor)
-- Container observability
-- Exercises: Build, ship, run a full-stack app
+- Dockerfile best practices (multi-stage builds, non-root users)
+- Docker Compose
+- Image security and scanning
+- Integration with CI/CD and Kubernetes
+
+See: [03-docker/README.md](./03-docker/README.md)
 
 **Official References**:
 - [Docker Documentation](https://docs.docker.com/)
 - [Docker Best Practices](https://docs.docker.com/develop/dev-best-practices/)
-- [Docker Compose](https://docs.docker.com/compose/)
 
 ### 04. Kubernetes & Orchestration
 
 **Location**: `04-kubernetes/`
 
-**Planned content**:
-- Core concepts: Pods, Deployments, Services, Ingress, ConfigMaps, Secrets
-- kubectl mastery & declarative management
-- Helm charts & Kustomize
-- StatefulSets, DaemonSets, Jobs/CronJobs
-- RBAC, Network Policies, Pod Security Standards
-- Operators & CRDs intro
-- Production patterns: HPA, PDB, disruption budgets
-- Local dev with kind/minikube + real cluster (EKS/GKE/AKS)
-- Exercises & troubleshooting (common errors & fixes)
+**Status**: ✅ **Structure created**
+
+**What you'll learn**:
+- Pods, Deployments, Services, Ingress
+- Helm, Kustomize, RBAC, Network Policies
+- Production patterns and security hardening
+- GitOps integration
+
+See: [04-kubernetes/README.md](./04-kubernetes/README.md)
 
 **Official References**:
 - [Kubernetes Documentation](https://kubernetes.io/docs/)
-- [Kubernetes Best Practices](https://kubernetes.io/docs/setup/best-practices/)
 - [Helm Documentation](https://helm.sh/docs/)
-- [kubectl Cheat Sheet](https://kubernetes.io/docs/reference/kubectl/cheatsheet/)
 
 ### 05. Infrastructure as Code - Terraform
 
 **Location**: `05-terraform/`
 
-**Planned content**:
-- Terraform vs other IaC tools
-- HCL, providers, resources, data sources
-- State management (local vs remote, locking, workspaces)
-- Modules (reusable, versioning, registry)
-- Variables, outputs, functions, expressions
-- Provisioners (use sparingly), null_resource
-- Best practices: `terraform fmt`, `validate`, `plan`, drift detection
-- Multi-cloud & cloud-specific modules
-- Integration with Ansible (Terraform provisions, Ansible configures)
-- Exercises: Provision VPC + EC2 + security groups, then configure with Ansible
+**Status**: ✅ **Structure created**
+
+**What you'll learn**:
+- HCL, providers, modules, state management
+- Best practices for remote state and workspaces
+- Integration with Ansible and Kubernetes
+
+See: [05-terraform/README.md](./05-terraform/README.md)
 
 **Official References**:
 - [Terraform Documentation](https://developer.hashicorp.com/terraform/docs)
-- [Terraform Best Practices](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/aws-best-practices)
-- [Terraform Registry](https://registry.terraform.io/)
-
-### 06. CI/CD Pipelines
-
-**Location**: `06-cicd/`
-
-**Planned content**:
-- CI/CD principles & GitOps vs traditional
-- **GitHub Actions** deep dive (workflows, jobs, steps, secrets, matrix, reusable workflows, self-hosted runners)
-- Jenkins (optional deep dive)
-- Pipeline as Code
-- Testing stages (lint, unit, integration, security)
-- Deployment strategies (blue-green, canary, rolling)
-- ArgoCD / Flux for continuous delivery
-- Exercises: Full pipeline for a sample app (build → test → scan → deploy to K8s)
-
-**Official References**:
-- [GitHub Actions Documentation](https://docs.github.com/en/actions)
-- [Argo CD Documentation](https://argo-cd.readthedocs.io/)
-- [Flux Documentation](https://fluxcd.io/flux/)
-
-### 07. Observability & Monitoring
-
-**Location**: `07-observability/`
-
-**Planned content**:
-- Three pillars: Metrics, Logs, Traces
-- **Prometheus** + **Grafana** + Alertmanager (setup, PromQL, dashboards, recording rules, alerts)
-- Logging: Loki + Grafana or ELK/EFK stack
-- Distributed tracing: Jaeger or OpenTelemetry
-- SLOs, SLIs, error budgets (SRE practices)
-- On-call & incident response basics
-- Exercises: Instrument a sample app, build dashboards, set up alerting
-
-**Official References**:
-- [Prometheus Documentation](https://prometheus.io/docs/)
-- [Grafana Documentation](https://grafana.com/docs/)
-- [OpenTelemetry Documentation](https://opentelemetry.io/docs/)
-
-### 08. Security & DevSecOps
-
-**Location**: `08-security/`
-
-**Planned content**:
-- Shift-left security
-- Secrets management: HashiCorp Vault, Sealed Secrets, External Secrets Operator
-- Image & code scanning (Trivy, Snyk, SonarQube)
-- Kubernetes security hardening
-- Network security, mTLS, service mesh intro (Istio/Linkerd)
-- Compliance & policy as code (OPA/Gatekeeper)
-- Supply chain security
-- Exercises: Secure a pipeline and cluster end-to-end
-
-**Official References**:
-- [HashiCorp Vault Documentation](https://developer.hashicorp.com/vault/docs)
-- [Trivy Documentation](https://aquasecurity.github.io/trivy/)
-- [Kubernetes Security Best Practices](https://kubernetes.io/docs/concepts/security/)
-
-### 09. Cloud Platforms for DevOps
-
-**Location**: `09-cloud/`
-
-**Planned content**:
-- Core services across AWS, Azure, GCP relevant to DevOps
-- Managed Kubernetes (EKS, AKS, GKE)
-- Serverless (Lambda, Cloud Functions, Cloud Run)
-- IaC with cloud-native tools vs Terraform
-- Cost optimization & FinOps basics
-- Multi-cloud strategies
-
-**Official References**:
-- [AWS DevOps Documentation](https://aws.amazon.com/devops/)
-- [Azure DevOps Documentation](https://learn.microsoft.com/en-us/azure/devops/)
-- [Google Cloud DevOps](https://cloud.google.com/devops)
-
-### 10. GitOps, Platform Engineering & Advanced Topics
-
-**Location**: `10-advanced/`
-
-**Planned content**:
-- GitOps principles & tools (ArgoCD, Flux)
-- Platform Engineering (Internal Developer Platforms, Backstage)
-- Service Mesh deep dive
-- Chaos Engineering (LitmusChaos, Chaos Monkey)
-- SRE practices in depth
-- Career guidance & interview prep for DevOps/SRE roles
-
-**Official References**:
-- [Argo CD](https://argo-cd.readthedocs.io/en/stable/)
-- [Backstage Documentation](https://backstage.io/docs/)
-- [OpenTelemetry](https://opentelemetry.io/docs/)
 
 ## 🔬 Hands-on Capstone Projects
 
+**Location**: `projects/`
+
 Build these to solidify learning:
 
-1. **Full CI/CD Pipeline** for a 3-tier web app (frontend, backend, DB) using GitHub Actions + Docker + Kubernetes + monitoring.
-2. **Infrastructure as Code + Config Mgmt** : Terraform provisions cloud resources + Ansible configures them.
-3. **Production-like Kubernetes Environment** with GitOps, observability, and security policies.
-4. **Custom Internal Developer Platform** (stretch goal).
+1. **Full CI/CD Pipeline** for a 3-tier web app
+2. **Infrastructure as Code + Configuration Management** (Terraform + Ansible)
+3. **Production-Ready Kubernetes Environment** with GitOps and observability
+
+See: [projects/README.md](./projects/README.md)
 
 ## 🤝 Contributing
 
 Contributions are highly encouraged!
 
 - Read `CONTRIBUTING.md` and `AGENTS.md` before contributing.
+- Use the [Module Template](./docs/MODULE_TEMPLATE.md) when creating new modules.
 - Add new examples or improve existing ones
-- Write new module sections following the mandatory structure in `AGENTS.md`
-- Fix typos, improve explanations
-- Add exercises or solutions
-- Suggest new topics via Issues
+- Write new module sections following the mandatory structure
 
-Please follow conventional commits and open a PR. Updates that help keep content enterprise-standard and current are especially valued.
+Please follow conventional commits and open a PR.
 
 ## 📑 Official Tool References
 
@@ -379,10 +290,8 @@ Quick access to authoritative sources:
 - **GitHub Actions**: [docs.github.com/en/actions](https://docs.github.com/en/actions)
 - **Prometheus**: [prometheus.io/docs](https://prometheus.io/docs/)
 - **Grafana**: [grafana.com/docs](https://grafana.com/docs/)
-- **HashiCorp Vault**: [developer.hashicorp.com/vault/docs](https://developer.hashicorp.com/vault/docs)
+- **HashiCorp Vault**: [developer.hashicorp.com/vault/docs](https://developer.hashicorp.com/vault/docs/)
 - **Argo CD**: [argo-cd.readthedocs.io](https://argo-cd.readthedocs.io/)
-
-(Links for additional tools will be added as modules are expanded.)
 
 ## 📄 License
 
