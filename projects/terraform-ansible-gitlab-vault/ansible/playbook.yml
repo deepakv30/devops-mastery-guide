@@ -1,0 +1,25 @@
+---
+- name: Configure servers provisioned by Terraform
+  hosts: all
+  become: yes
+  vars:
+    # These would come from Vault in a real setup
+    app_user: webapp
+
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Install required packages
+      apt:
+        name:
+          - nginx
+          - python3
+        state: present
+
+    - name: Start and enable Nginx
+      service:
+        name: nginx
+        state: started
+        enabled: yes

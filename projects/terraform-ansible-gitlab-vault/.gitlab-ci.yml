@@ -1,0 +1,44 @@
+stages:
+  - validate
+  - plan
+  - apply
+  - configure
+
+variables:
+  TF_ROOT: "$CI_PROJECT_DIR/terraform"
+
+validate:
+  stage: validate
+  script:
+    - cd $TF_ROOT
+    - terraform init
+    - terraform validate
+
+plan:
+  stage: plan
+  script:
+    - cd $TF_ROOT
+    - terraform init
+    - terraform plan -out=tfplan
+  artifacts:
+    paths:
+      - $TF_ROOT/tfplan
+
+apply:
+  stage: apply
+  script:
+    - cd $TF_ROOT
+    - terraform init
+    - terraform apply -auto-approve tfplan
+  when: manual  # Require manual approval for production
+  only:
+    - main
+
+configure:
+  stage: configure
+  script:
+    - echo "Authenticating to Vault..."
+    # In real pipeline: vault login with AppRole
+    - echo "Running Ansible playbook..."
+    - ansible-playbook ansible/playbook.yml -i terraform/ansible_inventory
+  needs: ["apply"]
