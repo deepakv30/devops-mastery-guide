@@ -137,71 +137,58 @@ A recommended learning path. Follow in order for best results, but modules are s
 - ✅ **`AGENTS.md`** — Instructions for consistent AI/human maintenance
 - ✅ `CONTRIBUTING.md`, `LICENSE`, and `CHANGELOG.md`
 - ✅ `docs/MODULE_TEMPLATE.md` for consistent module creation
+- ✅ **01-linux/** and **02-ansible/** added with proper structure
 - ✅ **Docker module** started with full structure + examples
 - ✅ Kubernetes and Terraform module structures created
 - ✅ `projects/` folder with capstone ideas
 - ✅ GitHub Issue Templates added
-- ✅ Core Foundations + detailed Ansible modules
 - 🔄 More modules and examples being added progressively following `AGENTS.md` standards
 
 This is a living repository. Check back often or star it to follow updates.
 
 ## 📖 Module Details
 
-### 01. Core Foundations
+### 01. Linux Mastery
 
-**Location**: `01-fundamentals/`
+**Location**: `01-linux/`
 
 **Topics covered**:
-- Linux mastery: users/groups/permissions, processes, systemd, package management, networking tools (`ip`, `ss`, `netstat`, `iptables`/`nftables`, `firewalld`)
-- Git mastery: branching strategies, rebasing, cherry-pick, reflog, hooks, GitHub flow
-- Bash scripting: variables, loops, functions, error handling, best practices
-- Python for DevOps: requests, subprocess, argparse, automation scripts
-- Networking: OSI model, TCP/UDP, HTTP/HTTPS, DNS resolution, load balancers, CDNs, firewalls
-- Exercises and troubleshooting labs
+- Users, groups, permissions
+- Process & service management (systemd)
+- Package management
+- Networking tools
+- Logging and performance
+- Security hardening basics
+- Exercises and troubleshooting
 
-**Goal**: Comfortable working on any Linux server and automating repetitive tasks.
+**Goal**: Strong Linux foundation required for all DevOps work.
+
+See: [01-linux/README.md](./01-linux/README.md)
 
 **Official References**:
 - [The Linux Documentation Project](https://tldp.org/)
-- [Pro Git Book](https://git-scm.com/book/en/v2)
 - [Linux man pages](https://man7.org/linux/man-pages/)
 
 ### 02. Ansible - Configuration Management
 
 **Location**: `02-ansible/`
 
-**Status**: ✅ **Detailed fundamentals available now**
+**Status**: ✅ **Detailed fundamentals available**
 
 This is one of the most important modules for immediate productivity.
 
 **What you'll learn**:
-- Why Ansible (agentless, idempotent, YAML-based, huge ecosystem)
-- Architecture, inventory (static + dynamic), modules, playbooks, roles
-- Ad-hoc commands and full playbooks
-- Variables, facts, Jinja2 templating, conditionals, loops, handlers
-- Roles for reusability + Ansible Galaxy
-- Ansible Vault for secrets management
-- Best practices, testing (`ansible-lint`, `--check --diff`), tags, limiting
-- Real examples: web server provisioning, user management, application deployment
-- Integration with other tools
+- Agentless automation, inventory, modules, playbooks, roles
+- Variables, templating, handlers, Vault
+- Best practices and enterprise usage
+- Integration with Linux, Docker, Kubernetes, and Terraform
 
-**Start here for practical automation wins**:
-
-```bash
-cd 02-ansible
-# Read the full guide
-cat README.md
-# Then explore examples/
-```
-
-See the complete detailed guide: [02-ansible/README.md](./02-ansible/README.md)
+See: [02-ansible/README.md](./02-ansible/README.md)
 
 **Official References**:
 - [Ansible Documentation](https://docs.ansible.com/ansible/latest/)
 - [Ansible Best Practices](https://docs.ansible.com/ansible/latest/user_guide/playbooks_best_practices.html)
 - [Ansible Galaxy](https://galaxy.ansible.com/)
-- [Ansible Vault Guide](https://docs.ansible.com/ansible/latest/vault_guide/index.html)
 
 ### 03. Docker & Containerization
 
