@@ -138,11 +138,11 @@ A recommended learning path. Follow in order for best results, but modules are s
 - ✅ `CONTRIBUTING.md`, `LICENSE`, and `CHANGELOG.md`
 - ✅ `docs/MODULE_TEMPLATE.md` for consistent module creation
 - ✅ **01-linux/** and **02-ansible/** added with proper structure
-- ✅ **Docker module** started with full structure + examples
-- ✅ Kubernetes and Terraform module structures created
+- ✅ **Docker, Kubernetes, Terraform** modules created
+- ✅ **New: 06-prometheus/** module added
 - ✅ `projects/` folder with capstone ideas
 - ✅ GitHub Issue Templates added
-- 🔄 More modules and examples being added progressively following `AGENTS.md` standards
+- 🔄 More modules being added progressively following `AGENTS.md` standards
 
 This is a living repository. Check back often or star it to follow updates.
 
@@ -243,6 +243,26 @@ See: [05-terraform/README.md](./05-terraform/README.md)
 **Official References**:
 - [Terraform Documentation](https://developer.hashicorp.com/terraform/docs)
 
+### 06. Prometheus Monitoring
+
+**Location**: `06-prometheus/`
+
+**Status**: ✅ **New module added**
+
+**What you'll learn**:
+- Prometheus architecture and core concepts
+- Prometheus Operator + kube-prometheus-stack
+- PromQL, recording rules, and alerting
+- Enterprise best practices (cardinality, HA, SLIs/SLOs)
+- Integration with Kubernetes and Grafana
+
+See: [06-prometheus/README.md](./06-prometheus/README.md)
+
+**Official References**:
+- [Prometheus Documentation](https://prometheus.io/docs/)
+- [Prometheus Operator](https://prometheus-operator.dev/)
+- [kube-prometheus-stack](https://github.com/prometheus-community/helm-charts)
+
 ## 🔬 Hands-on Capstone Projects
 
 **Location**: `projects/`
@@ -274,11 +294,9 @@ Quick access to authoritative sources:
 - **Docker**: [docs.docker.com](https://docs.docker.com/)
 - **Kubernetes**: [kubernetes.io/docs](https://kubernetes.io/docs/)
 - **Terraform**: [developer.hashicorp.com/terraform](https://developer.hashicorp.com/terraform/docs)
-- **GitHub Actions**: [docs.github.com/en/actions](https://docs.github.com/en/actions)
 - **Prometheus**: [prometheus.io/docs](https://prometheus.io/docs/)
+- **GitHub Actions**: [docs.github.com/en/actions](https://docs.github.com/en/actions)
 - **Grafana**: [grafana.com/docs](https://grafana.com/docs/)
-- **HashiCorp Vault**: [developer.hashicorp.com/vault/docs](https://developer.hashicorp.com/vault/docs/)
-- **Argo CD**: [argo-cd.readthedocs.io](https://argo-cd.readthedocs.io/)
 
 ## 📄 License
 
