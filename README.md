@@ -137,9 +137,9 @@ A recommended learning path. Follow in order for best results, but modules are s
 - ✅ **`AGENTS.md`** — Instructions for consistent AI/human maintenance
 - ✅ `CONTRIBUTING.md`, `LICENSE`, and `CHANGELOG.md`
 - ✅ `docs/MODULE_TEMPLATE.md` for consistent module creation
-- ✅ **01-linux/** and **02-ansible/** added with proper structure
-- ✅ **Docker, Kubernetes, Terraform** modules created
-- ✅ **New: 06-prometheus/** module added
+- ✅ Complete numbered structure: 01-linux through 08-github-actions
+- ✅ Prometheus module expanded with real examples
+- ✅ New Grafana and GitHub Actions modules added
 - ✅ `projects/` folder with capstone ideas
 - ✅ GitHub Issue Templates added
 - 🔄 More modules being added progressively following `AGENTS.md` standards
@@ -247,7 +247,7 @@ See: [05-terraform/README.md](./05-terraform/README.md)
 
 **Location**: `06-prometheus/`
 
-**Status**: ✅ **New module added**
+**Status**: ✅ **Expanded with examples**
 
 **What you'll learn**:
 - Prometheus architecture and core concepts
@@ -256,12 +256,45 @@ See: [05-terraform/README.md](./05-terraform/README.md)
 - Enterprise best practices (cardinality, HA, SLIs/SLOs)
 - Integration with Kubernetes and Grafana
 
-See: [06-prometheus/README.md](./06-prometheus/README.md)
+See: [06-prometheus/README.md](./06-prometheus/README.md) + examples/
 
 **Official References**:
 - [Prometheus Documentation](https://prometheus.io/docs/)
 - [Prometheus Operator](https://prometheus-operator.dev/)
-- [kube-prometheus-stack](https://github.com/prometheus-community/helm-charts)
+
+### 07. Grafana
+
+**Location**: `07-grafana/`
+
+**Status**: ✅ **New module added**
+
+**What you'll learn**:
+- Grafana dashboards, variables, and alerting
+- Integration with Prometheus
+- Best practices for enterprise visualization and access control
+- Dashboard as Code
+
+See: [07-grafana/README.md](./07-grafana/README.md)
+
+**Official References**:
+- [Grafana Documentation](https://grafana.com/docs/)
+
+### 08. GitHub Actions CI/CD
+
+**Location**: `08-github-actions/`
+
+**Status**: ✅ **New module added**
+
+**What you'll learn**:
+- Workflow creation, reusable workflows, and matrix builds
+- Secure secrets management and OIDC
+- Docker builds and Kubernetes deployments
+- Enterprise CI/CD best practices
+
+See: [08-github-actions/README.md](./08-github-actions/README.md)
+
+**Official References**:
+- [GitHub Actions Documentation](https://docs.github.com/en/actions)
 
 ## 🔬 Hands-on Capstone Projects
 
