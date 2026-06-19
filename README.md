@@ -30,6 +30,7 @@ This repository is a **living resource** committed to remaining a trusted, up-to
 - **Quality Over Quantity**: Focus on widely adopted enterprise tools (Ansible, Docker, Kubernetes, Terraform, GitHub Actions, Prometheus, etc.) with practical, battle-tested examples.
 
 ### How Updates Happen
+
 - Proactive reviews aligned with major version releases.
 - Community contributions that improve accuracy or add enterprise patterns are prioritized.
 - Issues and PRs for outdated information or new relevant tools are welcomed.
@@ -37,23 +38,27 @@ This repository is a **living resource** committed to remaining a trusted, up-to
 
 **Goal**: Anyone should be able to reference this guide confidently for learning, interviews, or implementing solutions in production environments.
 
+## 🤖 AI Agent Instructions (`AGENTS.md`)
+
+This project uses a dedicated **`AGENTS.md`** file to ensure **consistency and quality** across all updates made by AI tools (Claude, Grok, Cursor, etc.).
+
+**All AI contributors must read and follow `AGENTS.md`** before making changes. It defines:
+
+- Core principles (always up-to-date + enterprise standard)
+- Mandatory module structure
+- Rules for updates and adding new modules
+- Tone, style, and quality guidelines
+
+This guarantees the repository stays coherent and trustworthy even as it grows.
+
 ## 📍 Table of Contents
 
 - [Maintenance Agenda & Enterprise Standards](#-maintenance-agenda--keeping-content-enterprise-ready)
+- [AI Agent Instructions (AGENTS.md)](#-ai-agent-instructions-agentsmd)
 - [Learning Roadmap](#-learning-roadmap)
 - [How to Use This Repo](#-how-to-use-this-repo)
 - [Current Status](#-current-status)
 - [Module Details](#-module-details)
-  - [01. Core Foundations](#01-core-foundations)
-  - [02. Ansible - Configuration Management](#02-ansible---configuration-management)
-  - [03. Docker & Containerization](#03-docker--containerization)
-  - [04. Kubernetes & Orchestration](#04-kubernetes--orchestration)
-  - [05. Infrastructure as Code - Terraform](#05-infrastructure-as-code---terraform)
-  - [06. CI/CD Pipelines](#06-cicd-pipelines)
-  - [07. Observability & Monitoring](#07-observability--monitoring)
-  - [08. Security & DevSecOps](#08-security--devsecops)
-  - [09. Cloud Platforms for DevOps](#09-cloud-platforms-for-devops)
-  - [10. GitOps, Platform Engineering & Advanced Topics](#10-gitops-platform-engineering--advanced-topics)
 - [Hands-on Capstone Projects](#-hands-on-capstone-projects)
 - [Contributing](#-contributing)
 - [Official Tool References](#-official-tool-references)
@@ -125,10 +130,12 @@ A recommended learning path. Follow in order for best results, but modules are s
 ## 📊 Current Status
 
 - ✅ Main README with full roadmap + Maintenance Agenda
-- ✅ Detailed **Ansible Fundamentals** module (see `02-ansible/README.md`)
+- ✅ **`AGENTS.md`** — Instructions for consistent AI/human maintenance
+- ✅ `CONTRIBUTING.md` and `LICENSE`
+- ✅ Detailed **Ansible Fundamentals** module
 - ✅ Core Foundations overview
 - ✅ Project structure & .gitignore
-- 🔄 More modules being added progressively (Docker, Kubernetes, Terraform, etc.)
+- 🔄 More modules being added progressively following the `AGENTS.md` standard
 
 This is a living repository. Check back often or star it to follow updates.
 
@@ -352,8 +359,9 @@ Build these to solidify learning:
 
 Contributions are highly encouraged!
 
+- Read `CONTRIBUTING.md` and `AGENTS.md` before contributing.
 - Add new examples or improve existing ones
-- Write new module sections
+- Write new module sections following the mandatory structure in `AGENTS.md`
 - Fix typos, improve explanations
 - Add exercises or solutions
 - Suggest new topics via Issues
