@@ -7,6 +7,10 @@ stages:
 variables:
   TF_ROOT: "$CI_PROJECT_DIR/terraform"
 
+cache:
+  paths:
+    - .terraform/
+
 validate:
   stage: validate
   script:
@@ -23,22 +27,30 @@ plan:
   artifacts:
     paths:
       - $TF_ROOT/tfplan
+    expire_in: 1 week
 
 apply:
   stage: apply
+  environment:
+    name: $CI_COMMIT_REF_NAME
+    url: https://$CI_ENVIRONMENT_SLUG.example.com
   script:
     - cd $TF_ROOT
     - terraform init
     - terraform apply -auto-approve tfplan
-  when: manual  # Require manual approval for production
+  when: manual
   only:
     - main
+    - develop
 
 configure:
   stage: configure
   script:
-    - echo "Authenticating to Vault..."
-    # In real pipeline: vault login with AppRole
-    - echo "Running Ansible playbook..."
-    - ansible-playbook ansible/playbook.yml -i terraform/ansible_inventory
+    - echo "Authenticating to Vault using AppRole..."
+    # Example Vault login (replace with real secrets/variables)
+    - vault login -method=approle role_id=$VAULT_ROLE_ID secret_id=$VAULT_SECRET_ID
+    - echo "Running Ansible playbook with Vault secrets..."
+    - ansible-galaxy collection install community.hashi_vault
+    - ansible-playbook ansible/playbook.yml -i "$TF_ROOT/ansible_inventory" --extra-vars "ansible_user=ubuntu"
   needs: ["apply"]
+  when: manual

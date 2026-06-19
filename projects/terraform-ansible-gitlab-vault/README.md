@@ -13,79 +13,59 @@ GitLab Repository
       ↓
 GitLab CI Pipeline
       ↓
-Terraform Plan & Apply → Provision VMs / Infrastructure
+Terraform Plan & Apply → Provision VPC + EC2 (with Workspaces)
       ↓
-Vault Authentication (AppRole)
+Vault Authentication (AppRole / ID Token)
       ↓
-Ansible Playbooks → Configure Servers + Deploy Applications
+Ansible Playbooks → Configure Servers + Deploy Application
       ↓
 Monitoring & Validation
 ```
 
-## Why This Combination?
+## Key Improvements in This Version
 
-| Tool          | Purpose                          | Why Important in Enterprise          |
-|---------------|----------------------------------|--------------------------------------|
-| Terraform     | Infrastructure Provisioning     | Declarative, version-controlled IaC |
-| Ansible       | Configuration Management        | Agentless, idempotent automation    |
-| GitLab CI     | CI/CD Automation                | Integrated pipelines + self-hosted runners |
-| HashiCorp Vault | Secrets Management            | Dynamic secrets, zero-trust security |
+- Terraform with **VPC + Security Groups** and **Workspaces** for multiple environments (dev/staging/prod)
+- **Vault lookup plugin** integration in Ansible
+- Enhanced GitLab CI with caching, artifacts, environment protection, and Vault auth
+- Sample application deployment
+- Complete Vault setup documentation (AppRole + ID Token)
 
 ## Project Structure
 
 ```
 terraform-ansible-gitlab-vault/
-├── terraform/              # Infrastructure code
-├── ansible/                # Playbooks and roles
-├── vault/                  # Vault policies and auth examples
-├── .gitlab-ci.yml          # GitLab CI pipeline
+├── terraform/              # Infrastructure code with workspaces
+├── ansible/                # Playbooks with Vault integration
+├── vault/                  # Policies and setup guides
+├── docs/                   # Documentation
+├── .gitlab-ci.yml          # Enhanced GitLab CI pipeline
 └── README.md
 ```
 
-## Key Components
+## How to Use Workspaces
 
-### 1. Terraform
-- Provisions virtual machines or cloud resources
-- Outputs inventory for Ansible
-- Uses remote state (recommended with S3, Terraform Cloud, or GitLab)
+```bash
+terraform workspace new dev
+terraform workspace new staging
+terraform workspace new prod
 
-### 2. HashiCorp Vault
-- Uses **AppRole** authentication for CI/CD
-- Provides dynamic database credentials or SSH keys
-- Enforces least-privilege access
-
-### 3. Ansible
-- Pulls secrets dynamically from Vault during playbook execution
-- Configures servers provisioned by Terraform
-- Deploys applications
-
-### 4. GitLab CI
-- Runs `terraform plan` / `apply`
-- Authenticates to Vault
-- Executes Ansible playbooks
-- Handles approvals for production environments
-
-## How to Approach This Project
-
-1. Start with Terraform to provision infrastructure
-2. Set up Vault with AppRole authentication
-3. Create Ansible playbooks that fetch secrets from Vault
-4. Build the GitLab CI pipeline that orchestrates everything
-5. Add environment protection rules and manual approvals
+terraform workspace select dev
+terraform apply
+```
 
 ## Learning Outcomes
 
-By completing this project, you will learn:
-- Secure IaC practices with Terraform
-- Dynamic secrets management with Vault
-- Agentless configuration with Ansible
-- Building secure, auditable CI/CD pipelines in GitLab
-- Integrating multiple DevOps tools in a real-world workflow
+By completing this project, you will gain hands-on experience with:
 
-## Stretch Goals
+- Multi-environment infrastructure with Terraform workspaces
+- Secure secrets management using HashiCorp Vault (AppRole + OIDC)
+- Dynamic secret retrieval in Ansible
+- Building secure, auditable GitLab CI/CD pipelines
+- End-to-end DevOps automation combining IaC and configuration management
 
-- Use Terraform to provision a Kubernetes cluster
-- Implement GitOps with ArgoCD after Ansible configuration
-- Add policy-as-code checks (Sentinel or OPA)
-- Implement canary deployments
-- Add comprehensive monitoring and alerting
+## Next Steps / Stretch Goals
+
+- Add ArgoCD for GitOps after server configuration
+- Implement policy-as-code (OPA / Sentinel)
+- Add comprehensive monitoring with Prometheus
+- Create canary deployment strategy

@@ -1,10 +1,10 @@
 ---
-- name: Configure servers provisioned by Terraform
+- name: Configure web servers with Vault secrets
   hosts: all
   become: yes
   vars:
-    # These would come from Vault in a real setup
-    app_user: webapp
+    # Fetch secrets dynamically from Vault using lookup plugin
+    db_password: "{{ lookup('community.hashi_vault.vault_kv2', 'secret/data/devops/db', url='https://vault.example.com').data.data.password }}"
 
   tasks:
     - name: Update apt cache
@@ -16,10 +16,25 @@
         name:
           - nginx
           - python3
+          - python3-pip
         state: present
 
-    - name: Start and enable Nginx
+    - name: Deploy application
+      copy:
+        src: ../app/
+        dest: /var/www/html/
+        owner: www-data
+        group: www-data
+        mode: '0755'
+
+    - name: Configure Nginx
+      template:
+        src: templates/nginx.conf.j2
+        dest: /etc/nginx/sites-available/default
+      notify: Restart Nginx
+
+  handlers:
+    - name: Restart Nginx
       service:
         name: nginx
-        state: started
-        enabled: yes
+        state: restarted
