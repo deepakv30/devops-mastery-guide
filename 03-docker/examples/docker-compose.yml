@@ -1,0 +1,12 @@
+# Serve hello-static through nginx with a bind mount.
+# From this directory:
+#   docker compose up -d
+#   curl -s http://127.0.0.1:8082
+#   docker compose down
+services:
+  web:
+    image: nginx:1.27-alpine
+    ports:
+      - "8082:80"
+    volumes:
+      - ./hello-static:/usr/share/nginx/html:ro

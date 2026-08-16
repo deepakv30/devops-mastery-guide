@@ -1,0 +1,34 @@
+---
+# Needs become (sudo) and a Debian/Ubuntu box with apt.
+# Do not run this as your first success — use hello.yml on localhost first.
+- name: Install and configure nginx
+  hosts: local
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Install nginx
+      ansible.builtin.apt:
+        name: nginx
+        state: present
+        update_cache: true
+        cache_valid_time: 3600
+
+    - name: Deploy index page
+      ansible.builtin.template:
+        src: templates/index.html.j2
+        dest: /var/www/html/index.html
+        mode: "0644"
+      notify: Restart nginx
+      tags: [page]
+
+    - name: Ensure nginx is running
+      ansible.builtin.service:
+        name: nginx
+        state: started
+        enabled: true
+
+  handlers:
+    - name: Restart nginx
+      ansible.builtin.service:
+        name: nginx
+        state: restarted

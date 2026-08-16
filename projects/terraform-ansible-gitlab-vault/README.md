@@ -1,71 +1,128 @@
-# Capstone Project 2: Infrastructure as Code + Configuration Management with GitLab CI and HashiCorp Vault
+# Capstone: Terraform + Ansible + Vault
 
-This capstone project demonstrates how to combine **Terraform**, **Ansible**, **GitLab CI**, and **HashiCorp Vault** to build a secure, automated infrastructure provisioning and configuration pipeline.
+Provision (or *pretend* to provision) a server, configure it with Ansible, and only then add Vault and GitLab CI.
 
-## Project Goal
+| | |
+|---|---|
+| Levels | Local path = Intermediate · AWS + Vault + GitLab = Production |
+| Time | ~45 min local · several hours if you use real AWS and Vault |
+| Prerequisites | [Ansible](../../02-ansible/README.md) and [Terraform](../../05-terraform/README.md) first success |
+| You will be able to | (1) explain the handoff “Terraform writes inventory, Ansible uses it” (2) run the localhost playbook (3) say why this project uses GitLab when module 08 uses GitHub Actions |
 
-Provision infrastructure using Terraform, securely manage secrets with Vault, configure servers with Ansible, and automate the entire process using GitLab CI/CD.
+**Last verified:** 2026-08-16
 
-## Architecture Overview
+## Why this project uses GitLab
 
+Module 08 teaches **GitHub Actions**. This capstone keeps a **GitLab CI** pipeline (`.gitlab-ci.yml`) on purpose: the same ideas (stages, artifacts, a manual apply) show up under a different YAML dialect.
+
+You do **not** need a GitLab account for the local path. Treat `.gitlab-ci.yml` as a reading exercise until you have Terraform + Ansible working on your machine.
+
+```text
+GitHub Actions (module 08)     GitLab CI (this folder)
+--------------------------     -----------------------
+jobs: / steps:                 stages: + one key per job
+actions/checkout               implicit checkout
+environment:                   environment:
+secrets                        CI/CD variables
 ```
-GitLab Repository
-      ↓
-GitLab CI Pipeline
-      ↓
-Terraform Plan & Apply → Provision VPC + EC2 (with Workspaces)
-      ↓
-Vault Authentication (AppRole / ID Token)
-      ↓
-Ansible Playbooks → Configure Servers + Deploy Application
-      ↓
-Monitoring & Validation
+
+## Start when you can
+
+- Run the Ansible `hello.yml` first success twice and see `changed=0` the second time
+- `terraform apply` the `local_file` example in module 05 and then `destroy` it
+
+## What you are building
+
+```mermaid
+flowchart LR
+  TF[Terraform desired state] --> Inv[inventory]
+  Inv --> Ans[Ansible playbook]
+  Ans --> Host[A web root or an EC2 box]
+  Vault[Vault] -.->|Production only| Ans
+  GL[GitLab CI] -.->|Production only| TF
 ```
 
-## Key Improvements in This Version
+## Files
 
-- Terraform with **VPC + Security Groups** and **Workspaces** for multiple environments (dev/staging/prod)
-- **Vault lookup plugin** integration in Ansible
-- Enhanced GitLab CI with caching, artifacts, environment protection, and Vault auth
-- Sample application deployment
-- Complete Vault setup documentation (AppRole + ID Token)
-
-## Project Structure
-
-```
+```text
 terraform-ansible-gitlab-vault/
-├── terraform/              # Infrastructure code with workspaces
-├── ansible/                # Playbooks with Vault integration
-├── vault/                  # Policies and setup guides
-├── docs/                   # Documentation
-├── .gitlab-ci.yml          # Enhanced GitLab CI pipeline
-└── README.md
+├── terraform/
+│   ├── local-lab/          # Run this. No AWS.
+│   ├── main.tf             # Real-ish AWS VPC + EC2. Do not apply blindly.
+│   ├── variables.tf
+│   └── outputs.tf
+├── ansible/
+│   ├── localhost.yml       # Run this. No Vault, no sudo required.
+│   ├── inventory.localhost.ini
+│   ├── playbook.yml        # Needs sudo + Vault. Production.
+│   ├── files/index.html
+│   └── templates/nginx.conf.j2
+├── vault/                  # Policy example
+├── docs/vault-setup.md     # AppRole + OIDC notes
+└── .gitlab-ci.yml          # Reading + optional GitLab project
 ```
 
-## How to Use Workspaces
+## Step 1 — Terraform writes an inventory (local)
 
 ```bash
-terraform workspace new dev
-terraform workspace new staging
-terraform workspace new prod
-
-terraform workspace select dev
-terraform apply
+cd projects/terraform-ansible-gitlab-vault/terraform/local-lab
+terraform init
+terraform apply -auto-approve
+cat inventory.ini
 ```
 
-## Learning Outcomes
+**Expected output:** an `inventory.ini` with a fake `[web]` host. That is the handoff: Terraform’s job is to *create* (here, to *write*) something Ansible can target.
 
-By completing this project, you will gain hands-on experience with:
+```bash
+terraform destroy -auto-approve
+```
 
-- Multi-environment infrastructure with Terraform workspaces
-- Secure secrets management using HashiCorp Vault (AppRole + OIDC)
-- Dynamic secret retrieval in Ansible
-- Building secure, auditable GitLab CI/CD pipelines
-- End-to-end DevOps automation combining IaC and configuration management
+The AWS files in `terraform/main.tf` are the same idea with a real provider. They need an AWS account, a current AMI, and they **cost money** (NAT gateway). Do not apply them as a first success. The default `ami-0c55b159cbfafe1f0` is a placeholder and will fail.
 
-## Next Steps / Stretch Goals
+## Step 2 — Ansible configures a web root (local)
 
-- Add ArgoCD for GitOps after server configuration
-- Implement policy-as-code (OPA / Sentinel)
-- Add comprehensive monitoring with Prometheus
-- Create canary deployment strategy
+```bash
+cd projects/terraform-ansible-gitlab-vault/ansible
+ansible-playbook -i inventory.localhost.ini localhost.yml
+ansible-playbook -i inventory.localhost.ini localhost.yml
+```
+
+**Expected output:** first run creates `/tmp/capstone2-www/index.html` and prints the `<h1>`. Second run `changed=0`.
+
+**If it failed:** `ansible-playbook: command not found` → install Ansible from the [Ansible module](../../02-ansible/README.md).
+
+Read [playbook.yml](./ansible/playbook.yml) next. It is the same shape (copy a file, template nginx) plus `become` and a Vault lookup you cannot run yet.
+
+## Step 3 — Vault (optional, Production)
+
+Follow [docs/vault-setup.md](./docs/vault-setup.md) only if you have a Vault server. The lookup in `playbook.yml` talks to `https://vault.example.com` and will fail until you change the URL and authenticate.
+
+Prefer OIDC/JWT from CI over a long-lived AppRole secret, as that page says.
+
+## Step 4 — GitLab CI (optional, Production)
+
+[.gitlab-ci.yml](./.gitlab-ci.yml) is `validate → plan → apply (manual) → configure (manual)`.
+
+| Job | Meaning |
+|---|---|
+| `validate` | `terraform init && validate` |
+| `plan` | Writes a plan artifact |
+| `apply` | Manual, `main`/`develop` only — uses that plan |
+| `configure` | Vault login + `ansible-playbook` |
+
+The configure job assumes variables (`VAULT_ROLE_ID`, …) and an inventory path that a real apply would produce. It is a map, not a pipeline you can green without GitLab + AWS + Vault.
+
+## How this connects
+
+- [Terraform](../../05-terraform/README.md) — desired state and the state file
+- [Ansible](../../02-ansible/README.md) — idempotent config after the box exists
+- [GitHub Actions](../../08-github-actions/README.md) — compare job shape with this `.gitlab-ci.yml`
+- Capstone 1 — ships an *app* to Kubernetes; this one ships *machines*
+
+**When not to use this stack:** configuring Kubernetes apps day-to-day. That is manifests / Helm / GitOps, not Ansible over SSH to every node.
+
+## Practice
+
+1. **Basic.** Change the heading in `ansible/files/index.html` and re-run `localhost.yml`. Success: `cat /tmp/capstone2-www/index.html` shows the new heading.
+2. **Intermediate.** Point `local-lab` at a different `fake_host` via `-var` and apply. Success: `inventory.ini` contains the new IP.
+3. **Production.** In your notes, list what you would change in `terraform/main.tf` before a real apply (AMI, SSH CIDR not `0.0.0.0/0`, remote state, no NAT if you do not need it). Do not apply to a personal paid account just to “finish” the exercise.

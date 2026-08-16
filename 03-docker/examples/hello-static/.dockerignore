@@ -1,0 +1,4 @@
+# Keep the build context small. These never belong in the image.
+.git
+*.md
+.dockerignore

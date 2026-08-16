@@ -1,13 +1,19 @@
+# Only works after Prometheus Operator is installed (Production band of
+# 06-prometheus). The Service has a port named "metrics" and label app=devops-demo-app.
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: devops-demo-app
-  namespace: monitoring
+  labels:
+    release: prometheus
 spec:
   selector:
     matchLabels:
       app: devops-demo-app
+  namespaceSelector:
+    matchNames:
+      - default
   endpoints:
-  - port: metrics
-    interval: 30s
-    path: /metrics
+    - port: metrics
+      interval: 30s
+      path: /metrics

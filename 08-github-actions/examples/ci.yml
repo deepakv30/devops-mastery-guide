@@ -1,0 +1,15 @@
+# Copy this file into YOUR repo as .github/workflows/first-success.yml
+# A file sitting in this learning repo does not run.
+name: First success
+
+on: [push, pull_request]
+
+jobs:
+  hello:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prove it ran
+        run: |
+          echo "ok"
+          uname -a

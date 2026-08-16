@@ -1,28 +1,20 @@
-# Capstone Projects
+# Capstone projects
 
-This folder contains end-to-end projects that combine multiple tools covered in this guide.
+End-to-end practice. These combine modules; they are not a substitute for the beginner bands.
 
-## Recommended Projects
+Do not start a project until you can do the “Start when you can” checks. Each project README is a walkthrough of the files that exist — not a blank design brief.
 
-### 1. Full CI/CD Pipeline for a Web Application
-- Use GitHub Actions to build Docker image
-- Push to a registry
-- Deploy to Kubernetes using Helm or Kustomize
-- Add monitoring with Prometheus + Grafana
+| Project | Modules | Time | Start when you can |
+|---|---|---|---|
+| [Full CI/CD pipeline](./full-cicd-pipeline/README.md) | [Docker](../03-docker/README.md), [Kubernetes](../04-kubernetes/README.md), [GitHub Actions](../08-github-actions/README.md), [Prometheus](../06-prometheus/README.md) | ~2–4 h | Build an image, apply a Deployment on kind, read a workflow file |
+| [Terraform + Ansible + Vault](./terraform-ansible-gitlab-vault/README.md) | [Terraform](../05-terraform/README.md), [Ansible](../02-ansible/README.md) | ~3–5 h (local path ~45 min) | `terraform apply` a local example; run a localhost playbook |
 
-### 2. Infrastructure as Code + Configuration Management
-- Use Terraform to provision cloud infrastructure (VPC, VMs, Kubernetes cluster)
-- Use Ansible to configure the servers and deploy applications
+## How to use a capstone
 
-### 3. Production-Ready Kubernetes Environment
-- Set up a cluster with GitOps (ArgoCD)
-- Implement security policies (Network Policies, RBAC)
-- Add observability stack
-- Configure auto-scaling and self-healing
+1. Finish the listed modules’ **Beginner** bands (Intermediate helps; Production is optional).
+2. Follow the project README from the top. Run the local path before any cloud or CI path.
+3. When a step is marked **stub**, treat it as a reading exercise — do not pretend it deployed.
 
-## How to Approach These Projects
+## Not in this folder
 
-1. Start small and incrementally add components.
-2. Document your architecture decisions.
-3. Focus on security and observability from the beginning.
-4. Use the modules in this guide as reference.
+A third idea — “production Kubernetes + GitOps” — is a [design-only exercise](./gitops-k8s-design.md). There is no cluster folder for it yet.

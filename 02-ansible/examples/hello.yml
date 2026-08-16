@@ -1,0 +1,16 @@
+---
+- name: First success
+  hosts: local
+  gather_facts: false
+  tasks:
+    - name: Write a file
+      ansible.builtin.copy:
+        dest: /tmp/ansible-first-success.txt
+        content: "Ansible was here\n"
+    - name: Read it back
+      ansible.builtin.command: cat /tmp/ansible-first-success.txt
+      register: out
+      changed_when: false
+    - name: Show
+      ansible.builtin.debug:
+        var: out.stdout

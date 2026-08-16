@@ -1,9 +1,12 @@
+# Production path — needs a real inventory, sudo, and a Vault you configured
+# (see docs/vault-setup.md). For a first run use localhost.yml instead.
 ---
 - name: Configure web servers with Vault secrets
   hosts: all
-  become: yes
+  become: true
   vars:
-    # Fetch secrets dynamically from Vault using lookup plugin
+    # Fails until Vault is reachable. Unused in the nginx tasks below;
+    # kept to show the lookup shape. Do not put real passwords in git.
     db_password: "{{ lookup('community.hashi_vault.vault_kv2', 'secret/data/devops/db', url='https://vault.example.com').data.data.password }}"
 
   tasks:
@@ -21,11 +24,11 @@
 
     - name: Deploy application
       copy:
-        src: ../app/
-        dest: /var/www/html/
+        src: files/index.html
+        dest: /var/www/html/index.html
         owner: www-data
         group: www-data
-        mode: '0755'
+        mode: "0644"
 
     - name: Configure Nginx
       template:

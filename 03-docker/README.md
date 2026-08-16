@@ -1,104 +1,245 @@
-# Docker Mastery
+# Docker — Package an app and its dependencies into an image
 
-**Last Major Update:** 2026-06-19 | Tested with Docker v27.0+
+| | |
+|---|---|
+| Levels | Beginner → Intermediate → Production |
+| Time | Beginner ~25 min · full module ~3h |
+| Prerequisites | [Linux](../01-linux/README.md) first success; Docker Engine or Desktop |
+| You will be able to | (1) explain [image](../docs/GLOSSARY.md#image) vs [container](../docs/GLOSSARY.md#container) vs [layer](../docs/GLOSSARY.md#layer-docker) (2) write a small Dockerfile and run it (3) say when Compose is better than a long `docker run` |
 
-## Introduction & Why It Matters
+**Last verified:** 2026-08-16 · **Tested with:** Docker Engine 27.x / 28.x
 
-Docker is the de facto standard for containerization. In enterprise environments, it enables consistent deployments, faster development cycles, improved resource utilization, and easier scaling. Mastering Docker is foundational before moving to Kubernetes.
+## 60-second overview
 
-## Core Concepts
+Docker packages an app and the libraries it needs into an *image*, then runs a copy of that image as a *container*. The host kernel is shared; the filesystem and process list are not. You use it so “works on my laptop” and “works on the server” are the same filesystem, not two slightly different apt installs.
 
-- Images vs Containers
-- Dockerfile
-- Layers & Union File System
-- Docker Networking (bridge, host, overlay)
-- Volumes & Bind Mounts
-- Docker Compose
-- Registry (Docker Hub, ECR, Harbor)
+## Mental model
 
-## Installation & Setup
+An image is a sealed lunchbox; a container is someone eating from a copy of that lunchbox. Layers are ingredients stacked so two lunchboxes can share the bread.
+
+```mermaid
+flowchart LR
+  Dockerfile --> Image --> Container
+  Image --> Registry
+```
+
+## Skip to
+
+| Band | What you get | Go |
+|---|---|---|
+| Beginner | Concepts + first success | [below](#beginner-core-concepts) |
+| Intermediate | Worked examples, comparisons | [below](#intermediate-go-deeper) |
+| Production | Security, scale, real constraints | [below](#production) |
+
+## Beginner: core concepts
+
+### Image vs container
+
+- **What it is:** An [image](../docs/GLOSSARY.md#image) is an immutable filesystem snapshot plus a default command. A [container](../docs/GLOSSARY.md#container) is a running (or stopped) instance of that image.
+- **Why it exists:** You build the image once, run it many times, and throw the container away. State you care about does not live in the container.
+- **How it looks:** `docker run --rm -d --name web -p 8080:80 nginx:1.27-alpine` starts a container from the `nginx:1.27-alpine` image. `--rm` deletes the container on stop.
+- **Common confusion:** Deleting a container does not delete the image. `docker ps` is running containers; `docker images` is images.
+
+### Dockerfile
+
+- **What it is:** A text file of instructions that produce an image. Typical first three: `FROM` (base image), `COPY` (your files), `CMD` (what to run).
+- **Why it exists:** So the image is reproducible. “I apt-installed it by hand inside a container” is not a build.
+- **How it looks:** [examples/hello-static/Dockerfile](./examples/hello-static/Dockerfile) — two lines: start from nginx, copy [index.html](./examples/hello-static/index.html).
+- **Common confusion:** The Dockerfile does not run your app. `docker build` produces an image; `docker run` starts a container from it.
+
+### Layers and cache
+
+- **What it is:** Each Dockerfile instruction usually becomes one [layer](../docs/GLOSSARY.md#layer-docker), a filesystem diff. Docker reuses a layer when the instruction and every layer above it are unchanged.
+- **Why it exists:** Rebuilds stay fast, and ten images that start `FROM nginx:1.27-alpine` share that base on disk.
+- **How it looks:** Put the lines that change least first (`FROM`, `COPY package.json`, `RUN npm ci`) and your source last. `docker build` prints `CACHED` on reused steps.
+- **Common confusion:** `COPY . .` early in the file busts the cache on every edit, including README typos. That is what [`.dockerignore`](./examples/hello-static/.dockerignore) is for.
+
+### Ports and localhost publishing (`-p`)
+
+- **What it is:** A process in a container listens on a *container* port. `-p 8080:80` publishes host port 8080 to container port 80.
+- **Why it exists:** Containers have their own network namespace. Without `-p` (or Compose `ports:`), only other containers on the same network can connect.
+- **How it looks:** `curl http://127.0.0.1:8080` hits the host port. Inside the container the process still sees `:80`.
+- **Common confusion:** Publishing is not a firewall hole on another machine by itself, but `0.0.0.0:8080` is reachable from other hosts on your LAN. `localhost` *inside* the container is the container, not your laptop.
+
+### Volumes vs bind mounts (light)
+
+- **What it is:** A [volume](../docs/GLOSSARY.md#volume) is Docker-managed storage. A *bind mount* is a path on the host, mounted into the container.
+- **Why it exists:** Container filesystems are thrown away. Databases and your source tree need to outlive `docker rm`.
+- **How it looks:** [examples/docker-compose.yml](./examples/docker-compose.yml) bind-mounts `./hello-static` onto nginx’s html directory. Edit `index.html` on the host; nginx serves the new file.
+- **Common confusion:** A bind mount hides whatever the image had at that path. Named volumes are better for database data; bind mounts are better for “I am editing this directory.”
+
+## Beginner: first success
+
+**Goal:** Run an official image on localhost, then build and run the static example.  
+**Time:** ~15 minutes.
+
+If `docker version` fails with `permission denied` while talking to `/var/run/docker.sock`, your user is not in the `docker` group. On Ubuntu: `sudo usermod -aG docker "$USER"`, then log out and back in. If Docker is not installed, use [Docker Engine](https://docs.docker.com/engine/install/) (or Desktop). The Engine convenience script is the laptop path: `curl -fsSL https://get.docker.com | sh`.
 
 ```bash
-# Ubuntu/Debian
-curl -fsSL https://get.docker.com | sh
-sudo usermod -aG docker $USER
-newgrp docker
-
-docker --version
+docker version
+docker run --rm -d --name web -p 8080:80 nginx:1.27-alpine
+curl -s -o /dev/null -w "%{http_code}\n" http://127.0.0.1:8080
+docker logs web --tail 5
+docker stop web
 ```
 
-## Key Features & Best Practices
+Then, from this module directory (`03-docker/`):
 
-### Enterprise Best Practices
-- Use multi-stage builds to reduce image size
-- Run containers as non-root user
-- Use `.dockerignore`
-- Pin base image versions (avoid `latest`)
-- Scan images with Trivy or Docker Scout
-- Use distroless or minimal base images when possible
-
-### Security
-- Never run as root in production
-- Use read-only filesystems where possible
-- Limit capabilities
-
-## Hands-on Examples
-
-### Example 1: Multi-stage Build (Recommended)
-
-```dockerfile
-# Build stage
-FROM node:20-alpine AS builder
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci
-COPY . .
-RUN npm run build
-
-# Production stage
-FROM node:20-alpine
-WORKDIR /app
-COPY --from=builder /app/dist ./dist
-COPY package*.json ./
-RUN npm ci --only=production
-USER node
-EXPOSE 3000
-CMD ["node", "dist/main.js"]
+```bash
+cd examples/hello-static
+docker build -t hello-static:1 .
+docker run --rm -d --name hello -p 8081:80 hello-static:1
+curl -s http://127.0.0.1:8081
+docker stop hello
 ```
 
-### Example 2: Docker Compose for Local Development
+**Expected output:** `docker version` prints a Client and a Server section. The first `curl` prints `200`. `docker logs web` shows a GET to `/`. The second `curl` prints the `hello-static` heading from [index.html](./examples/hello-static/index.html).
 
-See `examples/docker-compose.yml`
+**If it failed:**
 
-## Common Pitfalls & Troubleshooting
+- `port is already allocated` → something else owns 8080 or 8081. Use `-p 8088:80` (and curl that host port).
+- `Cannot connect to the Docker daemon` → Engine is not running, or you are not in the `docker` group (see above).
+- `curl: (7) Failed to connect` right after `docker run` → wait one second and retry; nginx was still starting.
 
-- **Image too large**: Use multi-stage builds and `.dockerignore`
-- **Permission issues**: Run as non-root or fix ownership
-- **Container exits immediately**: Check logs with `docker logs`
-- **Port conflicts**: Use `docker ps` and choose free ports
+## Intermediate: go deeper
 
-## Integration with Other Tools
+### Compose instead of a long `docker run`
 
-- **Ansible**: Use `community.docker` collection to manage containers
-- **Kubernetes**: Docker images are the base unit for pods
-- **CI/CD**: Build and push images in GitHub Actions
-- **Terraform**: Can manage Docker resources (less common in production)
+[examples/docker-compose.yml](./examples/docker-compose.yml) starts nginx and bind-mounts [hello-static](./examples/hello-static/index.html) into the html directory. From `03-docker/examples/`:
 
-## Exercises
+```bash
+docker compose up -d
+curl -s http://127.0.0.1:8082
+docker compose logs --tail 5
+docker compose down
+```
+
+Compose is the right tool when you are tired of retyping `-p` and `-v`, or when a second service (a database, a cache) needs to share a network with the app.
+
+### `.dockerignore`
+
+[examples/hello-static/.dockerignore](./examples/hello-static/.dockerignore) keeps `.git` and markdown out of the build context. Without it, `COPY . .` sends everything in the directory to the daemon — including secrets and `node_modules`. Treat it like `.gitignore` for `docker build`.
+
+### logs, exec, inspect
+
+```bash
+docker logs hello --tail 20
+docker exec hello ls /usr/share/nginx/html
+docker inspect hello --format '{{.State.Status}} {{.NetworkSettings.IPAddress}}'
+```
+
+`logs` is stdout/stderr of PID 1 in the container. `exec` runs an extra process in that container (the container must still be running). `inspect` is the full JSON; `--format` pulls one field.
+
+### Comparison
+
+| Reach for a Dockerfile when… | Reach for Compose when… | Reach for Kubernetes when… |
+|---|---|---|
+| You are defining *one* image | You need one command to start an app plus its companions on a laptop (`ports`, bind mounts, a shared network) | You need those containers scheduled, healed, and rolled out across machines — see [Kubernetes](../04-kubernetes/README.md) |
+
+`docker run` is the learning tool and the one-off. It is not how you describe a two-service dev stack.
+
+## Production
+
+**You should already be able to:** run a container, write a 10-line Dockerfile, explain layers.
+
+### Multi-stage builds
+
+A builder stage has compilers and `node_modules`. The final stage copies only the artifact. [examples/multi-stage.Dockerfile](./examples/multi-stage.Dockerfile) compiles a tiny Go HTTP server and copies the one binary into `alpine:3.20`. The same idea in Node is `npm run build` then `COPY --from=builder /app/dist`.
+
+```bash
+# from 03-docker/examples/
+docker build -f multi-stage.Dockerfile -t hello-multi:1 .
+docker run --rm -d --name multi -p 8083:8080 hello-multi:1
+curl -s http://127.0.0.1:8083
+docker stop multi
+```
+
+The final image should not contain `go`, `gcc`, or your test fixtures.
+
+### Non-root `USER`
+
+The last stage of that Dockerfile runs `USER app`. If the process does not need to be root, it should not be. Official nginx already drops the worker to user `nginx`; your own app images often forget `USER` and stay root.
+
+### Pin tags, never `latest`
+
+`nginx:1.27-alpine` is a moving *patch* line, but it is still a pin compared to `nginx:latest`. `latest` on your laptop and `latest` on the server will diverge. Prefer a digest (`nginx@sha256:…`) when you need bit-for-bit reproducibility.
+
+### Read-only rootfs and dropped capabilities (short)
+
+```bash
+docker run --rm --read-only --tmpfs /tmp --cap-drop ALL \
+  --name hello-ro -p 8081:80 hello-static:1
+```
+
+nginx may also need tmpfs mounts for `/var/cache/nginx` and `/run`. `--cap-drop ALL` removes Linux capabilities the process does not need; add back only what it must have (rarely `NET_BIND_SERVICE` if it listens on a port below 1024 *and* is non-root). If the container exits, `docker logs` will tell you which path it tried to write.
+
+### Scan mention
+
+Tools such as [Trivy](https://trivy.dev/) report known CVEs in an image (`trivy image hello-static:1`). You do not need to install a scanner for this module. Make scanning a CI step later in [GitHub Actions](../08-github-actions/README.md), not a ritual you run by hand on every local build.
+
+### `.dockerignore` again
+
+Production images still start with a small context. A forgotten `.env` in the build context is a leaked secret even if you never `COPY` it, because people later change the Dockerfile.
+
+## Pitfalls
+
+| Symptom | Likely cause | Fix |
+|---|---|---|
+| Image is hundreds of MB for a static page | Fat base, no `.dockerignore`, leftover build tools | Alpine or a multi-stage final image; add [`.dockerignore`](./examples/hello-static/.dockerignore) |
+| `permission denied` on `docker.sock` | Your user is not in the `docker` group | `sudo usermod -aG docker "$USER"` then a new login |
+| Container exits immediately | PID 1 ended or crashed | `docker logs NAME`; `docker inspect NAME --format '{{.State.ExitCode}}'` |
+| `port is already allocated` | Host port is taken | `docker ps` and `ss -tuln`; pick another `-p` |
+
+## How this connects
+
+- **Previous:** [Linux](../01-linux/README.md) — you already know processes, ports (`ss`), and files.
+- **Next:** [Kubernetes](../04-kubernetes/README.md) — a Pod runs this image. [GitHub Actions](../08-github-actions/README.md) is where you will `docker build` and push on each git event.
+- **When not to use this:** A one-off debug on the host (`journalctl`, `ss`, a local binary) does not need Docker. Do not wrap a single `curl` in an image to look official.
+
+## Practice
 
 ### Basic
-1. Write a Dockerfile for a simple Python or Node.js app.
-2. Build and run the container locally.
+
+1. **Setup:** Empty directory, Docker running.  
+   **Task:** Write a Dockerfile that serves a static `index.html` with `nginx:1.27-alpine` (or a 10-line Python `http.server` image if you prefer).  
+   **Hint:** `COPY` the file into `/usr/share/nginx/html/`. You may copy [examples/hello-static/Dockerfile](./examples/hello-static/Dockerfile).  
+   **Success:** The Dockerfile has a pinned `FROM` and a `COPY`. It sits next to your `index.html`.
+
+2. **Setup:** The Dockerfile from exercise 1.  
+   **Task:** Build it and run it so a host port returns your HTML.  
+   **Hint:** `docker build -t … .` then `docker run --rm -d -p 8084:80`.  
+   **Success:** `curl -s http://127.0.0.1:8084` prints your heading.
 
 ### Intermediate
-3. Convert a single Dockerfile into a multi-stage build.
-4. Create a `docker-compose.yml` with two services (app + database).
 
-### Advanced
-5. Secure a container using non-root user, read-only filesystem, and dropped capabilities.
+3. **Setup:** [examples/docker-compose.yml](./examples/docker-compose.yml).  
+   **Task:** Add a second service (a `redis:7-alpine` with no ports published is enough) *or* convert your exercise-1 app into a two-service Compose file. Bring the stack up and down with Compose.  
+   **Hint:** Services on the default Compose network can reach each other by service name. `docker compose ps` should list both.  
+   **Success:** `docker compose up -d` starts two containers; `curl` to the web port still works; `docker compose down` removes them.
 
-## Official Documentation & Further Reading
+### Production
 
-- [Docker Documentation](https://docs.docker.com/)
-- [Docker Best Practices](https://docs.docker.com/develop/dev-best-practices/)
-- [Multi-stage Builds](https://docs.docker.com/build/building/multi-stage/)
+4. **Setup:** Your image from exercise 2, or [examples/multi-stage.Dockerfile](./examples/multi-stage.Dockerfile).  
+   **Task:** Write four notes (not a full harden-the-world list): (1) which user the process runs as, (2) what breaks if you add `--read-only`, (3) why the tag is not `latest`, (4) what `.dockerignore` is excluding. Then run the image with `--read-only` and record what you had to add (`--tmpfs`, a writable path).  
+   **Hint:** `docker exec` + `id`; `docker logs` after a failed read-only start.  
+   **Success:** Four short notes plus one command line that actually starts (or a log line that explains why nginx needed `/run`).
+
+<details>
+<summary>Solution notes</summary>
+
+1–2. Same shape as [examples/hello-static/](./examples/hello-static/Dockerfile).
+3. Under `services:` add `cache: { image: redis:7-alpine }`. `docker compose up -d && docker compose ps`.
+4. `hello-multi:1` already has `USER app`. `hello-static:1` plus `--read-only` usually needs `--tmpfs /var/cache/nginx --tmpfs /run`.
+
+</details>
+
+## Cheat sheet
+
+Command index: [cheatsheet.md](./cheatsheet.md).
+
+## Official documentation
+
+- [Start here: What is a container?](https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-a-container/) — image vs container in Docker’s own words.
+- [Deep reference: Dockerfile](https://docs.docker.com/reference/dockerfile/) — every instruction.
+- [Deep reference: multi-stage builds](https://docs.docker.com/build/building/multi-stage/) — the Production pattern above.
+- [Deep reference: Compose file](https://docs.docker.com/reference/compose-file/) — `services`, `ports`, `volumes`.

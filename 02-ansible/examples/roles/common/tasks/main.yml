@@ -1,0 +1,7 @@
+---
+# Smallest useful role: one task file. Add handlers/, templates/,
+# defaults/, and vars/ next to tasks/ when you need them.
+- name: Drop a marker so you can see the role ran
+  ansible.builtin.copy:
+    dest: /tmp/ansible-common-role.txt
+    content: "common role applied\n"

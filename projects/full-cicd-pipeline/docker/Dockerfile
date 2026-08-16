@@ -1,15 +1,17 @@
-# Build stage
-FROM node:20-alpine AS builder
-WORKDIR /app
-COPY ../app/package*.json ./
-RUN npm ci --only=production
+# Build from the project root:
+#   docker build -f docker/Dockerfile -t devops-demo-app:local .
+#
+# COPY paths are relative to that context, not to this file.
 
-# Production stage
+FROM node:20-alpine AS deps
+WORKDIR /app
+COPY app/package.json app/package-lock.json* ./
+RUN npm install --omit=dev
+
 FROM node:20-alpine
 WORKDIR /app
-COPY --from=builder /app/node_modules ./node_modules
-COPY ../app/ .
-
-EXPOSE 3000
+COPY --from=deps /app/node_modules ./node_modules
+COPY app/ ./
 USER node
+EXPOSE 3000
 CMD ["node", "index.js"]

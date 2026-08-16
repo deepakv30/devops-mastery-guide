@@ -37,8 +37,12 @@ jobs:
           ghcr.io/${{ github.repository }}/devops-demo-app:latest
           ghcr.io/${{ github.repository }}/devops-demo-app:${{ github.sha }}
 
-    - name: Deploy to Kubernetes
+    # STUB: this job does not talk to a cluster. A real deploy needs
+    # kubeconfig or OIDC to a cloud API, which this learning repo does not ship.
+    # Practice deploy locally with kind — see README.md "Step 3".
+    - name: Deploy to Kubernetes (stub)
       run: |
-        echo "Deploying to Kubernetes..."
-        # In real scenario, configure kubectl with cluster credentials
-        # kubectl set image deployment/devops-demo-app app=ghcr.io/${{ github.repository }}/devops-demo-app:${{ github.sha }}
+        echo "Skipping cluster deploy."
+        echo "Image that would be rolled out:"
+        echo "  ghcr.io/${{ github.repository }}/devops-demo-app:${{ github.sha }}"
+        echo "Local path: kind load docker-image && kubectl apply -f k8s/"

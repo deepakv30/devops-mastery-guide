@@ -10,6 +10,9 @@
 crash.log
 crash.*.log
 
+# Node (capstone app)
+node_modules/
+
 # Python
 __pycache__/
 *.py[cod]

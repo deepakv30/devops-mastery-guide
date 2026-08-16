@@ -16,7 +16,8 @@ spec:
     spec:
       containers:
       - name: app
-        image: ghcr.io/deepakv30/devops-demo-app:latest
+        image: devops-demo-app:local
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 3000
         resources:

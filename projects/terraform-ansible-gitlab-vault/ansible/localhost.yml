@@ -1,0 +1,28 @@
+# Local path — no Vault, no SSH, no AWS.
+#   ansible-playbook -i inventory.localhost.ini localhost.yml
+- name: First success on this machine
+  hosts: local
+  gather_facts: false
+  vars:
+    dest_dir: /tmp/capstone2-www
+  tasks:
+    - name: Create a fake web root
+      ansible.builtin.file:
+        path: "{{ dest_dir }}"
+        state: directory
+        mode: "0755"
+
+    - name: Copy the stand-in app
+      ansible.builtin.copy:
+        src: files/index.html
+        dest: "{{ dest_dir }}/index.html"
+        mode: "0644"
+
+    - name: Prove the file is there
+      ansible.builtin.command: cat {{ dest_dir }}/index.html
+      register: page
+      changed_when: false
+
+    - name: Show a snippet
+      ansible.builtin.debug:
+        msg: "{{ page.stdout | regex_search('<h1>[^<]+</h1>') }}"

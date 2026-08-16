@@ -1,150 +1,118 @@
-# Kubernetes Mastery
+# Kubernetes — Run and heal many containers as one system
 
-**Last Major Update:** 2026-06-19 | Comprehensive CKA-aligned content with enterprise best practices
+| | |
+|---|---|
+| Levels | Beginner → Intermediate → Production |
+| Time | Beginner ~40 min · full module ~6h |
+| Prerequisites | [Docker](../03-docker/README.md) first success; `kubectl` + [kind](https://kind.sigs.k8s.io/docs/user/quick-start/) |
+| You will be able to | (1) explain [Pod](../docs/GLOSSARY.md) vs [Deployment](../docs/GLOSSARY.md) vs [Service](../docs/GLOSSARY.md) (2) apply YAML on kind and curl the Service (3) use `describe` / `logs` when a Pod is not Ready |
 
-## Introduction & Why It Matters
+**Last verified:** 2026-08-16 · **Tested with:** Kubernetes 1.31+ via kind, kubectl matching the cluster
 
-Kubernetes is the industry-standard container orchestration platform. It automates deployment, scaling, and management of containerized applications. In enterprise environments, Kubernetes enables high availability, scalability, self-healing, and efficient resource utilization across hybrid and multi-cloud infrastructures.
+The first cluster in this module is **kind**, not kubeadm. kubeadm belongs in [Production](./advanced.md).
 
-Mastering Kubernetes is essential for modern DevOps, SRE, and Platform Engineering roles.
+## 60-second overview
 
-## Core Concepts
+Kubernetes keeps a declared number of containers running and reachable. You write YAML ([manifests](../docs/GLOSSARY.md)) that say “three copies of this image, behind this name.” The control plane stores that [desired state](../docs/GLOSSARY.md), watches what is actually running, and starts or kills Pods until the two match. That loop is [reconciliation](../docs/GLOSSARY.md).
 
-### Pods
-- Smallest deployable unit in Kubernetes.
-- Can contain one or more containers that share network and storage.
-- Ephemeral by nature (use Deployments/ReplicaSets for management).
+A laptop cluster is enough to learn the objects. A production cluster is a different problem (certificates, etcd backups, upgrades, networking) and is covered later.
 
-### Deployments
-- Declarative way to manage Pods and ReplicaSets.
-- Supports rolling updates, rollbacks, and scaling.
-- Preferred way to deploy applications.
+Jargon used more than once is in the [glossary](../docs/GLOSSARY.md). How to study: [How to learn](../docs/HOW_TO_LEARN.md).
 
-### ReplicaSets
-- Ensures a stable set of replica Pods are running.
-- Uses label selectors to manage Pods.
-- ReplicaSet is the successor to ReplicationController (uses `apps/v1`).
+## Mental model
 
-### Services
-- **ClusterIP**: Default, internal cluster access only.
-- **NodePort**: Exposes service on a static port on each node.
-- **LoadBalancer**: Provisions external load balancer (cloud providers).
-- **Headless**: For direct pod-to-pod communication (no cluster IP).
+A **Pod** is one lunch tray (one or more containers sharing a network). A **Deployment** is the cafeteria manager who keeps N trays out. A **Service** is the menu-board name that stays put while trays come and go.
 
-### ConfigMaps and Secrets
-- **ConfigMap**: Store non-sensitive configuration data.
-- **Secret**: Store sensitive data (base64 encoded, not encrypted by default).
-- Can be injected as environment variables or mounted as volumes.
-
-### Ingress
-- Manages external access to services (HTTP/HTTPS).
-- Requires an Ingress Controller (e.g., NGINX, Traefik).
-- Supports path-based and host-based routing.
-- Handles SSL termination centrally.
-
-### Networking
-- Every Pod gets a unique IP.
-- CNI (Container Network Interface) plugins handle pod networking (Flannel, Calico, Weave, Cilium).
-- Services provide stable endpoints and load balancing.
-- CoreDNS provides internal DNS resolution.
-
-## Installation & Setup
-
-### Using kubeadm (Recommended for learning & production)
-
-```bash
-# On master
-sudo kubeadm init --pod-network-cidr=10.244.0.0/16
-
-# Install CNI (example: Flannel)
-kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
-
-# On worker nodes
-sudo kubeadm join <master-ip>:6443 --token <token> ...
+```mermaid
+flowchart LR
+  Deployment --> ReplicaSet --> Pod
+  Service --> Pod
 ```
 
-### Local Development
-- Minikube or kind for single-node clusters.
-- Use `kubectl` with context switching for multiple clusters.
+You edit the Deployment. Kubernetes creates a [ReplicaSet](../docs/GLOSSARY.md), which creates Pods. The Service selects those Pods by [label](../docs/GLOSSARY.md), not by Pod name.
 
-## Key Features & Best Practices
+## Skip to
 
-### Enterprise Best Practices
-- Use **Deployments** instead of directly managing Pods or ReplicaSets.
-- Implement **Horizontal Pod Autoscaler (HPA)** for automatic scaling based on CPU/memory.
-- Use **Resource Requests and Limits** on all containers.
-- Prefer **ConfigMaps and Secrets** over hardcoding values.
-- Use **Ingress** + Ingress Controller instead of multiple NodePort/LoadBalancer Services.
-- Implement **Network Policies** for micro-segmentation.
-- Use **Namespaces** for environment and team isolation.
-- Enable **Pod Security Standards** or OPA/Gatekeeper for security policies.
+| Band | What you get | Go |
+|---|---|---|
+| Beginner | Six concepts + kind install + first success (apply, curl, scale) | [beginner.md](./beginner.md) |
+| Intermediate | ConfigMap, Ingress, HPA, requests/limits, namespaces, kubectl | [intermediate.md](./intermediate.md) |
+| Production | Requests required, NetworkPolicy, RBAC, Helm/Kustomize, real clusters | [advanced.md](./advanced.md) |
 
-### Important kubectl Commands
+## Files in this module
 
-```bash
-# Create resources
-kubectl create deployment nginx --image=nginx --replicas=3
-kubectl expose deployment nginx --port=80 --type=ClusterIP
+| File | Used in |
+|---|---|
+| [examples/nginx-deployment.yaml](./examples/nginx-deployment.yaml) | Beginner first success — 3 replicas of `nginx:1.27-alpine` |
+| [examples/nginx-service.yaml](./examples/nginx-service.yaml) | Beginner first success — ClusterIP on port 80 |
+| [examples/configmap.yaml](./examples/configmap.yaml) | Intermediate — ConfigMap injected as env |
+| [examples/rbac-example.yaml](./examples/rbac-example.yaml) | Production — Role + RoleBinding + ServiceAccount |
+| [cheatsheet.md](./cheatsheet.md) | Command and object reference |
 
-# Generate YAML without creating
-kubectl create deployment nginx --image=nginx --dry-run=client -o yaml > nginx.yaml
+## Pitfalls
 
-# Scaling
-kubectl scale deployment nginx --replicas=5
+| Symptom | Likely cause | Fix |
+|---|---|---|
+| `ImagePullBackOff` | Image name or tag wrong, or the node cannot reach the registry | `kubectl describe pod <name>` → Events. Fix the tag. On kind, confirm Docker can pull the same image. |
+| `CrashLoopBackOff` | Process inside the container exits | `kubectl logs <name>` and `kubectl describe pod <name>`. Fix the command, config, or missing file. |
+| Pod stays `Pending` | No node has enough CPU/memory, or a taint the Pod does not tolerate | `kubectl describe pod <name>` → Events (`FailedScheduling`). Lower requests, or free the node. |
+| Service has no endpoints | Selector does not match Pod labels | `kubectl get pods --show-labels` and `kubectl get endpoints nginx`. Align `spec.selector` with the Pod template labels. |
+| DNS name does not resolve inside the cluster | CoreDNS not Ready, or you used the wrong name | `kubectl get pods -n kube-system`. From another Pod the name is `nginx.default.svc.cluster.local` (Service `nginx` in namespace `default`). |
+| `kubectl edit pod` rejects the change | Most Pod spec fields are immutable | Edit the Deployment (`kubectl edit deploy/nginx` or change the YAML and `kubectl apply`). |
 
-# Rolling updates & history
-kubectl set image deployment/nginx nginx=nginx:1.21
-kubectl rollout status deployment/nginx
-kubectl rollout history deployment/nginx
-kubectl rollout undo deployment/nginx
+## How this connects
 
-# ConfigMap & Secret
-kubectl create configmap app-config --from-literal=APP_COLOR=blue
-kubectl create secret generic db-secret --from-literal=DB_PASSWORD=secret
+- **Previous:** [Docker](../03-docker/README.md) — the image is what the Pod runs. If you cannot `docker run` the image, Kubernetes will not run it either.
+- **Next:** [GitHub Actions](../08-github-actions/README.md) is how you build and deploy the image; [Prometheus](../06-prometheus/README.md) is how you watch what you shipped.
+- **When not to use this:** One container on a laptop is Docker Compose, not a cluster. Do not stand up Kubernetes to run a single process you can `docker run`.
 
-# Debugging
-kubectl get pods -o wide
-kubectl describe pod <pod-name>
-kubectl logs <pod-name> -f
-kubectl exec -it <pod-name> -- /bin/sh
-```
+## Practice
 
-## Common Pitfalls & Troubleshooting
-
-- **ImagePullBackOff**: Wrong image name or registry credentials.
-- **CrashLoopBackOff**: Application crashing inside container (check logs).
-- **Pending Pods**: Insufficient resources or taints/tolerations issues.
-- **Service not reachable**: Check selectors, endpoints (`kubectl get endpoints`), and Network Policies.
-- **DNS issues**: Verify CoreDNS pods are running.
-- Editing live Pods is limited — prefer editing Deployments.
-
-## Integration with Other Tools
-
-- **Docker**: Source of container images.
-- **Helm**: Package manager for Kubernetes applications.
-- **Prometheus + Grafana**: Monitoring and observability.
-- **ArgoCD / Flux**: GitOps continuous delivery.
-- **Terraform**: Can provision EKS, GKE, AKS clusters.
-- **Ansible**: Can deploy applications and configure clusters.
-
-## Exercises
+Do these from `04-kubernetes/` so the `examples/` paths work.
 
 ### Basic
-1. Create a Deployment with 3 replicas of Nginx and expose it via a ClusterIP Service.
-2. Create a ConfigMap and inject it into a Pod as environment variables.
+
+1. **Setup:** kind cluster `learn` from [first success](./beginner.md#beginner-first-success).  
+   **Task:** Apply [examples/nginx-deployment.yaml](./examples/nginx-deployment.yaml) and [examples/nginx-service.yaml](./examples/nginx-service.yaml). Scale to 5 replicas, wait until 5 are Ready, scale back to 3.  
+   **Hint:** `kubectl scale deploy/nginx --replicas=5` then `kubectl get pods -w`.  
+   **Success:** `kubectl get deploy nginx` shows `3/3` READY after you scale back.
+
+2. **Setup:** Same cluster.  
+   **Task:** Apply [examples/configmap.yaml](./examples/configmap.yaml). Exec into the `config-demo` Pod and print `APP_COLOR`.  
+   **Hint:** `kubectl exec deploy/config-demo -- env \| grep APP_`  
+   **Success:** Output includes `APP_COLOR=blue`.
 
 ### Intermediate
-3. Create an Ingress resource with path-based routing for two applications.
-4. Set up Horizontal Pod Autoscaler for a Deployment.
 
-### Advanced
-5. Deploy a multi-tier application (frontend + backend + database) with proper Services, ConfigMaps, and Secrets.
-6. Configure Network Policies to restrict traffic between namespaces.
+3. **Setup:** First-success Deployment and Service are applied.  
+   **Task:** Write an Ingress YAML that sends `/` to Service `nginx` on port 80. Apply it. Explain why `curl` to that Ingress does not work on this kind cluster yet.  
+   **Hint:** An Ingress object is data. A controller is a running Pod that reads it. kind does not install one for you.  
+   **Success:** `kubectl get ingress` shows your object, and you can name “no Ingress controller” as the reason traffic does not flow.
 
-## Official Documentation & Further Reading
+### Production
 
-- [Kubernetes Documentation](https://kubernetes.io/docs/)
-- [kubectl Cheat Sheet](https://kubernetes.io/docs/reference/kubectl/cheatsheet/)
-- [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/)
-- [Horizontal Pod Autoscaler](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/)
-- [CNCF CKA Curriculum](https://github.com/cncf/curriculum)
+4. **Setup:** Same cluster.  
+   **Task:** Apply [examples/rbac-example.yaml](./examples/rbac-example.yaml). Prove the `log-reader` ServiceAccount can list Pods and cannot delete them.  
+   **Hint:** `kubectl auth can-i` with `--as=system:serviceaccount:default:log-reader`.  
+   **Success:** `get pods` is `yes`; `delete pods` is `no`.
+
+<details>
+<summary>Solution sketches</summary>
+
+1. `kubectl apply -f examples/nginx-deployment.yaml -f examples/nginx-service.yaml` then the two `kubectl scale` commands from [beginner.md](./beginner.md).
+2. `kubectl apply -f examples/configmap.yaml` then `kubectl exec deploy/config-demo -- env | grep APP_`.
+3. Copy the Ingress snippet in [intermediate.md](./intermediate.md). `kubectl get pods -A` will not show an ingress-nginx (or similar) controller unless you installed one.
+4. After apply: `kubectl auth can-i get pods --as=system:serviceaccount:default:log-reader` and the same for `delete`.
+
+</details>
+
+## Cheat sheet
+
+[cheatsheet.md](./cheatsheet.md) — kind, apply/get/describe/logs, scale, rollout, port-forward, `auth can-i`.
+
+## Official documentation
+
+- [Start here: kind Quick Start](https://kind.sigs.k8s.io/docs/user/quick-start/) — laptop cluster used in this module
+- [Start here: kubectl install](https://kubernetes.io/docs/tasks/tools/) — the client, not the cluster
+- [Deep reference: Kubernetes concepts](https://kubernetes.io/docs/concepts/) — objects after you have applied one Deployment
+- [Deep reference: kubectl cheat sheet](https://kubernetes.io/docs/reference/kubectl/quick-reference/) — flags this page does not list

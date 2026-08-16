@@ -1,0 +1,23 @@
+name: prometheus-lab
+
+services:
+  prometheus:
+    image: prom/prometheus:v2.54.1
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --web.enable-lifecycle
+    restart: unless-stopped
+
+  # Optional second target. Uncomment this service and the node job in prometheus.yml,
+  # then run: docker compose up -d
+  # node-exporter:
+  #   image: prom/node-exporter:v1.8.2
+  #   pid: host
+  #   ports:
+  #     - "9100:9100"
+  #   restart: unless-stopped

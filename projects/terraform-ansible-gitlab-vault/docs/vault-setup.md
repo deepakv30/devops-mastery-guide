@@ -1,6 +1,8 @@
-# Setting Up HashiCorp Vault with AppRole + ID Token Authentication
+# Vault setup (AppRole and ID tokens)
 
-This guide explains how to configure HashiCorp Vault for secure authentication from GitLab CI/CD using **AppRole** and **ID Tokens** (OIDC).
+Production add-on for this capstone. You do **not** need Vault for [localhost.yml](../ansible/localhost.yml).
+
+This page configures HashiCorp Vault so GitLab CI can authenticate with **AppRole** or **ID tokens** (OIDC).
 
 ## 1. Enable AppRole Auth Method
 
