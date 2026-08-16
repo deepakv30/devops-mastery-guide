@@ -7,6 +7,7 @@ Edits that make a beginner finish **First success** faster, or that make a Produ
 1. Read [AGENTS.md](./AGENTS.md) and [docs/MODULE_TEMPLATE.md](./docs/MODULE_TEMPLATE.md).
 2. Follow [docs/HOW_TO_LEARN.md](./docs/HOW_TO_LEARN.md) so you do not invert the beginner / Production order.
 3. Do not add a folder to the root module table until it contains a working first-success path.
+4. To deepen an existing module (human or agent), use the [enhance-module](./.agents/skills/enhance-module/SKILL.md) skill. Work on a branch, not directly on `main`. Grok can run `/workflow enhance-module` with `target` set to the folder name.
 
 ## How to send a change
 

@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Added
+
+- Agent Skills layout under `.agents/skills/` ([spec](https://agentskills.io/home)) and the `enhance-module` skill so later agents can deepen a module without dropping the teaching contract.
+- Grok workflow `.grok/workflows/enhance-module.rhai` (enhance, then a read-only review). Advisory only — no CI fail.
+
 ## [2026-08-16]
 
 ### Changed
@@ -30,19 +37,11 @@ All notable changes to this project will be documented in this file.
 - Dockerfile `COPY ../app/` (outside build context) in the CI/CD capstone
 - ServiceMonitor selected a Service that had no `app` label and no port named `metrics`
 
-## [Unreleased]
+## [2026-06-19]
 
-### Added
-
+- Initial project creation and standardization
 - Module template in `docs/`
 - Docker, Kubernetes, and Terraform module structures
 - Capstone projects folder
 - GitHub Issue Templates
-
-### Changed
-
-- Major README improvements with Maintenance Agenda and official links
-
-## [2026-06-19]
-
-- Initial project creation and standardization
+- README maintenance agenda and official links
