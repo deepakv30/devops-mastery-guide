@@ -22,6 +22,7 @@ This repository is a learning guide, not a vendor doc mirror. Keep it accurate, 
 - After a major upstream release of Docker, Kubernetes, Terraform, Ansible, Prometheus, Grafana, or GitHub Actions.
 - When a reader opens an issue that a command or link is wrong.
 - When adding a module: follow [MODULE_TEMPLATE.md](./MODULE_TEMPLATE.md) and [AGENTS.md](../AGENTS.md).
+- When an agent deepens a module: it must follow [enhance-module](../.agents/skills/enhance-module/SKILL.md). Grok’s [enhance-module workflow](../.grok/workflows/enhance-module.rhai) runs that skill and then a reviewer. Treat the reviewer’s regression list as required reading; this is not a CI gate.
 
 ## What does *not* belong in the root README
 

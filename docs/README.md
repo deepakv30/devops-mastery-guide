@@ -9,5 +9,6 @@ Supporting pages for the DevOps Mastery Guide. Start at the [root README](../REA
 | [Glossary](./GLOSSARY.md) | One-sentence definitions |
 | [Module template](./MODULE_TEMPLATE.md) | Required shape of every module |
 | [Maintenance](./MAINTENANCE.md) | How this repo stays current |
+| [Agent Skills](../.agents/README.md) | How AI agents enhance a module without dropping the contract |
 
 Editors also read [AGENTS.md](../AGENTS.md) and [CONTRIBUTING.md](../CONTRIBUTING.md).

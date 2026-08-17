@@ -2,6 +2,12 @@
 
 Read this before changing any learning page. Humans and AI tools follow the same rules.
 
+## When enhancing a module
+
+If the task is to deepen, rewrite, or improve an **existing** module, follow [`.agents/skills/enhance-module/SKILL.md`](./.agents/skills/enhance-module/SKILL.md) before you edit. Do not create a ninth module unless the human named the folder and asked for it.
+
+Page shape: [docs/MODULE_TEMPLATE.md](./docs/MODULE_TEMPLATE.md). How learners use the repo: [docs/HOW_TO_LEARN.md](./docs/HOW_TO_LEARN.md).
+
 ## Purpose
 
 This repo teaches DevOps tools from beginner to production. The failure mode to avoid is a **term dump**: names, slogan-like “enterprise best practices,” and `see examples/` links to folders that do not exist.
