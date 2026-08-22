@@ -2,10 +2,10 @@
 
 A hands-on path from first Linux commands to shipping and observing applications. Each module teaches a **mental model**, a **15-minute first success**, then intermediate and production material you can skip until you need it.
 
-This repo contains **eight tool modules** and **two capstone projects**. Topics listed under [Planned, not written yet](#planned-not-written-yet) are not in the tree.
+This repo contains **nine tool modules** and **two capstone projects**. Topics listed under [Planned, not written yet](#planned-not-written-yet) are not in the tree.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
-[![Last Updated](https://img.shields.io/badge/Last%20Updated-2026--08--16-brightgreen)](./CHANGELOG.md)
+[![Last Updated](https://img.shields.io/badge/Last%20Updated-2026--08--22-brightgreen)](./CHANGELOG.md)
 
 ## Choose a path
 
@@ -17,7 +17,7 @@ This repo contains **eight tool modules** and **two capstone projects**. Topics 
 
 How to study, what to install, and when to move on: [How to learn](./docs/HOW_TO_LEARN.md).
 
-## How the eight tools fit
+## How the nine tools fit
 
 ```mermaid
 flowchart LR
@@ -27,12 +27,14 @@ flowchart LR
   Ansible --> TF[Terraform]
   TF --> K8s
   Docker --> GHA[GitHub Actions]
+  Docker --> GL[GitLab CI]
   GHA --> K8s
+  GL --> K8s
   K8s --> Prom[Prometheus]
   Prom --> Graf[Grafana]
 ```
 
-Linux is the OS everything else runs on. Ansible configures machines. Docker packages an app. Kubernetes runs those packages. Terraform creates the machines and clusters. GitHub Actions ships changes. Prometheus collects numbers; Grafana shows them. Details and “which tool when”: [Concept map](./docs/CONCEPT_MAP.md).
+Linux is the OS everything else runs on. Ansible configures machines. Docker packages an app. Kubernetes runs those packages. Terraform creates the machines and clusters. GitHub Actions and GitLab CI both ship changes from a YAML pipeline in the repo. Prometheus collects numbers; Grafana shows them. Details and “which tool when”: [Concept map](./docs/CONCEPT_MAP.md).
 
 ## Modules
 
@@ -46,8 +48,9 @@ Linux is the OS everything else runs on. Ansible configures machines. Docker pac
 | 06 | [Prometheus](./06-prometheus/README.md) | Pull metrics on a timer and ask questions of them | Beginner → Advanced |
 | 07 | [Grafana](./07-grafana/README.md) | Turn those metrics into dashboards and alerts | Beginner → Advanced |
 | 08 | [GitHub Actions](./08-github-actions/README.md) | Run build, test, and deploy steps on a git event | Beginner → Advanced |
+| 09 | [GitLab CI/CD](./09-gitlab/README.md) | Run build, test, and deploy steps from a YAML pipeline in the repo | Beginner → Advanced |
 
-Recommended order: **01 → 03 → 04** for apps, with **02** and **05** when you care about machines, then **08** to ship, then **06 → 07** to see what you shipped.
+Recommended order: **01 → 03 → 04** for apps, with **02** and **05** when you care about machines, then **08** or **09** to ship (pick the CI system you use), then **06 → 07** to see what you shipped.
 
 ## How to use this repo
 
