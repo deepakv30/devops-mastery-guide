@@ -1,0 +1,23 @@
+stages:
+  - build
+  - test
+
+build:
+  stage: build
+  image: alpine:3.20
+  script:
+    - echo "hello from build" > artifact.txt
+    - cat artifact.txt
+  artifacts:
+    paths:
+      - artifact.txt
+    expire_in: 1 hour
+
+test:
+  stage: test
+  image: alpine:3.20
+  script:
+    - echo "Content of artifact:"
+    - cat artifact.txt
+  dependencies:
+    - build
