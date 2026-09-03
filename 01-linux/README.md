@@ -219,41 +219,14 @@ The `rwx` triad is owner, one group, everyone else. If alice and bob both need w
 
 ## Practice
 
-### Basic
+Full write-ups (setup, task, hint, success, solution notes) live under [exercises/](./exercises/).
 
-1. **Setup:** A shell where you have sudo.  
-   **Task:** Create user `learner` with a home directory and a login shell. Do **not** add them to `sudo`.  
-   **Hint:** `useradd -m -s /bin/bash`. Contrast with [create-sudo-user.sh](./examples/create-sudo-user.sh), which *does* add sudo.  
-   **Success:** `id learner` prints a uid; `ls -ld /home/learner` exists; `groups learner` does not list `sudo`.
-
-2. **Setup:** The same shell, no extra user required.  
-   **Task:** List processes owned by your current user.  
-   **Hint:** `ps -u "$USER"` or `ps aux` and filter column 1.  
-   **Success:** You see your shell (`bash`/`zsh`) and the `ps` command itself; PIDs are integers.
-
-### Intermediate
-
-3. **Setup:** [examples/disk-alert.sh](./examples/disk-alert.sh) in this module.  
-   **Task:** Run it so you see an `ALERT` line, then run it with the default threshold.  
-   **Hint:** `THRESHOLD=0` makes every real filesystem “over.” Read the `awk` in the script.  
-   **Success:** Forced run prints `ALERT: … is N% full (threshold 0%)`. Default run exits 0 and prints nothing unless a mount is actually over 80%.
-
-### Production
-
-4. **Setup:** None. This is writing, not a CIS run.  
-   **Task:** List five hardening steps you would apply to a fresh VM and *why* each one. Do not implement a benchmark.  
-   **Hint:** Start from this page’s Production section: root SSH, keys, updates, firewall, journal persistence.  
-   **Success:** Five bullets, each with a failure it prevents (for example “`PermitRootLogin no` — a guessed root password is not an SSH session”).
-
-<details>
-<summary>Solution notes</summary>
-
-1. `sudo useradd -m -s /bin/bash learner` then `id learner` and `groups learner`. To undo: `sudo userdel -r learner`.
-2. `ps -u "$USER"`.
-3. From `01-linux/`: `chmod +x examples/disk-alert.sh && THRESHOLD=0 ./examples/disk-alert.sh`.
-4. Sample set: disable root SSH; key-only auth after a test login; `unattended-upgrades`; `ufw` default deny + allow 22/tcp; persist the journal. Each line names the incident it blocks.
-
-</details>
+| # | Band | Exercise |
+|---|---|---|
+| 1 | Basic | [Create a login user without sudo](./exercises/01-basic-user.md) |
+| 2 | Basic | [List your processes](./exercises/02-basic-processes.md) |
+| 3 | Intermediate | [Force a disk alert](./exercises/03-intermediate-disk-alert.md) |
+| 4 | Production | [Name five hardening steps](./exercises/04-production-hardening.md) |
 
 ## Cheat sheet
 

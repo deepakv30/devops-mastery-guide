@@ -9,11 +9,16 @@ This repo contains **nine tool modules** and **two capstone projects**. Topics l
 
 ## Choose a path
 
-| You are… | Start here |
-|---|---|
-| New to servers and the terminal | [01. Linux](./01-linux/README.md), then follow Next at the bottom of each module |
-| Comfortable on Linux, new to DevOps tools | [03. Docker](./03-docker/README.md) or [02. Ansible](./02-ansible/README.md) |
-| Experienced, looking up one tool | Jump via the [module table](#modules) or the [concept map](./docs/CONCEPT_MAP.md) |
+You do not need to scan every folder. Pick a goal. JSON for the same routes lives in [learning-paths/](./learning-paths/).
+
+| Your goal | Start here | Path file |
+|---|---|---|
+| New to servers | [01. Linux](./01-linux/README.md) | [from-zero](./learning-paths/from-zero.json) |
+| Ship an app (box it, run it, CI it) | [03. Docker](./03-docker/README.md) after Linux first success | [apps](./learning-paths/apps.json) |
+| Configure machines | [02. Ansible](./02-ansible/README.md) after Linux first success | [machines](./learning-paths/machines.json) |
+| See what you shipped | [06. Prometheus](./06-prometheus/README.md) (needs Docker) | [observe](./learning-paths/observe.json) |
+| Combine the tools | [Capstones](./projects/README.md) | — |
+| Look up one tool | [Module table](#modules) or [concept map](./docs/CONCEPT_MAP.md) | — |
 
 How to study, what to install, and when to move on: [How to learn](./docs/HOW_TO_LEARN.md).
 
@@ -38,7 +43,7 @@ Linux is the OS everything else runs on. Ansible configures machines. Docker pac
 
 ## Modules
 
-| # | Module | Job in one sentence | Levels in this repo |
+| # | Module | Job in one sentence | Levels |
 |---|---|---|---|
 | 01 | [Linux](./01-linux/README.md) | Run, inspect, and fix a Linux machine | Beginner → Advanced |
 | 02 | [Ansible](./02-ansible/README.md) | Describe server setup as repeatable recipes | Beginner → Advanced |
@@ -56,8 +61,8 @@ Recommended order: **01 → 03 → 04** for apps, with **02** and **05** when yo
 
 1. Clone it and open the module for your path.
 2. Read the 60-second overview and the mental-model diagram. Do the **First success** before anything labeled Intermediate or Production.
-3. Run the files under `examples/`. Treat `exercises/` as practice, not a test.
-4. Use a Linux environment (native, a VM, or WSL2). Install only what [How to learn](./docs/HOW_TO_LEARN.md) lists for the module you are on.
+3. Run the files under `examples/`. Practice is in each module’s **Practice** section. Linux, Docker, and Kubernetes also have `exercises/` files with setup, task, hint, and success. Treat them as practice, not a test.
+4. Use a Linux environment (native, a VM, or WSL2). Install only what [How to learn](./docs/HOW_TO_LEARN.md) lists for the module you are on. After clone, `./scripts/preflight.sh` tells you what will run now.
 
 Jargon is defined in the [glossary](./docs/GLOSSARY.md).
 

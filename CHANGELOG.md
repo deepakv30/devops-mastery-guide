@@ -9,6 +9,11 @@ All notable changes to this project will be documented in this file.
 - **09-gitlab** module: GitLab CI/CD (pipeline, stages, jobs, runners, artifacts, rules, needs, environments). Follows the same beginner → Intermediate → Production contract as the other eight modules. Examples and cheatsheet included. Root README, concept map, and capstone 2 now point at it.
 - Agent Skills layout under `.agents/skills/` ([spec](https://agentskills.io/home)) and the `enhance-module` skill so later agents can deepen a module without dropping the teaching contract.
 - Grok workflow `.grok/workflows/enhance-module.rhai` (enhance, then a read-only review). Advisory only — no CI fail.
+- Learning-path manifests in `learning-paths/` (from-zero, apps, machines, observe) and `curriculum.json`.
+- `scripts/preflight.sh` — reports which first-success paths can run on this machine.
+- `ROADMAP.md` — written vs planned; planned topics stay out of the module table.
+- `exercises/` and `quiz.json` for Linux, Docker, and Kubernetes (app path). Other modules still use inline Practice.
+- Static learning site under `site/` (goal cards, module reader, glossary, local progress). Markdown stays canonical.
 
 ## [2026-08-16]
 

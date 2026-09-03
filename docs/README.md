@@ -10,5 +10,8 @@ Supporting pages for the DevOps Mastery Guide. Start at the [root README](../REA
 | [Module template](./MODULE_TEMPLATE.md) | Required shape of every module |
 | [Maintenance](./MAINTENANCE.md) | How this repo stays current |
 | [Agent Skills](../.agents/README.md) | How AI agents enhance a module without dropping the contract |
+| [Roadmap](../ROADMAP.md) | Written vs planned; not a second module table |
+| [Learning paths](../learning-paths/) | JSON routes (from-zero, apps, machines, observe) |
+| [Learning site](../site/README.md) | How to build the static reader |
 
 Editors also read [AGENTS.md](../AGENTS.md) and [CONTRIBUTING.md](../CONTRIBUTING.md).

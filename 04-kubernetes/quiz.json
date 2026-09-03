@@ -1,0 +1,103 @@
+{
+  "module": "04-kubernetes",
+  "questions": [
+    {
+      "id": "pod-vs-deployment",
+      "band": "beginner",
+      "prompt": "You want three copies of nginx that get replaced if a container dies. You should create:",
+      "choices": [
+        "Three naked Pods with the same name",
+        "A Deployment (replica count + Pod template)",
+        "A ClusterIP Service only",
+        "A kubeadm control plane"
+      ],
+      "answer": 1,
+      "why": "A Pod is ephemeral. A Deployment keeps N copies and a ReplicaSet. You almost never create a ReplicaSet yourself.",
+      "review": "04-kubernetes/beginner.md#deployment--replicaset"
+    },
+    {
+      "id": "clusterip-not-laptop",
+      "band": "beginner",
+      "prompt": "A Service of type ClusterIP is reachable from:",
+      "choices": [
+        "Your laptop browser, always",
+        "Inside the cluster; use kubectl port-forward (or an Ingress later) from your shell",
+        "The public internet via kube-proxy",
+        "Only the node that runs etcd"
+      ],
+      "answer": 1,
+      "why": "ClusterIP is not on your laptop. curl from your shell will not hit it until you port-forward or install an Ingress controller.",
+      "review": "04-kubernetes/beginner.md#service-clusterip-first"
+    },
+    {
+      "id": "selector-pod-template",
+      "band": "beginner",
+      "prompt": "A Service has no endpoints. The usual cause is:",
+      "choices": [
+        "etcd is full",
+        "The Service selector does not match the Pod template labels",
+        "You used kind instead of kubeadm",
+        "The image tag is alpine"
+      ],
+      "answer": 1,
+      "why": "Matching the Deployment’s own metadata.labels is not enough. The Service must match the Pod template labels. kubectl get pods --show-labels and kubectl get endpoints.",
+      "review": "04-kubernetes/beginner.md#labels-and-selectors"
+    },
+    {
+      "id": "kubectl-not-cluster",
+      "band": "beginner",
+      "prompt": "Installing kubectl:",
+      "choices": [
+        "Creates a cluster on your laptop",
+        "Installs a client. kind (this module) or a cloud control plane is the cluster",
+        "Is the same as kubeadm init",
+        "Starts kubelet as a systemd unit"
+      ],
+      "answer": 1,
+      "why": "kubectl talks HTTP to an API server using a kubeconfig. kubectl config current-context tells you which cluster you are talking to.",
+      "review": "04-kubernetes/beginner.md#kubectl-as-the-client"
+    },
+    {
+      "id": "kind-not-kubeadm",
+      "band": "beginner",
+      "prompt": "The first cluster in this module is kind because:",
+      "choices": [
+        "kubeadm cannot run nginx",
+        "kind is Kubernetes in Docker — enough to learn objects; kubeadm is a Production install path",
+        "kind includes an Ingress controller and a load balancer",
+        "kind stores state in a Terraform state file"
+      ],
+      "answer": 1,
+      "why": "A laptop cluster is enough to learn Pod, Deployment, and Service. kubeadm belongs in Production.",
+      "review": "04-kubernetes/README.md"
+    },
+    {
+      "id": "ingress-is-data",
+      "band": "intermediate",
+      "prompt": "You apply an Ingress object on kind and curl does nothing. Why?",
+      "choices": [
+        "Ingress YAML is invalid on kind",
+        "An Ingress object is data; a controller Pod must be running to route traffic, and kind does not install one for you",
+        "You must use NodePort instead of any HTTP routing",
+        "The Service type must be LoadBalancer on kind"
+      ],
+      "answer": 1,
+      "why": "kind does not ship an Ingress controller. kubectl get ingress can show the object while no Pod is listening for it.",
+      "review": "04-kubernetes/exercises/03-intermediate-ingress.md"
+    },
+    {
+      "id": "imagepullbackoff",
+      "band": "beginner",
+      "prompt": "A Pod is ImagePullBackOff. First place to look:",
+      "choices": [
+        "Terraform state",
+        "kubectl describe pod — Events, then fix the image name/tag or registry auth",
+        "Grafana",
+        "the Service ClusterIP"
+      ],
+      "answer": 1,
+      "why": "describe shows Failed to pull. On kind, confirm Docker can pull the same image.",
+      "review": "04-kubernetes/README.md#pitfalls"
+    }
+  ]
+}

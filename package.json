@@ -1,0 +1,16 @@
+{
+  "name": "devops-mastery-guide",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "node site/build.mjs",
+    "dev": "node site/build.mjs && python3 -m http.server 4173 --directory site/dist"
+  },
+  "devDependencies": {
+    "github-slugger": "^2.0.0",
+    "marked": "^15.0.12"
+  }
+}

@@ -1,0 +1,103 @@
+{
+  "module": "03-docker",
+  "questions": [
+    {
+      "id": "image-vs-container",
+      "band": "beginner",
+      "prompt": "You docker rm a container. What happens to the image it was created from?",
+      "choices": [
+        "The image is deleted too",
+        "The image stays; docker rm removes the instance, not the snapshot",
+        "The image is untagged but the layers remain only if you used --rm",
+        "Docker asks you to docker rmi first"
+      ],
+      "answer": 1,
+      "why": "An image is the immutable snapshot. A container is an instance. docker ps lists containers; docker images lists images.",
+      "review": "03-docker/README.md#image-vs-container"
+    },
+    {
+      "id": "dockerfile-does-not-run",
+      "band": "beginner",
+      "prompt": "A Dockerfile is:",
+      "choices": [
+        "The running app",
+        "Instructions that docker build uses to produce an image; docker run starts a container from that image",
+        "A Compose file with one service",
+        "A Kubernetes Pod template"
+      ],
+      "answer": 1,
+      "why": "The Dockerfile does not run your app. docker build produces an image; docker run starts a container from it.",
+      "review": "03-docker/README.md#dockerfile"
+    },
+    {
+      "id": "port-publish",
+      "band": "beginner",
+      "prompt": "docker run -p 8080:80 nginx maps:",
+      "choices": [
+        "Host port 80 to container port 8080",
+        "Host port 8080 to container port 80",
+        "Both ports to 0.0.0.0:80",
+        "The container’s localhost to your laptop’s 8080 without publishing"
+      ],
+      "answer": 1,
+      "why": "-p HOST:CONTAINER. curl http://127.0.0.1:8080 hits the host port. Inside the container the process still sees :80. localhost inside the container is the container.",
+      "review": "03-docker/README.md#ports-and-localhost-publishing--p"
+    },
+    {
+      "id": "copy-busts-cache",
+      "band": "beginner",
+      "prompt": "COPY . . near the top of a Dockerfile is usually a bad idea because:",
+      "choices": [
+        "COPY cannot copy directories",
+        "Any file change, including a README typo, invalidates every later layer",
+        "The image will not have a CMD",
+        "Docker ignores COPY on Alpine"
+      ],
+      "answer": 1,
+      "why": "Put lines that change least first. COPY . . early busts the cache on every edit. That is what .dockerignore is for.",
+      "review": "03-docker/README.md#layers-and-cache"
+    },
+    {
+      "id": "bind-vs-volume",
+      "band": "beginner",
+      "prompt": "A bind mount versus a named volume:",
+      "choices": [
+        "They are the same; Docker picks one at random",
+        "A bind mount is a host path; a named volume is Docker-managed storage",
+        "Named volumes are only for Kubernetes",
+        "Bind mounts persist after docker rm; named volumes never do"
+      ],
+      "answer": 1,
+      "why": "Container filesystems are thrown away. Bind mounts are a host path (good while you edit). Named volumes are better for database data.",
+      "review": "03-docker/README.md#volumes-vs-bind-mounts-light"
+    },
+    {
+      "id": "latest-tag",
+      "band": "production",
+      "prompt": "Why does this guide pin tags like nginx:1.27-alpine instead of latest?",
+      "choices": [
+        "latest is slower to pull",
+        "latest moves; a rebuild next month can be a different image than the one you tested",
+        "Alpine images cannot use latest",
+        "Pinned tags skip the registry"
+      ],
+      "answer": 1,
+      "why": "latest is a moving pointer. Production images pin a version so you can explain what is running.",
+      "review": "03-docker/README.md#production"
+    },
+    {
+      "id": "not-for-one-curl",
+      "band": "beginner",
+      "prompt": "When should you not reach for Docker?",
+      "choices": [
+        "When you need the same filesystem on a laptop and in CI",
+        "A one-off debug on the host (journalctl, ss, a local binary)",
+        "When you will run the same app on kind later",
+        "When Compose would replace a long docker run"
+      ],
+      "answer": 1,
+      "why": "A one-off debug on the host does not need Docker. Do not wrap a single curl in an image to look official.",
+      "review": "03-docker/README.md#how-this-connects"
+    }
+  ]
+}

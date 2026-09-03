@@ -63,6 +63,10 @@ These belong in **Production** only: kubeadm, Helm `kube-prometheus-stack` as th
 
 The root README is a learner index. Maintenance philosophy, AI process, and contributor rules do not go there. See [docs/MAINTENANCE.md](./docs/MAINTENANCE.md) and [CONTRIBUTING.md](./CONTRIBUTING.md).
 
+## Site is a view
+
+`site/` renders existing markdown. Do not add teaching text that exists only in HTML. Path order lives in [learning-paths/](./learning-paths/). Module metadata lives in [curriculum.json](./curriculum.json). If the site and GitHub disagree, GitHub markdown wins.
+
 ## Do not
 
 - Reintroduce the old template order (best practices immediately after install).

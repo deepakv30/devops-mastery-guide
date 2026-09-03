@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "id": "observe",
+  "title": "See what you shipped",
+  "summary": "Scrape metrics and draw them. Assumes you can already run a container.",
+  "estimatedMinutes": 55,
+  "entry": "06-prometheus",
+  "steps": [
+    {"order": 1, "module": "06-prometheus", "band": "beginner", "minutes": 30, "required": true},
+    {"order": 2, "module": "07-grafana", "band": "beginner", "minutes": 25, "required": true}
+  ]
+}
