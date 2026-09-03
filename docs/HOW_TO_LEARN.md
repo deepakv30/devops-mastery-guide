@@ -14,16 +14,25 @@ Every module is split into three bands. Read them in order the first time. After
 
 Do not start a Production section until you can do the “you should already be able to…” checklist at the top of that section.
 
-## A session that works
+## Use every module the same way
 
-1. Skim the module header table (time, prerequisites, outcomes).
-2. Read the 60-second overview and look at the mermaid diagram until you can redraw it from memory.
-3. Read the beginner concept cards. Each card is *What / Why / How it looks / Common confusion*.
-4. Run **First success** end to end. Stop if the output does not match; use the “If it failed” note.
-5. Only then open Intermediate examples.
-6. Do the Basic exercises the same day. Save Intermediate/Advanced exercises for a second sitting.
+1. **Read** the 60-second overview and the mermaid until you can redraw it. Then read the beginner concept cards (*What / Why / How it looks / Common confusion*).
+2. **Run** **First success** from the directory the page names. Type the commands; do not treat the block as decoration.
+3. **Check** your output against **Expected output**. Small differences (IPs, versions, timestamps) are normal. If it failed, use that note, then the pitfall table.
+4. **Keep evidence:** the command, working directory, exit code, and a line of output that proves it worked.
+5. **Continue** only when you can explain what each command did. Do the Basic exercises the same day (`exercises/` on Linux, Docker, and Kubernetes; inline Practice on the other modules until those folders exist). Intermediate and Production wait for a second sitting.
 
 A module’s beginner band is sized for about 15–45 minutes of focused work, not a weekend.
+
+Machine check after clone:
+
+```bash
+./scripts/preflight.sh
+```
+
+It lists which first-success paths will run *now*. It does not install packages and it does not invent lab output.
+
+Path files the site and this page share: [from-zero](../learning-paths/from-zero.json), [apps](../learning-paths/apps.json), [machines](../learning-paths/machines.json), [observe](../learning-paths/observe.json).
 
 ## What to install (by module)
 
@@ -37,7 +46,7 @@ You do not need the whole toolchain on day one.
 | 04 Kubernetes | Docker + [kind](https://kind.sigs.k8s.io/) + `kubectl`. Not kubeadm, not a cloud cluster. |
 | 05 Terraform | `terraform` binary (or OpenTofu). First success uses the `local` / Docker provider — no cloud account. |
 | 06 Prometheus | Docker. Kubernetes Operator comes later. |
-| 07 Grafana | Docker (same compose stack as Prometheus first success). |
+| 07 Grafana | Docker. This module has **its own** compose stack (Grafana + Prometheus). Stop module 06’s stack first — both bind host port 9090. |
 | 08 GitHub Actions | A GitHub account and a repo you can push to. No self-hosted runner required. |
 
 Python 3, Git, and a text editor are assumed after Linux.

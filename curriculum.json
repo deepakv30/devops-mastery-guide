@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "repo": "https://github.com/deepakv30/devops-mastery-guide",
+  "pagesUrl": "https://deepakv30.github.io/devops-mastery-guide/",
+  "modules": [
+    {
+      "id": "01-linux",
+      "number": "01",
+      "title": "Linux",
+      "job": "Run, inspect, and fix a Linux machine",
+      "dir": "01-linux",
+      "beginnerMinutes": 25,
+      "fullHours": 3,
+      "install": "A Linux shell (Ubuntu 22.04+ or Debian, native / VM / WSL2) with sudo.",
+      "preflight": ["shell"]
+    },
+    {
+      "id": "02-ansible",
+      "number": "02",
+      "title": "Ansible",
+      "job": "Describe server setup as repeatable recipes",
+      "dir": "02-ansible",
+      "beginnerMinutes": 30,
+      "fullHours": 4,
+      "install": "Linux shell plus ansible on the control machine. Localhost is enough for first success.",
+      "preflight": ["shell", "ansible"]
+    },
+    {
+      "id": "03-docker",
+      "number": "03",
+      "title": "Docker",
+      "job": "Package an app and its dependencies into an image",
+      "dir": "03-docker",
+      "beginnerMinutes": 25,
+      "fullHours": 3,
+      "install": "Docker Engine or Docker Desktop. Your user in the docker group.",
+      "preflight": ["docker"]
+    },
+    {
+      "id": "04-kubernetes",
+      "number": "04",
+      "title": "Kubernetes",
+      "job": "Run and heal many containers as one system",
+      "dir": "04-kubernetes",
+      "beginnerMinutes": 40,
+      "fullHours": 6,
+      "install": "Docker plus kind plus kubectl. Not kubeadm, not a cloud cluster.",
+      "preflight": ["docker", "kind", "kubectl"]
+    },
+    {
+      "id": "05-terraform",
+      "number": "05",
+      "title": "Terraform",
+      "job": "Declare infrastructure and let a tool converge it",
+      "dir": "05-terraform",
+      "beginnerMinutes": 30,
+      "fullHours": 4,
+      "install": "terraform or tofu. First success uses the local provider — no cloud account.",
+      "preflight": ["terraform"]
+    },
+    {
+      "id": "06-prometheus",
+      "number": "06",
+      "title": "Prometheus",
+      "job": "Pull metrics on a timer and ask questions of them",
+      "dir": "06-prometheus",
+      "beginnerMinutes": 30,
+      "fullHours": 4,
+      "install": "Docker. Kubernetes Operator comes later.",
+      "preflight": ["docker"]
+    },
+    {
+      "id": "07-grafana",
+      "number": "07",
+      "title": "Grafana",
+      "job": "Turn those metrics into dashboards and alerts",
+      "dir": "07-grafana",
+      "beginnerMinutes": 25,
+      "fullHours": 3,
+      "install": "Docker (same compose stack as Prometheus first success).",
+      "preflight": ["docker"]
+    },
+    {
+      "id": "08-github-actions",
+      "number": "08",
+      "title": "GitHub Actions",
+      "job": "Run build, test, and deploy steps on a git event",
+      "dir": "08-github-actions",
+      "beginnerMinutes": 25,
+      "fullHours": 3,
+      "install": "A GitHub account and a repo you can push to. No self-hosted runner required.",
+      "preflight": ["git"]
+    }
+  ],
+  "projects": [
+    {
+      "id": "projects/full-cicd-pipeline",
+      "title": "Full CI/CD pipeline",
+      "dir": "projects/full-cicd-pipeline",
+      "job": "Build a tiny API, run it on kind, and read how GitHub Actions would ship the image.",
+      "startWhen": "Build an image, apply a Deployment on kind, read a workflow file"
+    },
+    {
+      "id": "projects/terraform-ansible-gitlab-vault",
+      "title": "Terraform + Ansible + Vault",
+      "dir": "projects/terraform-ansible-gitlab-vault",
+      "job": "Create local infra with Terraform and configure it with Ansible before any Vault or GitLab CI.",
+      "startWhen": "terraform apply a local example; run a localhost playbook"
+    }
+  ]
+}

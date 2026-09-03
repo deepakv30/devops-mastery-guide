@@ -1,0 +1,103 @@
+{
+  "module": "01-linux",
+  "questions": [
+    {
+      "id": "chmod-dir-x",
+      "band": "beginner",
+      "prompt": "What does the execute bit (x) mean on a directory?",
+      "choices": [
+        "The directory is a runnable program",
+        "You may enter the directory and resolve names inside it",
+        "Anyone may delete files in the directory",
+        "The directory will be searched by locate"
+      ],
+      "answer": 1,
+      "why": "On a directory, x is traverse: you can cd into it and look up names. chmod 777 is not a fix; it gives every account write access.",
+      "review": "01-linux/README.md#users-groups-and-the-permission-triad"
+    },
+    {
+      "id": "enable-vs-start",
+      "band": "beginner",
+      "prompt": "systemctl enable nginx does which of these?",
+      "choices": [
+        "Starts nginx right now",
+        "Marks the unit to start on boot; it may still be stopped or failed",
+        "Reloads nginx after a config change",
+        "Installs the nginx package"
+      ],
+      "answer": 1,
+      "why": "enable ≠ start. A unit can be enabled and still failed. Read systemctl status and the journal before editing the unit file.",
+      "review": "01-linux/README.md#systemd-services"
+    },
+    {
+      "id": "kill-vs-service",
+      "band": "beginner",
+      "prompt": "You kill the PID of a process that systemd is managing with Restart=always. What usually happens?",
+      "choices": [
+        "The service stays down until you enable it again",
+        "systemd starts a new process for that unit",
+        "The unit file is deleted",
+        "journalctl stops recording that unit"
+      ],
+      "answer": 1,
+      "why": "Killing a process is not the same as stopping a systemd service. If Restart= is set, systemd brings it back. Use systemctl stop.",
+      "review": "01-linux/README.md#processes-pid-parent-signals"
+    },
+    {
+      "id": "ss-vs-netstat",
+      "band": "beginner",
+      "prompt": "On modern Ubuntu, which command lists listening TCP/UDP sockets without DNS lookups?",
+      "choices": [
+        "netstat -tuln (always present)",
+        "ss -tuln",
+        "ps aux",
+        "journalctl -u ssh"
+      ],
+      "answer": 1,
+      "why": "ss replaced netstat on modern Ubuntu. -tuln is TCP/UDP, listening, numeric. If ss is missing, install iproute2.",
+      "review": "01-linux/README.md#networking-basics-interfaces-and-listening-ports"
+    },
+    {
+      "id": "journal-empty",
+      "band": "beginner",
+      "prompt": "journalctl prints nothing after a reboot. The most likely cause is:",
+      "choices": [
+        "Linux has no logs",
+        "journald is storing only in memory under /run/log/journal",
+        "You must use dmesg exclusively",
+        "The syslog package is missing"
+      ],
+      "answer": 1,
+      "why": "An empty journal after reboot often means Storage is volatile. That is a persistence setting, not “Linux has no logs.”",
+      "review": "01-linux/README.md#logs-journalctl-vs-varlog"
+    },
+    {
+      "id": "localhost",
+      "band": "beginner",
+      "prompt": "127.0.0.1 is:",
+      "choices": [
+        "The default gateway",
+        "This machine",
+        "The first container on Docker",
+        "The Kubernetes API server"
+      ],
+      "answer": 1,
+      "why": "127.0.0.1 is this host. A process listening only on 127.0.0.1 is not reachable from another machine.",
+      "review": "01-linux/README.md#networking-basics-interfaces-and-listening-ports"
+    },
+    {
+      "id": "disk-full",
+      "band": "production",
+      "prompt": "df -h shows 100% on /. What should you do first?",
+      "choices": [
+        "Reboot so logs rotate",
+        "chmod 777 /var",
+        "Find the full mount with df, then du, and free space before anything else",
+        "systemctl isolate rescue.target immediately"
+      ],
+      "answer": 2,
+      "why": "Nothing else works well on a full root filesystem. Identify the mount, find large directories, rotate or delete logs. Do not reboot and hope.",
+      "review": "01-linux/README.md#pitfalls"
+    }
+  ]
+}

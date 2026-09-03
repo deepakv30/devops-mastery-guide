@@ -198,40 +198,14 @@ Production images still start with a small context. A forgotten `.env` in the bu
 
 ## Practice
 
-### Basic
+Full write-ups (setup, task, hint, success, solution notes) live under [exercises/](./exercises/).
 
-1. **Setup:** Empty directory, Docker running.  
-   **Task:** Write a Dockerfile that serves a static `index.html` with `nginx:1.27-alpine` (or a 10-line Python `http.server` image if you prefer).  
-   **Hint:** `COPY` the file into `/usr/share/nginx/html/`. You may copy [examples/hello-static/Dockerfile](./examples/hello-static/Dockerfile).  
-   **Success:** The Dockerfile has a pinned `FROM` and a `COPY`. It sits next to your `index.html`.
-
-2. **Setup:** The Dockerfile from exercise 1.  
-   **Task:** Build it and run it so a host port returns your HTML.  
-   **Hint:** `docker build -t … .` then `docker run --rm -d -p 8084:80`.  
-   **Success:** `curl -s http://127.0.0.1:8084` prints your heading.
-
-### Intermediate
-
-3. **Setup:** [examples/docker-compose.yml](./examples/docker-compose.yml).  
-   **Task:** Add a second service (a `redis:7-alpine` with no ports published is enough) *or* convert your exercise-1 app into a two-service Compose file. Bring the stack up and down with Compose.  
-   **Hint:** Services on the default Compose network can reach each other by service name. `docker compose ps` should list both.  
-   **Success:** `docker compose up -d` starts two containers; `curl` to the web port still works; `docker compose down` removes them.
-
-### Production
-
-4. **Setup:** Your image from exercise 2, or [examples/multi-stage.Dockerfile](./examples/multi-stage.Dockerfile).  
-   **Task:** Write four notes (not a full harden-the-world list): (1) which user the process runs as, (2) what breaks if you add `--read-only`, (3) why the tag is not `latest`, (4) what `.dockerignore` is excluding. Then run the image with `--read-only` and record what you had to add (`--tmpfs`, a writable path).  
-   **Hint:** `docker exec` + `id`; `docker logs` after a failed read-only start.  
-   **Success:** Four short notes plus one command line that actually starts (or a log line that explains why nginx needed `/run`).
-
-<details>
-<summary>Solution notes</summary>
-
-1–2. Same shape as [examples/hello-static/](./examples/hello-static/Dockerfile).
-3. Under `services:` add `cache: { image: redis:7-alpine }`. `docker compose up -d && docker compose ps`.
-4. `hello-multi:1` already has `USER app`. `hello-static:1` plus `--read-only` usually needs `--tmpfs /var/cache/nginx --tmpfs /run`.
-
-</details>
+| # | Band | Exercise |
+|---|---|---|
+| 1 | Basic | [Write a static Dockerfile](./exercises/01-basic-dockerfile.md) |
+| 2 | Basic | [Build and publish a host port](./exercises/02-basic-build-run.md) |
+| 3 | Intermediate | [Two services with Compose](./exercises/03-intermediate-compose.md) |
+| 4 | Production | [Four notes and a read-only run](./exercises/04-production-read-only.md) |
 
 ## Cheat sheet
 

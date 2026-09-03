@@ -1,5 +1,12 @@
 # DevOps Mastery Guide - Common ignores
 
+# Learner tutor state (phase 2). Never commit someone else's plan.
+LEARNING.md
+LEARNING-*.md
+
+# Generated learning site
+site/dist/
+
 # Ansible
 *.retry
 

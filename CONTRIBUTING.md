@@ -17,6 +17,8 @@ Edits that make a beginner finish **First success** faster, or that make a Produ
 4. If you add a file under `examples/` or `exercises/`, link it from the module README. Do not write “see `examples/`” unless the file exists.
 5. Open a pull request. Use a conventional commit subject if you can (`docs:`, `fix:`, `feat:`).
 
+The learning site is generated. Do not hand-edit `site/dist/` or any `data.js` the build writes. Change markdown, `curriculum.json`, or `learning-paths/`, then `npm run build`. See [site/README.md](./site/README.md).
+
 ## What we will not merge
 
 - A new module that is only a term list and official-doc links.

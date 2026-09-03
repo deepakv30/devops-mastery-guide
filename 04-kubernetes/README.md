@@ -68,43 +68,14 @@ You edit the Deployment. Kubernetes creates a [ReplicaSet](../docs/GLOSSARY.md),
 
 ## Practice
 
-Do these from `04-kubernetes/` so the `examples/` paths work.
+Do these from `04-kubernetes/` so the `examples/` paths work. Full write-ups live under [exercises/](./exercises/).
 
-### Basic
-
-1. **Setup:** kind cluster `learn` from [first success](./beginner.md#beginner-first-success).  
-   **Task:** Apply [examples/nginx-deployment.yaml](./examples/nginx-deployment.yaml) and [examples/nginx-service.yaml](./examples/nginx-service.yaml). Scale to 5 replicas, wait until 5 are Ready, scale back to 3.  
-   **Hint:** `kubectl scale deploy/nginx --replicas=5` then `kubectl get pods -w`.  
-   **Success:** `kubectl get deploy nginx` shows `3/3` READY after you scale back.
-
-2. **Setup:** Same cluster.  
-   **Task:** Apply [examples/configmap.yaml](./examples/configmap.yaml). Exec into the `config-demo` Pod and print `APP_COLOR`.  
-   **Hint:** `kubectl exec deploy/config-demo -- env \| grep APP_`  
-   **Success:** Output includes `APP_COLOR=blue`.
-
-### Intermediate
-
-3. **Setup:** First-success Deployment and Service are applied.  
-   **Task:** Write an Ingress YAML that sends `/` to Service `nginx` on port 80. Apply it. Explain why `curl` to that Ingress does not work on this kind cluster yet.  
-   **Hint:** An Ingress object is data. A controller is a running Pod that reads it. kind does not install one for you.  
-   **Success:** `kubectl get ingress` shows your object, and you can name “no Ingress controller” as the reason traffic does not flow.
-
-### Production
-
-4. **Setup:** Same cluster.  
-   **Task:** Apply [examples/rbac-example.yaml](./examples/rbac-example.yaml). Prove the `log-reader` ServiceAccount can list Pods and cannot delete them.  
-   **Hint:** `kubectl auth can-i` with `--as=system:serviceaccount:default:log-reader`.  
-   **Success:** `get pods` is `yes`; `delete pods` is `no`.
-
-<details>
-<summary>Solution sketches</summary>
-
-1. `kubectl apply -f examples/nginx-deployment.yaml -f examples/nginx-service.yaml` then the two `kubectl scale` commands from [beginner.md](./beginner.md).
-2. `kubectl apply -f examples/configmap.yaml` then `kubectl exec deploy/config-demo -- env | grep APP_`.
-3. Copy the Ingress snippet in [intermediate.md](./intermediate.md). `kubectl get pods -A` will not show an ingress-nginx (or similar) controller unless you installed one.
-4. After apply: `kubectl auth can-i get pods --as=system:serviceaccount:default:log-reader` and the same for `delete`.
-
-</details>
+| # | Band | Exercise |
+|---|---|---|
+| 1 | Basic | [Apply and scale nginx](./exercises/01-basic-scale.md) |
+| 2 | Basic | [ConfigMap as env](./exercises/02-basic-configmap.md) |
+| 3 | Intermediate | [Ingress object without a controller](./exercises/03-intermediate-ingress.md) |
+| 4 | Production | [ServiceAccount can-i](./exercises/04-production-rbac.md) |
 
 ## Cheat sheet
 

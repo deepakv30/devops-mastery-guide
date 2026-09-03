@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "id": "from-zero",
+  "title": "New to servers",
+  "summary": "Start on Linux. After first success, pick the apps path or the machines path.",
+  "estimatedMinutes": 25,
+  "entry": "01-linux",
+  "nextPaths": ["apps", "machines"],
+  "steps": [
+    {
+      "order": 1,
+      "module": "01-linux",
+      "band": "beginner",
+      "minutes": 25,
+      "required": true
+    }
+  ]
+}
