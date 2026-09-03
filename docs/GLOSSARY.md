@@ -33,7 +33,7 @@ One-sentence definitions for terms this guide uses more than once. Linked from m
 - <a id="image"></a>**Image** — An immutable filesystem snapshot plus a default command. Built from a Dockerfile; run as a container.
 - **Ingress** — Kubernetes object that routes HTTP(S) from outside the cluster to Services. Needs an Ingress *controller*.
 - **Inventory** (Ansible) — The list of hosts (and groups) a playbook can target.
-- **Job** (GitHub Actions) — A set of steps that run on one runner. A workflow has one or more jobs.
+- **Job** (GitHub Actions / GitLab CI) — A set of steps (or a `script:`) that run on one runner. A workflow or pipeline has one or more jobs.
 - **kind** — Kubernetes in Docker. The local cluster this guide uses for first success.
 
 ## L–P
@@ -48,6 +48,7 @@ One-sentence definitions for terms this guide uses more than once. Linked from m
 - **Namespace** — A Kubernetes scope for names. Isolation is weak unless you add RBAC and NetworkPolicies.
 - **OIDC** — A login protocol. In CI, the runner proves who it is to a cloud or Vault so you do not store long-lived keys.
 - **Overlay network** — A virtual network spanning hosts so containers on different machines can share an address space.
+- **Pipeline** (GitLab CI) — The top-level run created from `.gitlab-ci.yml` for one event (push, MR, schedule). Contains stages and jobs.
 - **Plan** (Terraform) — The computed diff between desired state and the state file, shown before apply.
 - **Playbook** — An Ansible YAML file: which hosts, which tasks, in what order.
 - **Pod** — The smallest Kubernetes deployable: one or more containers that share network and volumes. Ephemeral.
@@ -63,13 +64,14 @@ One-sentence definitions for terms this guide uses more than once. Linked from m
 - **ReplicaSet** — Ensures N Pods matching a selector exist. You usually let a Deployment own this.
 - **Resource** (Terraform) — One object the provider can create (`aws_instance`, `local_file`, …).
 - **Role** (Ansible) — A reusable directory layout of tasks, templates, vars, and handlers.
-- **Runner** — The machine that executes a GitHub Actions job (GitHub-hosted or self-hosted).
+- **Runner** — The machine that executes a CI job (GitHub-hosted / GitLab shared or self-managed).
 - **Scrape** — One HTTP GET of a `/metrics` endpoint by Prometheus.
 - **Secret** — Data you do not want in git. Kubernetes Secrets are base64-encoded, not encrypted at rest by default.
 - **Selector** — A label query. A Service finds Pods by selector; a ServiceMonitor finds Services the same way.
 - **Service** (Kubernetes) — A stable virtual IP (and DNS name) in front of Pods that may come and go.
 - **ServiceMonitor** — Prometheus Operator CRD that tells Prometheus which Services to scrape.
 - **SLI / SLO** — Service level indicator (a number you measure) and objective (the target for that number).
+- **Stage** (GitLab CI) — An ordered group of jobs. Jobs in the same stage can run in parallel; the next stage waits for the previous to succeed.
 - **State file** (Terraform) — Terraform’s memory of what it created and the IDs those objects have. Not the same as the `.tf` files.
 - **TSDB** — Time-series database. Prometheus’s on-disk store.
 - **Vault** — HashiCorp’s secrets manager. Used in capstone 2; not required for module first-success paths.
