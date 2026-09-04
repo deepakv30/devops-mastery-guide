@@ -1,0 +1,10 @@
+stages:
+  - hello
+
+hello-job:
+  stage: hello
+  image: alpine:3.20
+  script:
+    - echo "ok"
+    - uname -a
+    - echo "Branch is $CI_COMMIT_BRANCH"

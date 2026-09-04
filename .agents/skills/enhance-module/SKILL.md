@@ -4,11 +4,11 @@ description: >
   Deepen or rewrite one existing DevOps Mastery Guide module without
   breaking the beginner to Production contract. Use when the user asks
   to enhance, deepen, rewrite, or improve a module (Linux, Ansible,
-  Docker, Kubernetes, Terraform, Prometheus, Grafana, GitHub Actions, Git),
-  fix a first-success path, or runs /enhance-module.
+  Docker, Kubernetes, Terraform, Prometheus, Grafana, GitHub Actions,
+  GitLab), fix a first-success path, or runs /enhance-module.
 license: MIT
 metadata:
-  version: "1.0"
+  version: "1.1"
 ---
 
 # Enhance one existing module
@@ -17,9 +17,9 @@ Do this procedure. Do not invent a new template. The contract is [AGENTS.md](../
 
 ## Allowed targets
 
-`01-linux` · `02-ansible` · `03-docker` · `04-kubernetes` · `05-terraform` · `06-prometheus` · `07-grafana` · `08-github-actions` · `09-git`
+`01-linux` · `02-ansible` · `03-docker` · `04-kubernetes` · `05-terraform` · `06-prometheus` · `07-grafana` · `08-github-actions` · `09-gitlab`
 
-If the user names a tool that has **no** folder, stop and ask. Do not create a tenth module.
+If the user names a tool that has **no** folder, stop and ask. Do not create a new module.
 
 ## Progress
 

@@ -1,0 +1,44 @@
+stages:
+  - prepare
+  - build
+  - deploy
+
+prepare:
+  stage: prepare
+  image: alpine:3.20
+  script:
+    - echo "prepare done" > prepare.txt
+  artifacts:
+    paths:
+      - prepare.txt
+    expire_in: 1 hour
+
+# Starts as soon as prepare finishes (does not wait for other prepare jobs if any)
+build:
+  stage: build
+  image: alpine:3.20
+  needs:
+    - prepare
+  script:
+    - echo "building after prepare"
+    - cat prepare.txt
+  artifacts:
+    paths:
+      - prepare.txt
+    expire_in: 1 hour
+
+# Only on the default branch; manual so a human can gate production
+deploy:
+  stage: deploy
+  image: alpine:3.20
+  needs:
+    - build
+  script:
+    - echo "Would deploy from $CI_COMMIT_BRANCH"
+    - cat prepare.txt
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: manual
+  environment:
+    name: production
+    action: start
