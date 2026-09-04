@@ -1,0 +1,103 @@
+{
+  "module": "09-git",
+  "questions": [
+    {
+      "id": "github-is-not-git",
+      "band": "beginner",
+      "prompt": "After git init in /tmp/git-lab, you have:",
+      "choices": [
+        "A GitHub repository",
+        "A local repository (a .git directory). GitHub is a host, not Git",
+        "A remote named origin pointing at GitHub",
+        "Only a working tree; a repository starts when you push"
+      ],
+      "answer": 1,
+      "why": "git init creates .git on disk. A GitHub page is a copy plus a UI. First success never leaves the laptop.",
+      "review": "09-git/README.md#repository"
+    },
+    {
+      "id": "add-is-not-commit",
+      "band": "beginner",
+      "prompt": "You edited notes.txt and saved it in the editor. git commit with no add will:",
+      "choices": [
+        "Commit the saved file because the editor already wrote it to disk",
+        "Commit only what is in the index; a saved unstaged file is not in the next snapshot",
+        "Commit every file under the directory",
+        "Create a branch named notes.txt"
+      ],
+      "answer": 1,
+      "why": "The working tree is the desk; the index is the next snapshot. git add copies into the index. git commit writes a commit from the index.",
+      "review": "09-git/README.md#working-tree-index-and-commit"
+    },
+    {
+      "id": "commit-is-snapshot",
+      "band": "beginner",
+      "prompt": "A Git commit is:",
+      "choices": [
+        "A saved diff Git reapplies later",
+        "A snapshot of the index plus parent, author, date, and message",
+        "A GitHub pull request",
+        "The contents of the working tree, including untracked files"
+      ],
+      "answer": 1,
+      "why": "Git stores snapshots. It can show a diff between two commits. Untracked files are not in the index, so they are not in the commit.",
+      "review": "09-git/README.md#commit"
+    },
+    {
+      "id": "branch-is-pointer",
+      "band": "beginner",
+      "prompt": "main (or master) is:",
+      "choices": [
+        "A special Git object type that other branches cannot have",
+        "A default branch name: a movable pointer at a commit",
+        "The remote named origin",
+        "Required before git init will work"
+      ],
+      "answer": 1,
+      "why": "A branch is a name pointing at a commit. main/master is the default name, not a special object.",
+      "review": "09-git/README.md#branch"
+    },
+    {
+      "id": "origin-not-github",
+      "band": "beginner",
+      "prompt": "git remote -v prints nothing. Which is true?",
+      "choices": [
+        "origin still exists; Git always has GitHub as origin",
+        "This repo has no remote. origin is a name you add, not a default host",
+        "You must git clone again to get a remote",
+        "git init failed"
+      ],
+      "answer": 1,
+      "why": "A remote is a URL or path Git knows how to fetch and push. After init the list is empty until git remote add.",
+      "review": "09-git/README.md#remote"
+    },
+    {
+      "id": "clone-vs-init",
+      "band": "beginner",
+      "prompt": "You already git cloned this learning guide. That means:",
+      "choices": [
+        "You finished the Git first success",
+        "You copied an existing repo (and usually got origin). First success is still git init in /tmp/git-lab",
+        "GitHub Actions will run on your laptop",
+        "You must not run git init anywhere else"
+      ],
+      "answer": 1,
+      "why": "Clone is a download plus a remote. First success is init, add, commit, log in a throwaway directory, not in the guide clone.",
+      "review": "09-git/README.md#clone-versus-init"
+    },
+    {
+      "id": "secret-in-history",
+      "band": "production",
+      "prompt": "You committed PASSWORD=demo in .env, then git rm'd the file and committed again. The password is:",
+      "choices": [
+        "Gone from git; git rm deletes history",
+        "Still in the old commit. If that commit was pushed, rotate the password",
+        "Hidden by .gitignore, which rewrites old commits",
+        "Safe because /tmp repos cannot be cloned"
+      ],
+      "answer": 1,
+      "why": "A later commit can drop the file from the tree. The old blob stays. .gitignore does not rewrite history. Rotate a pushed secret.",
+      "review": "09-git/README.md#secrets-in-history"
+    }
+  ]
+}

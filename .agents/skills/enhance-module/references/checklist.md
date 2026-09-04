@@ -27,4 +27,4 @@ Walk this list against the module you changed. Use `scripts/check-module.sh` as 
 
 - [ ] Beginner install is the laptop path
 - [ ] kubeadm / kube-prometheus-stack / AWS / Vault / OIDC / Thanos are not in Beginner
-- [ ] No new tool module was created
+- [ ] No extra tool module was created beyond the allowed list

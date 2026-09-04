@@ -409,20 +409,22 @@ function modulePage(sourceRel) {
 
 function homePage() {
   const mermaidSrc = `flowchart LR
-  Linux[Linux] --> Ansible[Ansible]
-  Linux --> Docker[Docker]
+  Linux[Linux] --> Git[Git]
+  Git --> Ansible[Ansible]
+  Git --> Docker[Docker]
   Docker --> K8s[Kubernetes]
   Ansible --> TF[Terraform]
   TF --> K8s
-  Docker --> GHA[GitHub Actions]
+  Git --> GHA[GitHub Actions]
+  Docker --> GHA
   GHA --> K8s
   K8s --> Prom[Prometheus]
   Prom --> Graf[Grafana]`;
 
   const pathCards = [
     { id: 'from-zero', title: 'New to servers', blurb: 'Start on Linux. After first success, pick apps or machines.', href: urlPath('/01-linux/') + '?path=from-zero', meta: 'from-zero' },
-    { id: 'apps', title: 'Ship an application', blurb: 'Linux → Docker → Kubernetes → GitHub Actions, then watch it.', href: urlPath('/01-linux/') + '?path=apps', meta: 'apps path' },
-    { id: 'machines', title: 'Configure machines', blurb: 'Linux → Ansible → Terraform, then the local capstone.', href: urlPath('/01-linux/') + '?path=machines', meta: 'machines path' },
+    { id: 'apps', title: 'Ship an application', blurb: 'Linux → Git → Docker → Kubernetes → GitHub Actions, then watch it.', href: urlPath('/01-linux/') + '?path=apps', meta: 'apps path' },
+    { id: 'machines', title: 'Configure machines', blurb: 'Linux → Git → Ansible → Terraform, then the local capstone.', href: urlPath('/01-linux/') + '?path=machines', meta: 'machines path' },
     { id: 'observe', title: 'See what you shipped', blurb: 'Prometheus then Grafana. Needs Docker.', href: urlPath('/06-prometheus/') + '?path=observe', meta: 'observe path' },
   ].map((c) => `<a class="card" href="${c.href}">
       <h2>${escapeHtml(c.title)}</h2>
@@ -439,7 +441,7 @@ function homePage() {
 
   const body = `<main class="wrap" id="main">
     <section class="hero">
-      <p class="section-label">Eight tools · two capstones</p>
+      <p class="section-label">${curriculum.modules.length} tools · two capstones</p>
       <h1>From a Linux shell to shipping and watching an app.</h1>
       <p class="lede">Each module is a mental model, a 15-minute first success, then Intermediate and Production you can skip. The markdown on GitHub is the same text as this reader.</p>
     </section>
@@ -464,7 +466,7 @@ function homePage() {
         <span class="meta">catalog</span>
       </a>
     </div>
-    <p class="section-label">How the eight tools fit</p>
+    <p class="section-label">How the ${curriculum.modules.length} tools fit</p>
     <div class="mermaid-wrap"><pre class="mermaid">${escapeHtml(mermaidSrc)}</pre></div>
     <p class="section-label">Modules</p>
     <table class="module-table">
@@ -494,7 +496,7 @@ function catalogPage() {
   </a>`).join('');
   const body = `<main class="wrap" id="main">
     <p class="section-label">Catalog</p>
-    <h1 class="page-title">Eight modules</h1>
+    <h1 class="page-title">${curriculum.modules.length} modules</h1>
     <p class="lede">Beginner first success is the door. Production is never the first install.</p>
     <div class="card-grid">${cards}</div>
     <p class="section-label">Capstones</p>
@@ -506,7 +508,7 @@ function catalogPage() {
   </main>`;
   return layout({
     title: 'Catalog',
-    description: 'All eight modules and two capstones.',
+    description: `All ${curriculum.modules.length} modules and two capstones.`,
     url: '/catalog/',
     body,
   });

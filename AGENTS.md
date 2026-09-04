@@ -4,7 +4,7 @@ Read this before changing any learning page. Humans and AI tools follow the same
 
 ## When enhancing a module
 
-If the task is to deepen, rewrite, or improve an **existing** module, follow [`.agents/skills/enhance-module/SKILL.md`](./.agents/skills/enhance-module/SKILL.md) before you edit. Do not create a ninth module unless the human named the folder and asked for it.
+If the task is to deepen, rewrite, or improve an **existing** module, follow [`.agents/skills/enhance-module/SKILL.md`](./.agents/skills/enhance-module/SKILL.md) before you edit. Do not create a tenth module unless the human named the folder and asked for it.
 
 Page shape: [docs/MODULE_TEMPLATE.md](./docs/MODULE_TEMPLATE.md). How learners use the repo: [docs/HOW_TO_LEARN.md](./docs/HOW_TO_LEARN.md).
 
@@ -70,6 +70,6 @@ The root README is a learner index. Maintenance philosophy, AI process, and cont
 ## Do not
 
 - Reintroduce the old template order (best practices immediately after install).
-- Add Git, AWS, Argo CD, or DevSecOps as modules in a drive-by edit.
+- Add AWS, Argo CD, or DevSecOps as modules in a drive-by edit.
 - Expand capstone apps into real 3-tier products. Teach the path through the files that exist.
 - Leave “see the original comprehensive guide” or “see `examples/`” with no files.

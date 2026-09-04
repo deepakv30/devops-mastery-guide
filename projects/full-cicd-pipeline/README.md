@@ -6,7 +6,7 @@ Build a tiny API, put it in an image, run it on a local Kubernetes cluster, and 
 |---|---|
 | Levels | Local path = Intermediate · GitHub Actions + ServiceMonitor = Production |
 | Time | ~2 hours local · another hour if you add CI and metrics |
-| Prerequisites | [Docker](../../03-docker/README.md), [Kubernetes](../../04-kubernetes/README.md), [GitHub Actions](../../08-github-actions/README.md) beginner bands |
+| Prerequisites | [Git](../../09-git/README.md), [Docker](../../03-docker/README.md), [Kubernetes](../../04-kubernetes/README.md), [GitHub Actions](../../08-github-actions/README.md) beginner bands |
 | You will be able to | (1) run this app in Docker (2) deploy the same image on kind (3) explain what the workflow does — and what it does *not* do |
 
 **Last verified:** 2026-08-16

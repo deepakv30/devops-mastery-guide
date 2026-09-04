@@ -19,7 +19,7 @@ if [[ ! -d "$dir" ]]; then
   exit 1
 fi
 
-allowed='^(01-linux|02-ansible|03-docker|04-kubernetes|05-terraform|06-prometheus|07-grafana|08-github-actions)$'
+allowed='^(01-linux|02-ansible|03-docker|04-kubernetes|05-terraform|06-prometheus|07-grafana|08-github-actions|09-git)$'
 if [[ ! "$mod" =~ $allowed ]]; then
   echo "FAIL: $mod is not an allowed module folder" >&2
   exit 1

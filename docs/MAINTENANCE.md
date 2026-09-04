@@ -8,7 +8,7 @@ This repository is a learning guide, not a vendor doc mirror. Keep it accurate, 
 - **Versions on the page.** Every module header has `Last verified` and `Tested with`. Bump those when you re-run the first-success path.
 - **Honesty over completeness.** If a folder does not exist, do not list it in the root module table. Planned topics live under “Planned, not written yet” on the root README.
 - **Enterprise patterns stay in Production.** Do not put Operator/HA/OIDC/kubeadm in the beginner band because a blog called it “the real way.”
-- **Quality over new tools.** Prefer fixing an existing first-success path over adding a ninth module.
+- **Quality over new tools.** Prefer fixing an existing first-success path over adding another module.
 
 ## What to do when a tool changes
 
