@@ -1,0 +1,28 @@
+# Copy this file to `.gitignore` in a repo that holds playbooks, Terraform, or an app.
+# It does not apply inside 09-git/examples/ — the name is not `.gitignore` on purpose.
+
+# Secrets and machine-local env
+.env
+.env.*
+!.env.example
+
+# Terraform — state is memory of real objects, not a file you share in git
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Node / Python leftovers
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+
+# Editor / OS noise
+*.swp
+.DS_Store

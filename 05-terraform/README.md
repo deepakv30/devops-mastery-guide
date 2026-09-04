@@ -204,7 +204,7 @@ Drift is reality no longer matching state: someone edited the file (or the cloud
 
 ## How this connects
 
-- **Previous:** [Ansible](../02-ansible/README.md) configures the OS; [Linux](../01-linux/README.md) is what you are configuring. Terraform should have created that OS first.
+- **Previous:** [Ansible](../02-ansible/README.md) configures the OS; [Linux](../01-linux/README.md) is what you are configuring. Terraform should have created that OS first. [Git](../09-git/README.md) — commit `.tf` files, not the state file.
 - **Next:** [Kubernetes](../04-kubernetes/README.md) — later, Terraform can create a cluster (EKS and friends). [GitHub Actions](../08-github-actions/README.md) — run `fmt` / `validate` / `plan` in CI.
 - **When not to use this:** Do not use Terraform to install packages on a VM — that is Ansible. Do not use Terraform as the day-to-day deploy tool for app YAML (kubectl, Helm, or GitOps).
 

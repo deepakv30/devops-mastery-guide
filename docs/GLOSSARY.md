@@ -6,6 +6,8 @@ One-sentence definitions for terms this guide uses more than once. Linked from m
 
 - **Agentless** — The control machine reaches targets over SSH (or an API). Nothing extra is installed and left running on the target. Ansible’s default model.
 - **Alert** — A rule that becomes true (or stays true) and is sent to a human or a pager. In Prometheus this is evaluated on the server and handed to Alertmanager.
+- <a id="branch"></a>**Branch** (Git) — A movable name pointing at a commit. `main` / `master` is a default name, not a special object.
+- <a id="commit"></a>**Commit** (Git) — A snapshot of the index plus parent, author, date, and message. Git can show a diff between commits; it does not store “a patch” as the object.
 - **Artifact** — A file a CI job produced and stored for a later job or for download (a binary, a test report, a built image tarball).
 - **Cardinality** — How many unique time series a metric explodes into. A label like `user_id` can make Prometheus fall over.
 - **ClusterIP** — A Kubernetes Service that is reachable only inside the cluster. The default Service type.
@@ -27,7 +29,9 @@ One-sentence definitions for terms this guide uses more than once. Linked from m
 - **Exporter** — A small process that translates someone else’s stats into Prometheus’s pull format (`/metrics`).
 - **First success** — The shortest path in a module that produces a known output. Do this before Intermediate material.
 - **Handler** (Ansible) — A task that runs only when notified, usually “restart this service after a config change.”
+- <a id="head"></a>**HEAD** (Git) — The commit you are on, usually the tip of a branch.
 - **Helm** — A package manager for Kubernetes manifests (charts + values).
+- <a id="index-git"></a>**Index** (Git) — The tree the next commit will store. Also called the staging area. `git add` copies a file into the index; `git commit` writes a commit from it.
 - **HPA** — Horizontal Pod Autoscaler. Adds or removes Pods from a Deployment based on metrics.
 - **Idempotent** — Running the same change twice leaves the system in the same state. A playbook that always `apt install`s nginx is idempotent; `echo x >> file` is not.
 - <a id="image"></a>**Image** — An immutable filesystem snapshot plus a default command. Built from a Dockerfile; run as a container.
@@ -59,6 +63,7 @@ One-sentence definitions for terms this guide uses more than once. Linked from m
 ## R–Z
 
 - **RBAC** — Role-based access control. Who can do what to which API objects.
+- <a id="remote"></a>**Remote** (Git) — Another copy of the repository you fetch from and push to. The URL can be a path on disk or a host (`https://`, `git@`). `origin` is a common *name*, not GitHub.
 - **Reconciliation** — A loop that reads desired state and current state and moves reality toward desired.
 - **Recording rule** — A PromQL expression Prometheus precomputes and stores as a new series.
 - **ReplicaSet** — Ensures N Pods matching a selector exist. You usually let a Deployment own this.
@@ -77,6 +82,7 @@ One-sentence definitions for terms this guide uses more than once. Linked from m
 - **Vault** — HashiCorp’s secrets manager. Used in capstone 2; not required for module first-success paths.
 - <a id="volume"></a>**Volume** — Persistent or shared files for a container. A **bind mount** is a host path; a named volume is managed by Docker.
 - **Workflow** — A GitHub Actions YAML file under `.github/workflows/` that defines triggers, jobs, and steps.
+- <a id="working-tree"></a>**Working tree** — The files in the directory next to `.git` as they sit on disk. Saving in an editor changes the working tree; `git add` copies into the index.
 - **Workspace** (Terraform) — A named copy of state, often used (and often overused) to separate environments.
 - **Idempotency** — See **Idempotent**.
 

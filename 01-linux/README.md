@@ -214,7 +214,7 @@ The `rwx` triad is owner, one group, everyone else. If alice and bob both need w
 ## How this connects
 
 - **Previous:** none — this is the first module.
-- **Next:** [Docker](../03-docker/README.md) to package an app, and [Ansible](../02-ansible/README.md) to repeat the setup you just did by hand.
+- **Next:** [Git](../09-git/README.md) to record the files you just learned to create. Then [Docker](../03-docker/README.md) to package an app, and [Ansible](../02-ansible/README.md) to repeat the setup you just did by hand.
 - **When not to use this:** Do not SSH into every box to “just fix it” once you have more than a handful. That is why Ansible exists.
 
 ## Practice

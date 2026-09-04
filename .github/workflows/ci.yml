@@ -16,7 +16,7 @@ jobs:
       - name: Module honesty checks
         run: |
           set -e
-          for m in 01-linux 02-ansible 03-docker 04-kubernetes 05-terraform 06-prometheus 07-grafana 08-github-actions; do
+          for m in 01-linux 02-ansible 03-docker 04-kubernetes 05-terraform 06-prometheus 07-grafana 08-github-actions 09-git; do
             .agents/skills/enhance-module/scripts/check-module.sh "$m"
           done
       - run: npm ci

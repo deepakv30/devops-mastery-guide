@@ -6,7 +6,7 @@ Do not start a project until you can do the “Start when you can” checks. Eac
 
 | Project | Modules | Time | Start when you can |
 |---|---|---|---|
-| [Full CI/CD pipeline](./full-cicd-pipeline/README.md) | [Docker](../03-docker/README.md), [Kubernetes](../04-kubernetes/README.md), [GitHub Actions](../08-github-actions/README.md), [Prometheus](../06-prometheus/README.md) | ~2–4 h | Build an image, apply a Deployment on kind, read a workflow file |
+| [Full CI/CD pipeline](./full-cicd-pipeline/README.md) | [Git](../09-git/README.md), [Docker](../03-docker/README.md), [Kubernetes](../04-kubernetes/README.md), [GitHub Actions](../08-github-actions/README.md), [Prometheus](../06-prometheus/README.md) | ~2–4 h | Build an image, apply a Deployment on kind, read a workflow file |
 | [Terraform + Ansible + Vault](./terraform-ansible-gitlab-vault/README.md) | [Terraform](../05-terraform/README.md), [Ansible](../02-ansible/README.md) | ~3–5 h (local path ~45 min) | `terraform apply` a local example; run a localhost playbook |
 
 ## How to use a capstone

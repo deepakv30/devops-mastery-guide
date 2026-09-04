@@ -20,7 +20,7 @@ Do not start a Production section until you can do the “you should already be 
 2. **Run** **First success** from the directory the page names. Type the commands; do not treat the block as decoration.
 3. **Check** your output against **Expected output**. Small differences (IPs, versions, timestamps) are normal. If it failed, use that note, then the pitfall table.
 4. **Keep evidence:** the command, working directory, exit code, and a line of output that proves it worked.
-5. **Continue** only when you can explain what each command did. Do the Basic exercises the same day (`exercises/` on Linux, Docker, and Kubernetes; inline Practice on the other modules until those folders exist). Intermediate and Production wait for a second sitting.
+5. **Continue** only when you can explain what each command did. Do the Basic exercises the same day (`exercises/` on Linux, Git, Docker, and Kubernetes; inline Practice on the other modules until those folders exist). Intermediate and Production wait for a second sitting.
 
 A module’s beginner band is sized for about 15–45 minutes of focused work, not a weekend.
 
@@ -41,6 +41,7 @@ You do not need the whole toolchain on day one.
 | You are opening… | Have this ready |
 |---|---|
 | 01 Linux | A Linux shell (Ubuntu 22.04+ or Debian, native / VM / WSL2). `sudo` access. |
+| 09 Git | Linux first success plus `git` on the PATH (`sudo apt install -y git` if missing). No GitHub account for first success. |
 | 02 Ansible | Linux shell + `ansible` on the control machine. SSH to a second host is nice; localhost works for first success. |
 | 03 Docker | [Docker Engine](https://docs.docker.com/engine/install/) or Docker Desktop. Your user in the `docker` group. |
 | 04 Kubernetes | Docker + [kind](https://kind.sigs.k8s.io/) + `kubectl`. Not kubeadm, not a cloud cluster. |
@@ -49,7 +50,7 @@ You do not need the whole toolchain on day one.
 | 07 Grafana | Docker. This module has **its own** compose stack (Grafana + Prometheus). Stop module 06’s stack first — both bind host port 9090. |
 | 08 GitHub Actions | A GitHub account and a repo you can push to. No self-hosted runner required. |
 
-Python 3, Git, and a text editor are assumed after Linux.
+Python 3 and a text editor are assumed after Linux. Git is [module 09](../09-git/README.md), after Linux first success.
 
 ## Lab options
 
@@ -73,17 +74,18 @@ You do not need every Intermediate example or any Production section before movi
 
 ```text
 01 Linux
-   ├─ 03 Docker ──► 04 Kubernetes ──► 08 GitHub Actions
-   │                      │
-   └─ 02 Ansible ──► 05 Terraform
-                              │
-                    06 Prometheus ──► 07 Grafana
-                              │
-                         capstone projects
+   └─ 09 Git
+         ├─ 03 Docker ──► 04 Kubernetes ──► 08 GitHub Actions
+         │                      │
+         └─ 02 Ansible ──► 05 Terraform
+                                    │
+                          06 Prometheus ──► 07 Grafana
+                                    │
+                               capstone projects
 ```
 
-- Building and running apps: **01 → 03 → 04 → 08**.
-- Building and configuring machines: **01 → 02 → 05**.
+- Building and running apps: **01 → 09 → 03 → 04 → 08**.
+- Building and configuring machines: **01 → 09 → 02 → 05**.
 - Seeing what you shipped: **06 → 07** after something is actually running.
 - Capstones: only after the modules listed on [projects/README.md](../projects/README.md).
 

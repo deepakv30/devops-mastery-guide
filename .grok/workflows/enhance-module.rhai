@@ -1,7 +1,7 @@
 let meta = #{
     name: "enhance-module",
     description: "Enhance one existing module using the Agent Skill, then review for teaching-contract regressions",
-    when_to_use: "Deepen or rewrite an existing module (01-linux through 08-github-actions) without breaking Beginner to Production",
+    when_to_use: "Deepen or rewrite an existing module (01-linux through 09-git) without breaking Beginner to Production",
     phases: [
         #{ title: "Enhance", detail: "follow .agents/skills/enhance-module" },
         #{ title: "Review", detail: "read-only regression check" },
@@ -31,7 +31,7 @@ let review_schema = #{
 
 let target = if args == () { () } else { args.target };
 if target == () {
-    pause("verification", "Pass args.target — one of 01-linux, 02-ansible, 03-docker, 04-kubernetes, 05-terraform, 06-prometheus, 07-grafana, 08-github-actions.");
+    pause("verification", "Pass args.target — one of 01-linux, 02-ansible, 03-docker, 04-kubernetes, 05-terraform, 06-prometheus, 07-grafana, 08-github-actions, 09-git.");
 }
 
 phase("Enhance");

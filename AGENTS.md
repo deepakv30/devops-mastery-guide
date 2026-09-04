@@ -70,6 +70,6 @@ The root README is a learner index. Maintenance philosophy, AI process, and cont
 ## Do not
 
 - Reintroduce the old template order (best practices immediately after install).
-- Add Git, AWS, Argo CD, or DevSecOps as modules in a drive-by edit.
+- Add AWS, Argo CD, or DevSecOps as modules in a drive-by edit.
 - Expand capstone apps into real 3-tier products. Teach the path through the files that exist.
 - Leave “see the original comprehensive guide” or “see `examples/`” with no files.

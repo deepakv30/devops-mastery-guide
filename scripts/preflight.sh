@@ -68,9 +68,9 @@ else
 fi
 
 if have git; then
-  ok "git" "08 GitHub Actions (you still need a GitHub repo you can push to)"
+  ok "git" "09 Git first success; 08 GitHub Actions still needs a GitHub repo you can push to"
 else
-  missing "git" "08 GitHub Actions examples are files; pushing them needs git"
+  missing "git" "Debian/Ubuntu: sudo apt install -y git  — 09 Git first success"
 fi
 
 if have python3; then
@@ -120,13 +120,14 @@ if [[ "$can_tf" -eq 1 ]]; then
   echo "  - 05 Terraform ./05-terraform/README.md"
 fi
 if [[ "$can_gha" -eq 1 ]]; then
+  echo "  - 09 Git      ./09-git/README.md"
   echo "  - 08 GitHub Actions ./08-github-actions/README.md  (needs a GitHub remote)"
 fi
 
 echo
 echo "Recommended first command after clone:"
 echo "  # Linux first success lives in 01-linux/README.md — Beginner: first success"
-echo "  # Apps path after that: 03-docker → 04-kubernetes → 08-github-actions"
+echo "  # Apps path after that: 09-git → 03-docker → 04-kubernetes → 08-github-actions"
 echo
 echo "Paths: learning-paths/from-zero.json, apps.json, machines.json, observe.json"
 echo "How to study: docs/HOW_TO_LEARN.md"
