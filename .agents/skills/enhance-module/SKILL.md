@@ -9,7 +9,7 @@ description: >
   fix a first-success path, or runs /enhance-module.
 license: MIT
 metadata:
-  version: "1.0"
+  version: "1.1"
 ---
 
 # Enhance one existing module
@@ -19,6 +19,9 @@ Do this procedure. Do not invent a new template. The contract is [AGENTS.md](../
 ## Allowed targets
 
 The `dir` values in [curriculum.json](../../../curriculum.json). If the user names a tool that has **no** folder and no curriculum row, stop and ask. Do not add a curriculum row unless the human named the folder.
+`01-linux` · `02-ansible` · `03-docker` · `04-kubernetes` · `05-terraform` · `06-prometheus` · `07-grafana` · `08-github-actions` · `09-gitlab`
+
+If the user names a tool that has **no** folder, stop and ask. Do not create a new module.
 
 ## Progress
 
