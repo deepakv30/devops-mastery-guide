@@ -2,6 +2,36 @@
   "schemaVersion": 1,
   "repo": "https://github.com/deepakv30/devops-mastery-guide",
   "pagesUrl": "https://deepakv30.github.io/devops-mastery-guide/",
+  "tools": {
+    "shell": {
+      "kind": "always"
+    },
+    "docker": {
+      "binary": "docker",
+      "daemon": true,
+      "missing": "https://docs.docker.com/engine/install/"
+    },
+    "kubectl": {
+      "binary": "kubectl",
+      "missing": "https://kubernetes.io/docs/tasks/tools/"
+    },
+    "kind": {
+      "binary": "kind",
+      "missing": "https://kind.sigs.k8s.io/docs/user/quick-start/#installation"
+    },
+    "terraform": {
+      "binary": ["terraform", "tofu"],
+      "missing": "https://developer.hashicorp.com/terraform/install or install tofu"
+    },
+    "ansible": {
+      "binary": "ansible-playbook",
+      "missing": "Debian/Ubuntu: sudo apt install -y ansible"
+    },
+    "git": {
+      "binary": "git",
+      "missing": "Debian/Ubuntu: sudo apt install -y git"
+    }
+  },
   "modules": [
     {
       "id": "01-linux",
@@ -77,7 +107,7 @@
       "dir": "07-grafana",
       "beginnerMinutes": 25,
       "fullHours": 3,
-      "install": "Docker (same compose stack as Prometheus first success).",
+      "install": "Docker. This module has its own compose stack (Grafana + Prometheus). Stop module 06’s stack first — both bind host port 9090.",
       "preflight": ["docker"]
     },
     {
@@ -89,7 +119,8 @@
       "beginnerMinutes": 25,
       "fullHours": 3,
       "install": "A GitHub account and a repo you can push to. No self-hosted runner required.",
-      "preflight": ["git"]
+      "preflight": ["git"],
+      "preflightNote": "needs a GitHub remote"
     },
     {
       "id": "09-git",

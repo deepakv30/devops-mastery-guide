@@ -7,7 +7,9 @@
   },
   "scripts": {
     "build": "node site/build.mjs",
-    "dev": "node site/build.mjs && python3 -m http.server 4173 --directory site/dist"
+    "dev": "node site/build.mjs && python3 -m http.server 4173 --directory site/dist",
+    "sync": "node scripts/sync-indexes.mjs",
+    "check": "node scripts/sync-indexes.mjs --check && .agents/skills/enhance-module/scripts/check-module.sh && node site/build.mjs"
   },
   "devDependencies": {
     "github-slugger": "^2.0.0",

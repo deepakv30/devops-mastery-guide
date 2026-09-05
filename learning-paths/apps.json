@@ -1,6 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "apps",
+  "order": 2,
   "title": "Ship an application",
   "summary": "Box an app, run it on a cluster, ship it on git events, then watch it.",
   "estimatedMinutes": 310,

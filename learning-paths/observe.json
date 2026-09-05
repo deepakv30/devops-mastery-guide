@@ -1,6 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "observe",
+  "order": 4,
   "title": "See what you shipped",
   "summary": "Scrape metrics and draw them. Assumes you can already run a container.",
   "estimatedMinutes": 55,

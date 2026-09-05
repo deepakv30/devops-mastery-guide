@@ -38,19 +38,21 @@ Path files the site and this page share: [from-zero](../learning-paths/from-zero
 
 You do not need the whole toolchain on day one.
 
+<!-- curriculum:install:start -->
 | You are opening… | Have this ready |
 |---|---|
-| 01 Linux | A Linux shell (Ubuntu 22.04+ or Debian, native / VM / WSL2). `sudo` access. |
-| 09 Git | Linux first success plus `git` on the PATH (`sudo apt install -y git` if missing). No GitHub account for first success. |
-| 02 Ansible | Linux shell + `ansible` on the control machine. SSH to a second host is nice; localhost works for first success. |
-| 03 Docker | [Docker Engine](https://docs.docker.com/engine/install/) or Docker Desktop. Your user in the `docker` group. |
-| 04 Kubernetes | Docker + [kind](https://kind.sigs.k8s.io/) + `kubectl`. Not kubeadm, not a cloud cluster. |
-| 05 Terraform | `terraform` binary (or OpenTofu). First success uses the `local` / Docker provider — no cloud account. |
+| 01 Linux | A Linux shell (Ubuntu 22.04+ or Debian, native / VM / WSL2) with sudo. |
+| 02 Ansible | Linux shell plus ansible on the control machine. Localhost is enough for first success. |
+| 03 Docker | Docker Engine or Docker Desktop. Your user in the docker group. |
+| 04 Kubernetes | Docker plus kind plus kubectl. Not kubeadm, not a cloud cluster. |
+| 05 Terraform | terraform or tofu. First success uses the local provider — no cloud account. |
 | 06 Prometheus | Docker. Kubernetes Operator comes later. |
-| 07 Grafana | Docker. This module has **its own** compose stack (Grafana + Prometheus). Stop module 06’s stack first — both bind host port 9090. |
+| 07 Grafana | Docker. This module has its own compose stack (Grafana + Prometheus). Stop module 06’s stack first — both bind host port 9090. |
 | 08 GitHub Actions | A GitHub account and a repo you can push to. No self-hosted runner required. |
+| 09 Git | Linux shell plus git on the PATH. sudo apt install -y git if missing. No GitHub account for first success. |
+<!-- curriculum:install:end -->
 
-Python 3 and a text editor are assumed after Linux. Git is [module 09](../09-git/README.md), after Linux first success.
+Python 3 and a text editor are assumed after Linux.
 
 ## Lab options
 
@@ -72,22 +74,15 @@ You do not need every Intermediate example or any Production section before movi
 
 ## Recommended order
 
-```text
-01 Linux
-   └─ 09 Git
-         ├─ 03 Docker ──► 04 Kubernetes ──► 08 GitHub Actions
-         │                      │
-         └─ 02 Ansible ──► 05 Terraform
-                                    │
-                          06 Prometheus ──► 07 Grafana
-                                    │
-                               capstone projects
-```
-
-- Building and running apps: **01 → 09 → 03 → 04 → 08**.
-- Building and configuring machines: **01 → 09 → 02 → 05**.
-- Seeing what you shipped: **06 → 07** after something is actually running.
+<!-- curriculum:order:start -->
+- **New to servers:** **01**.
+- **Ship an application:** **01 → 09 → 03 → 04 → 08**.
+- **Configure machines:** **01 → 09 → 02 → 05**.
+- **See what you shipped:** **06 → 07**.
 - Capstones: only after the modules listed on [projects/README.md](../projects/README.md).
+
+Folder numbers are catalog IDs, not lesson order. JSON for the same routes: [learning-paths/](../learning-paths/).
+<!-- curriculum:order:end -->
 
 ## If you get stuck
 

@@ -1,6 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "from-zero",
+  "order": 1,
   "title": "New to servers",
   "summary": "Start on Linux. After first success, pick the apps path or the machines path.",
   "estimatedMinutes": 25,

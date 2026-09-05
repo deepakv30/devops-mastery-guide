@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Changed
+
+- Module registration is `curriculum.json` plus `learning-paths/`. CI, preflight, honesty checks, and the site catalog read that list. `npm run sync` fills the README and How-to-learn tables.
+
 ### Added
 
 - **09 Git** module (`09-git/`): local first success (`git init` / add / commit / log), a disk remote, ignore file, and exercises. Catalog number 09; learning-path order is after Linux on apps and machines. Existing 01–08 folders were not renamed.

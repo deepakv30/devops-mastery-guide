@@ -44,7 +44,8 @@ const curriculum = JSON.parse(read('curriculum.json'));
 const pathFiles = fs.readdirSync(path.join(ROOT, 'learning-paths'))
   .filter((f) => f.endsWith('.json'))
   .sort();
-const learningPaths = pathFiles.map((f) => JSON.parse(read(path.join('learning-paths', f))));
+const learningPaths = pathFiles.map((f) => JSON.parse(read(path.join('learning-paths', f))))
+  .sort((a, b) => (a.order ?? 99) - (b.order ?? 99) || String(a.id).localeCompare(String(b.id)));
 
 function fail(msg) {
   console.error(`build: ${msg}`);
@@ -96,14 +97,42 @@ for (const mod of curriculum.modules) {
   }
 }
 
+function firstHeading(rel, fallback) {
+  const m = read(rel).match(/^#\s+(.+)$/m);
+  return m ? m[1].trim() : fallback;
+}
+
+function mermaidFromReadme() {
+  const src = read('README.md');
+  const m = src.match(/```mermaid\r?\n([\s\S]*?)```/);
+  if (!m) fail('README.md has no mermaid fence for the home diagram');
+  return m[1].replace(/\s+$/, '');
+}
+
+function dirFor(id) {
+  const mod = curriculum.modules.find((x) => x.id === id);
+  if (mod) return mod.dir;
+  const proj = curriculum.projects.find((x) => x.id === id);
+  if (proj) return proj.dir;
+  fail(`unknown curriculum id ${id}`);
+}
+
 addPage('docs/HOW_TO_LEARN.md', '/how-to-learn/', 'How to learn', 'doc');
 addPage('docs/CONCEPT_MAP.md', '/concept-map/', 'Concept map', 'doc');
 addPage('docs/GLOSSARY.md', '/glossary/', 'Glossary', 'doc');
 addPage('README.md', '/', 'Home', 'home');
 addPage('projects/README.md', '/projects/', 'Capstone projects', 'project');
-addPage('projects/full-cicd-pipeline/README.md', '/projects/full-cicd-pipeline/', 'Full CI/CD pipeline', 'project');
-addPage('projects/terraform-ansible-gitlab-vault/README.md', '/projects/terraform-ansible-gitlab-vault/', 'Terraform + Ansible + Vault', 'project');
-addPage('projects/gitops-k8s-design.md', '/projects/gitops-k8s-design/', 'GitOps design (no cluster folder)', 'project');
+for (const p of curriculum.projects) {
+  const rel = `${p.dir}/README.md`;
+  if (!fs.existsSync(path.join(ROOT, rel))) fail(`project README missing: ${rel}`);
+  addPage(rel, `/${p.dir}/`, p.title, 'project');
+}
+const projectsRoot = path.join(ROOT, 'projects');
+for (const name of fs.readdirSync(projectsRoot).filter((n) => n.endsWith('.md')).sort()) {
+  const rel = `projects/${name}`;
+  if (pageMap.has(rel)) continue;
+  addPage(rel, `/${rel.replace(/\.md$/, '')}/`, firstHeading(rel, name.replace(/\.md$/, '')), 'doc');
+}
 addPage('ROADMAP.md', '/roadmap/', 'Roadmap', 'doc');
 
 let currentSource = 'README.md';
@@ -408,29 +437,17 @@ function modulePage(sourceRel) {
 }
 
 function homePage() {
-  const mermaidSrc = `flowchart LR
-  Linux[Linux] --> Git[Git]
-  Git --> Ansible[Ansible]
-  Git --> Docker[Docker]
-  Docker --> K8s[Kubernetes]
-  Ansible --> TF[Terraform]
-  TF --> K8s
-  Git --> GHA[GitHub Actions]
-  Docker --> GHA
-  GHA --> K8s
-  K8s --> Prom[Prometheus]
-  Prom --> Graf[Grafana]`;
+  const mermaidSrc = mermaidFromReadme();
+  const nCap = curriculum.projects.length;
 
-  const pathCards = [
-    { id: 'from-zero', title: 'New to servers', blurb: 'Start on Linux. After first success, pick apps or machines.', href: urlPath('/01-linux/') + '?path=from-zero', meta: 'from-zero' },
-    { id: 'apps', title: 'Ship an application', blurb: 'Linux → Git → Docker → Kubernetes → GitHub Actions, then watch it.', href: urlPath('/01-linux/') + '?path=apps', meta: 'apps path' },
-    { id: 'machines', title: 'Configure machines', blurb: 'Linux → Git → Ansible → Terraform, then the local capstone.', href: urlPath('/01-linux/') + '?path=machines', meta: 'machines path' },
-    { id: 'observe', title: 'See what you shipped', blurb: 'Prometheus then Grafana. Needs Docker.', href: urlPath('/06-prometheus/') + '?path=observe', meta: 'observe path' },
-  ].map((c) => `<a class="card" href="${c.href}">
-      <h2>${escapeHtml(c.title)}</h2>
-      <p>${escapeHtml(c.blurb)}</p>
-      <span class="meta">${escapeHtml(c.meta)} · Open on site</span>
-    </a>`).join('');
+  const pathCards = learningPaths.map((lp) => {
+    const href = urlPath(`/${dirFor(lp.entry)}/`) + `?path=${encodeURIComponent(lp.id)}`;
+    return `<a class="card" href="${href}">
+      <h2>${escapeHtml(lp.title)}</h2>
+      <p>${escapeHtml(lp.summary)}</p>
+      <span class="meta">${escapeHtml(lp.id)} · Open on site</span>
+    </a>`;
+  }).join('');
 
   const rows = curriculum.modules.map((m) => `<tr>
     <td><span class="dot" data-mod-dot="${m.id}"></span><a href="${urlPath('/' + m.dir + '/')}">${m.number}. ${escapeHtml(m.title)}</a></td>
@@ -441,7 +458,7 @@ function homePage() {
 
   const body = `<main class="wrap" id="main">
     <section class="hero">
-      <p class="section-label">${curriculum.modules.length} tools · two capstones</p>
+      <p class="section-label">${curriculum.modules.length} tools · ${nCap} capstones</p>
       <h1>From a Linux shell to shipping and watching an app.</h1>
       <p class="lede">Each module is a mental model, a 15-minute first success, then Intermediate and Production you can skip. The markdown on GitHub is the same text as this reader.</p>
     </section>
@@ -466,7 +483,7 @@ function homePage() {
         <span class="meta">catalog</span>
       </a>
     </div>
-    <p class="section-label">How the ${curriculum.modules.length} tools fit</p>
+    <p class="section-label">How the tools fit</p>
     <div class="mermaid-wrap"><pre class="mermaid">${escapeHtml(mermaidSrc)}</pre></div>
     <p class="section-label">Modules</p>
     <table class="module-table">
@@ -508,7 +525,7 @@ function catalogPage() {
   </main>`;
   return layout({
     title: 'Catalog',
-    description: `All ${curriculum.modules.length} modules and two capstones.`,
+    description: `All ${curriculum.modules.length} modules and ${curriculum.projects.length} capstones.`,
     url: '/catalog/',
     body,
   });
@@ -557,20 +574,14 @@ writeDataJs();
 
 writePage('/', homePage());
 writePage('/catalog/', catalogPage());
-writePage('/how-to-learn/', docPage('docs/HOW_TO_LEARN.md'));
-writePage('/concept-map/', docPage('docs/CONCEPT_MAP.md'));
-writePage('/glossary/', docPage('docs/GLOSSARY.md'));
-writePage('/roadmap/', docPage('ROADMAP.md'));
-writePage('/projects/', modulePage('projects/README.md'));
-writePage('/projects/full-cicd-pipeline/', modulePage('projects/full-cicd-pipeline/README.md'));
-writePage('/projects/terraform-ansible-gitlab-vault/', modulePage('projects/terraform-ansible-gitlab-vault/README.md'));
-writePage('/projects/gitops-k8s-design/', docPage('projects/gitops-k8s-design.md'));
 
 for (const [rel, meta] of pageMap) {
   if (meta.kind === 'home') continue;
-  if (rel.startsWith('docs/') || rel === 'ROADMAP.md' || rel === 'projects/gitops-k8s-design.md') continue;
-  if (rel.startsWith('projects/') && rel.endsWith('README.md')) continue;
-  if (meta.kind === 'module' || meta.kind === 'module-page' || meta.kind === 'exercise') {
+  if (meta.kind === 'doc') {
+    writePage(meta.url, docPage(rel));
+    continue;
+  }
+  if (meta.kind === 'module' || meta.kind === 'module-page' || meta.kind === 'exercise' || meta.kind === 'project') {
     writePage(meta.url, modulePage(rel));
   }
 }

@@ -4,7 +4,7 @@ Read this before changing any learning page. Humans and AI tools follow the same
 
 ## When enhancing a module
 
-If the task is to deepen, rewrite, or improve an **existing** module, follow [`.agents/skills/enhance-module/SKILL.md`](./.agents/skills/enhance-module/SKILL.md) before you edit. Do not create a tenth module unless the human named the folder and asked for it.
+If the task is to deepen, rewrite, or improve an **existing** module, follow [`.agents/skills/enhance-module/SKILL.md`](./.agents/skills/enhance-module/SKILL.md) before you edit. Do not create a module folder unless the human named it and asked for it. Register a new module in [curriculum.json](./curriculum.json) and the relevant [learning-paths/](./learning-paths/) file; do not edit allow-lists (there are none).
 
 Page shape: [docs/MODULE_TEMPLATE.md](./docs/MODULE_TEMPLATE.md). How learners use the repo: [docs/HOW_TO_LEARN.md](./docs/HOW_TO_LEARN.md).
 

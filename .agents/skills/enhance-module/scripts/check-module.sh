@@ -1,59 +1,87 @@
 #!/usr/bin/env bash
-# Advisory honesty check for one module directory.
-# Usage: check-module.sh <module-dir>
+# Advisory honesty check for module directories listed in curriculum.json.
+# Usage:
+#   check-module.sh              # every curriculum module
+#   check-module.sh <module-dir> # one dir; must be in curriculum.json
 # Example: .agents/skills/enhance-module/scripts/check-module.sh 03-docker
 set -euo pipefail
 
-if [[ $# -lt 1 ]]; then
-  echo "usage: $0 <module-dir>" >&2
-  exit 2
-fi
-
 root="$(cd "$(dirname "$0")/../../../.." && pwd)"
-mod="$1"
-mod="${mod#./}"
-dir="$root/$mod"
 
-if [[ ! -d "$dir" ]]; then
-  echo "FAIL: not a directory: $mod" >&2
+curriculum_dirs() {
+  python3 - "$root" <<'PY'
+import json, sys
+from pathlib import Path
+root = Path(sys.argv[1])
+cur = json.loads((root / "curriculum.json").read_text(encoding="utf-8"))
+for m in cur.get("modules") or []:
+    d = m.get("dir")
+    if not d:
+        sys.stderr.write("FAIL: curriculum module missing dir\n")
+        sys.exit(1)
+    print(d)
+PY
+}
+
+mapfile -t allowed_dirs < <(curriculum_dirs)
+if [[ "${#allowed_dirs[@]}" -eq 0 ]]; then
+  echo "FAIL: curriculum.json has no modules" >&2
   exit 1
 fi
 
-allowed='^(01-linux|02-ansible|03-docker|04-kubernetes|05-terraform|06-prometheus|07-grafana|08-github-actions|09-git)$'
-if [[ ! "$mod" =~ $allowed ]]; then
-  echo "FAIL: $mod is not an allowed module folder" >&2
-  exit 1
-fi
+is_allowed() {
+  local want="$1"
+  local d
+  for d in "${allowed_dirs[@]}"; do
+    if [[ "$d" == "$want" ]]; then
+      return 0
+    fi
+  done
+  return 1
+}
 
-fail=0
-note() { echo "FAIL: $1"; fail=1; }
+check_one() {
+  local mod="$1"
+  mod="${mod#./}"
+  local dir="$root/$mod"
+  local fail=0
+  local readme has_beginner has_production
 
-readme="$dir/README.md"
-if [[ ! -f "$readme" ]]; then
-  note "missing $mod/README.md"
-  exit 1
-fi
+  note() { echo "FAIL: $1"; fail=1; }
 
-# Bands: either headings in README or split files.
-has_beginner=0
-has_production=0
-if grep -qE '^## Beginner' "$readme"; then has_beginner=1; fi
-if grep -qE '^## Production' "$readme"; then has_production=1; fi
-if [[ -f "$dir/beginner.md" ]]; then has_beginner=1; fi
-if [[ -f "$dir/advanced.md" ]]; then has_production=1; fi
-if [[ "$has_beginner" -eq 0 ]]; then note "$mod has no Beginner heading or beginner.md"; fi
-if [[ "$has_production" -eq 0 ]]; then note "$mod has no Production heading or advanced.md"; fi
-
-# "see examples/" without an examples directory (or empty).
-if grep -qiE 'see [`'\'']?examples/' "$dir"/*.md 2>/dev/null; then
-  if [[ ! -d "$dir/examples" ]] || [[ -z "$(ls -A "$dir/examples" 2>/dev/null)" ]]; then
-    note "$mod mentions examples/ but examples/ is missing or empty"
+  if ! is_allowed "$mod"; then
+    echo "FAIL: $mod is not a dir in curriculum.json" >&2
+    return 1
   fi
-fi
 
-# Relative markdown links in this module's markdown files.
-while IFS= read -r -d '' md; do
-  python3 - "$md" "$dir" <<'PY' || fail=1
+  if [[ ! -d "$dir" ]]; then
+    echo "FAIL: not a directory: $mod" >&2
+    return 1
+  fi
+
+  readme="$dir/README.md"
+  if [[ ! -f "$readme" ]]; then
+    echo "FAIL: missing $mod/README.md" >&2
+    return 1
+  fi
+
+  has_beginner=0
+  has_production=0
+  if grep -qE '^## Beginner' "$readme"; then has_beginner=1; fi
+  if grep -qE '^## Production' "$readme"; then has_production=1; fi
+  if [[ -f "$dir/beginner.md" ]]; then has_beginner=1; fi
+  if [[ -f "$dir/advanced.md" ]]; then has_production=1; fi
+  if [[ "$has_beginner" -eq 0 ]]; then note "$mod has no Beginner heading or beginner.md"; fi
+  if [[ "$has_production" -eq 0 ]]; then note "$mod has no Production heading or advanced.md"; fi
+
+  if grep -qiE 'see [`'\'']?examples/' "$dir"/*.md 2>/dev/null; then
+    if [[ ! -d "$dir/examples" ]] || [[ -z "$(ls -A "$dir/examples" 2>/dev/null)" ]]; then
+      note "$mod mentions examples/ but examples/ is missing or empty"
+    fi
+  fi
+
+  while IFS= read -r -d '' md; do
+    python3 - "$md" "$dir" <<'PY' || fail=1
 import re, sys
 from pathlib import Path
 md = Path(sys.argv[1])
@@ -81,10 +109,27 @@ if bad:
         print(f"FAIL: broken link in {rel}: {u}")
     sys.exit(1)
 PY
-done < <(find "$dir" -name '*.md' -print0)
+  done < <(find "$dir" -name '*.md' -print0)
 
-if [[ "$fail" -ne 0 ]]; then
-  echo "check-module: $mod has problems" >&2
-  exit 1
+  if [[ "$fail" -ne 0 ]]; then
+    echo "check-module: $mod has problems" >&2
+    return 1
+  fi
+  echo "check-module: $mod ok"
+  return 0
+}
+
+if [[ $# -eq 0 ]]; then
+  overall=0
+  for mod in "${allowed_dirs[@]}"; do
+    check_one "$mod" || overall=1
+  done
+  exit "$overall"
 fi
-echo "check-module: $mod ok"
+
+if [[ $# -ne 1 ]]; then
+  echo "usage: $0 [module-dir]" >&2
+  exit 2
+fi
+
+check_one "$1"

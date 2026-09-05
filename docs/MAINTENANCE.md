@@ -21,7 +21,7 @@ This repository is a learning guide, not a vendor doc mirror. Keep it accurate, 
 
 - After a major upstream release of Docker, Kubernetes, Terraform, Ansible, Prometheus, Grafana, or GitHub Actions.
 - When a reader opens an issue that a command or link is wrong.
-- When adding a module: follow [MODULE_TEMPLATE.md](./MODULE_TEMPLATE.md) and [AGENTS.md](../AGENTS.md).
+- When adding a module: follow [MODULE_TEMPLATE.md](./MODULE_TEMPLATE.md) and [AGENTS.md](../AGENTS.md). Register it in `curriculum.json` and the path JSON; run `npm run sync`. Do not maintain a second module list in CI or `site/build.mjs`.
 - When an agent deepens a module: it must follow [enhance-module](../.agents/skills/enhance-module/SKILL.md). Grok’s [enhance-module workflow](../.grok/workflows/enhance-module.rhai) runs that skill and then a reviewer. Treat the reviewer’s regression list as required reading; this is not a CI gate.
 - When module markdown changes, rebuild the learning site (`npm run build`) so GitHub and the reader stay the same files. The site must not grow teaching text of its own.
 
