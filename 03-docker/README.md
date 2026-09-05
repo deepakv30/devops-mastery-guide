@@ -118,7 +118,7 @@ Compose is the right tool when you are tired of retyping `-p` and `-v`, or when 
 
 ### `.dockerignore`
 
-[examples/hello-static/.dockerignore](./examples/hello-static/.dockerignore) keeps `.git` and markdown out of the build context. Without it, `COPY . .` sends everything in the directory to the daemon — including secrets and `node_modules`. Treat it like `.gitignore` for `docker build` ([Git ignore example](../09-git/examples/gitignore-devops)).
+[examples/hello-static/.dockerignore](./examples/hello-static/.dockerignore) keeps `.git` and markdown out of the build context. Without it, `COPY . .` sends everything in the directory to the daemon — including secrets and `node_modules`. Treat it like `.gitignore` for `docker build` ([Git ignore example](../02-git/examples/gitignore-devops)).
 
 ### logs, exec, inspect
 
@@ -175,7 +175,7 @@ nginx may also need tmpfs mounts for `/var/cache/nginx` and `/run`. `--cap-drop 
 
 ### Scan mention
 
-Tools such as [Trivy](https://trivy.dev/) report known CVEs in an image (`trivy image hello-static:1`). You do not need to install a scanner for this module. Make scanning a CI step later in [GitHub Actions](../08-github-actions/README.md), not a ritual you run by hand on every local build.
+Tools such as [Trivy](https://trivy.dev/) report known CVEs in an image (`trivy image hello-static:1`). You do not need to install a scanner for this module. Make scanning a CI step later in [GitHub Actions](../05-github-actions/README.md), not a ritual you run by hand on every local build.
 
 ### `.dockerignore` again
 
@@ -192,8 +192,8 @@ Production images still start with a small context. A forgotten `.env` in the bu
 
 ## How this connects
 
-- **Previous:** [Linux](../01-linux/README.md) — you already know processes, ports (`ss`), and files. [Git](../09-git/README.md) — the Dockerfile belongs in a repo.
-- **Next:** [Kubernetes](../04-kubernetes/README.md) — a Pod runs this image. [GitHub Actions](../08-github-actions/README.md) is where you will `docker build` and push on each git event.
+- **Previous:** [Linux](../01-linux/README.md) — you already know processes, ports (`ss`), and files. [Git](../02-git/README.md) — the Dockerfile belongs in a repo.
+- **Next:** [Kubernetes](../04-kubernetes/README.md) — a Pod runs this image. [GitHub Actions](../05-github-actions/README.md) is where you will `docker build` and push on each git event.
 - **When not to use this:** A one-off debug on the host (`journalctl`, `ss`, a local binary) does not need Docker. Do not wrap a single `curl` in an image to look official.
 
 ## Practice

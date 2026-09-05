@@ -8,10 +8,10 @@
   "entry": "01-linux",
   "steps": [
     {"order": 1, "module": "01-linux", "band": "beginner", "minutes": 25, "required": true},
-    {"order": 2, "module": "09-git", "band": "beginner", "minutes": 20, "required": true},
+    {"order": 2, "module": "02-git", "band": "beginner", "minutes": 20, "required": true},
     {"order": 3, "module": "03-docker", "band": "beginner", "minutes": 25, "required": true},
     {"order": 4, "module": "04-kubernetes", "band": "beginner", "minutes": 40, "required": true},
-    {"order": 5, "module": "08-github-actions", "band": "beginner", "minutes": 25, "required": true},
+    {"order": 5, "module": "05-github-actions", "band": "beginner", "minutes": 25, "required": true},
     {"order": 6, "module": "06-prometheus", "band": "beginner", "minutes": 30, "required": false},
     {"order": 7, "module": "07-grafana", "band": "beginner", "minutes": 25, "required": false},
     {"order": 8, "module": "projects/full-cicd-pipeline", "band": "local", "minutes": 120, "required": false}

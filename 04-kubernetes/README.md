@@ -63,7 +63,7 @@ You edit the Deployment. Kubernetes creates a [ReplicaSet](../docs/GLOSSARY.md),
 ## How this connects
 
 - **Previous:** [Docker](../03-docker/README.md) — the image is what the Pod runs. If you cannot `docker run` the image, Kubernetes will not run it either.
-- **Next:** [GitHub Actions](../08-github-actions/README.md) is how you build and deploy the image; [Prometheus](../06-prometheus/README.md) is how you watch what you shipped.
+- **Next:** [GitHub Actions](../05-github-actions/README.md) is how you build and deploy the image; [Prometheus](../06-prometheus/README.md) is how you watch what you shipped.
 - **When not to use this:** One container on a laptop is Docker Compose, not a cluster. Do not stand up Kubernetes to run a single process you can `docker run`.
 
 ## Practice

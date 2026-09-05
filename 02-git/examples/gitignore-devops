@@ -1,5 +1,5 @@
 # Copy this file to `.gitignore` in a repo that holds playbooks, Terraform, or an app.
-# It does not apply inside 09-git/examples/ — the name is not `.gitignore` on purpose.
+# It does not apply inside 02-git/examples/ — the name is not `.gitignore` on purpose.
 
 # Secrets and machine-local env
 .env

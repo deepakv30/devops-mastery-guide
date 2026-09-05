@@ -45,15 +45,15 @@
       "preflight": ["shell"]
     },
     {
-      "id": "02-ansible",
+      "id": "02-git",
       "number": "02",
-      "title": "Ansible",
-      "job": "Describe server setup as repeatable recipes",
-      "dir": "02-ansible",
-      "beginnerMinutes": 30,
-      "fullHours": 4,
-      "install": "Linux shell plus ansible on the control machine. Localhost is enough for first success.",
-      "preflight": ["shell", "ansible"]
+      "title": "Git",
+      "job": "Record file history so you, a teammate, and CI share one source of truth",
+      "dir": "02-git",
+      "beginnerMinutes": 20,
+      "fullHours": 3,
+      "install": "Linux shell plus git on the PATH. sudo apt install -y git if missing. No GitHub account for first success.",
+      "preflight": ["git"]
     },
     {
       "id": "03-docker",
@@ -78,15 +78,16 @@
       "preflight": ["docker", "kind", "kubectl"]
     },
     {
-      "id": "05-terraform",
+      "id": "05-github-actions",
       "number": "05",
-      "title": "Terraform",
-      "job": "Declare infrastructure and let a tool converge it",
-      "dir": "05-terraform",
-      "beginnerMinutes": 30,
-      "fullHours": 4,
-      "install": "terraform or tofu. First success uses the local provider — no cloud account.",
-      "preflight": ["terraform"]
+      "title": "GitHub Actions",
+      "job": "Run build, test, and deploy steps on a git event",
+      "dir": "05-github-actions",
+      "beginnerMinutes": 25,
+      "fullHours": 3,
+      "install": "A GitHub account and a repo you can push to. No self-hosted runner required.",
+      "preflight": ["git"],
+      "preflightNote": "needs a GitHub remote"
     },
     {
       "id": "06-prometheus",
@@ -111,27 +112,26 @@
       "preflight": ["docker"]
     },
     {
-      "id": "08-github-actions",
+      "id": "08-ansible",
       "number": "08",
-      "title": "GitHub Actions",
-      "job": "Run build, test, and deploy steps on a git event",
-      "dir": "08-github-actions",
-      "beginnerMinutes": 25,
-      "fullHours": 3,
-      "install": "A GitHub account and a repo you can push to. No self-hosted runner required.",
-      "preflight": ["git"],
-      "preflightNote": "needs a GitHub remote"
+      "title": "Ansible",
+      "job": "Describe server setup as repeatable recipes",
+      "dir": "08-ansible",
+      "beginnerMinutes": 30,
+      "fullHours": 4,
+      "install": "Linux shell plus ansible on the control machine. Localhost is enough for first success.",
+      "preflight": ["shell", "ansible"]
     },
     {
-      "id": "09-git",
+      "id": "09-terraform",
       "number": "09",
-      "title": "Git",
-      "job": "Record file history so you, a teammate, and CI share one source of truth",
-      "dir": "09-git",
-      "beginnerMinutes": 20,
-      "fullHours": 3,
-      "install": "Linux shell plus git on the PATH. sudo apt install -y git if missing. No GitHub account for first success.",
-      "preflight": ["git"]
+      "title": "Terraform",
+      "job": "Declare infrastructure and let a tool converge it",
+      "dir": "09-terraform",
+      "beginnerMinutes": 30,
+      "fullHours": 4,
+      "install": "terraform or tofu. First success uses the local provider — no cloud account.",
+      "preflight": ["terraform"]
     }
   ],
   "projects": [

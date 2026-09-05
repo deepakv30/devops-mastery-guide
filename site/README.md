@@ -22,7 +22,7 @@ Open [http://127.0.0.1:4173/](http://127.0.0.1:4173/). `npm run build` writes `s
 | `/concept-map/` | `docs/CONCEPT_MAP.md` |
 | `/glossary/` | `docs/GLOSSARY.md` |
 | `/catalog/` | module index |
-| `/01-linux/` … | each module `README.md` and split files |
+| `/01-linux/` … | each module `README.md` and split files. Old numbered URLs (`/09-git/`, `/08-github-actions/`, `/02-ansible/`, `/05-terraform/`) redirect. |
 | `/projects/` | `projects/README.md` and capstone READMEs |
 
 Progress is stored in the browser (`localStorage` key `dmg:progress:v1`). Clearing the site data clears it. There is no account.

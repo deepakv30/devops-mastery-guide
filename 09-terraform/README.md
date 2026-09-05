@@ -187,7 +187,7 @@ terraform validate
 terraform plan -out=tfplan
 ```
 
-Run those on every pull request. Apply the saved plan on merge, not a fresh plan. [GitHub Actions](../08-github-actions/README.md) is the module that runs this on a git event.
+Run those on every pull request. Apply the saved plan on merge, not a fresh plan. [GitHub Actions](../05-github-actions/README.md) is the module that runs this on a git event.
 
 ### Drift
 
@@ -204,8 +204,8 @@ Drift is reality no longer matching state: someone edited the file (or the cloud
 
 ## How this connects
 
-- **Previous:** [Ansible](../02-ansible/README.md) configures the OS; [Linux](../01-linux/README.md) is what you are configuring. Terraform should have created that OS first. [Git](../09-git/README.md) — commit `.tf` files, not the state file.
-- **Next:** [Kubernetes](../04-kubernetes/README.md) — later, Terraform can create a cluster (EKS and friends). [GitHub Actions](../08-github-actions/README.md) — run `fmt` / `validate` / `plan` in CI.
+- **Previous:** [Ansible](../08-ansible/README.md) configures the OS; [Linux](../01-linux/README.md) is what you are configuring. Terraform should have created that OS first. [Git](../02-git/README.md) — commit `.tf` files, not the state file.
+- **Next:** [Kubernetes](../04-kubernetes/README.md) — later, Terraform can create a cluster (EKS and friends). [GitHub Actions](../05-github-actions/README.md) — run `fmt` / `validate` / `plan` in CI.
 - **When not to use this:** Do not use Terraform to install packages on a VM — that is Ansible. Do not use Terraform as the day-to-day deploy tool for app YAML (kubectl, Helm, or GitOps).
 
 ## Practice

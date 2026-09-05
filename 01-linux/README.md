@@ -184,7 +184,7 @@ Keep a console session open and test a *new* SSH login before you close the old 
 
 ### Why Ansible later
 
-Once you have more than a handful of machines, repeating `useradd` and `sshd_config` by hand is how drift starts. [Ansible](../02-ansible/README.md) turns those steps into a playbook. Learn them by hand first so you can read what the playbook changed. Do not start this module by automating it.
+Once you have more than a handful of machines, repeating `useradd` and `sshd_config` by hand is how drift starts. [Ansible](../08-ansible/README.md) turns those steps into a playbook. Learn them by hand first so you can read what the playbook changed. Do not start this module by automating it.
 
 ### journald persistence
 
@@ -214,7 +214,7 @@ The `rwx` triad is owner, one group, everyone else. If alice and bob both need w
 ## How this connects
 
 - **Previous:** none — this is the first module.
-- **Next:** [Git](../09-git/README.md) to record the files you just learned to create. Then [Docker](../03-docker/README.md) to package an app, and [Ansible](../02-ansible/README.md) to repeat the setup you just did by hand.
+- **Next:** [Git](../02-git/README.md) to record the files you just learned to create. Then [Docker](../03-docker/README.md) to package an app, and [Ansible](../08-ansible/README.md) to repeat the setup you just did by hand.
 - **When not to use this:** Do not SSH into every box to “just fix it” once you have more than a handful. That is why Ansible exists.
 
 ## Practice

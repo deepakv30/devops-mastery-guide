@@ -3,8 +3,8 @@
   "id": "from-zero",
   "order": 1,
   "title": "New to servers",
-  "summary": "Start on Linux. After first success, pick the apps path or the machines path.",
-  "estimatedMinutes": 25,
+  "summary": "Start on Linux, then Git. After first success, pick the apps path or the machines path.",
+  "estimatedMinutes": 45,
   "entry": "01-linux",
   "nextPaths": ["apps", "machines"],
   "steps": [
@@ -13,6 +13,13 @@
       "module": "01-linux",
       "band": "beginner",
       "minutes": 25,
+      "required": true
+    },
+    {
+      "order": 2,
+      "module": "02-git",
+      "band": "beginner",
+      "minutes": 20,
       "required": true
     }
   ]
