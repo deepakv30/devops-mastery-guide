@@ -5,7 +5,7 @@ Supporting pages for the DevOps Mastery Guide. Start at the [root README](../REA
 | Page | Use it for |
 |---|---|
 | [How to learn](./HOW_TO_LEARN.md) | Study order, lab setup, when to move on |
-| [Concept map](./CONCEPT_MAP.md) | How the nine tools fit, which tool when |
+| [Concept map](./CONCEPT_MAP.md) | How the tools fit, which tool when |
 | [Glossary](./GLOSSARY.md) | One-sentence definitions |
 | [Module template](./MODULE_TEMPLATE.md) | Required shape of every module |
 | [Maintenance](./MAINTENANCE.md) | How this repo stays current |

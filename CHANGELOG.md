@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Changed
+
+- Module registration is `curriculum.json` plus `learning-paths/`. CI, preflight, honesty checks, and the site catalog read that list. `npm run sync` fills the README and How-to-learn tables.
+
 ### Added
 
 - **09-gitlab** module: GitLab CI/CD (pipeline, stages, jobs, runners, artifacts, rules, needs, environments). Follows the same beginner → Intermediate → Production contract as the other eight modules. Examples and cheatsheet included. Root README, concept map, and capstone 2 now point at it.

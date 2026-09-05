@@ -1,6 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "machines",
+  "order": 3,
   "title": "Configure machines",
   "summary": "Take a blank computer, make the OS usable, then declare infrastructure you can recreate.",
   "estimatedMinutes": 150,

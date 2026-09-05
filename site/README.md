@@ -17,7 +17,7 @@ Open [http://127.0.0.1:4173/](http://127.0.0.1:4173/). `npm run build` writes `s
 
 | URL | Source |
 |---|---|
-| `/` | `curriculum.json` + `learning-paths/*.json` (not a second README) |
+| `/` | `curriculum.json` + `learning-paths/*.json` + mermaid from `README.md` |
 | `/how-to-learn/` | `docs/HOW_TO_LEARN.md` |
 | `/concept-map/` | `docs/CONCEPT_MAP.md` |
 | `/glossary/` | `docs/GLOSSARY.md` |

@@ -4,8 +4,9 @@ description: >
   Deepen or rewrite one existing DevOps Mastery Guide module without
   breaking the beginner to Production contract. Use when the user asks
   to enhance, deepen, rewrite, or improve a module (Linux, Ansible,
-  Docker, Kubernetes, Terraform, Prometheus, Grafana, GitHub Actions,
-  GitLab), fix a first-success path, or runs /enhance-module.
+  Docker, Kubernetes, Terraform, Prometheus, Grafana, GitHub Actions, Git —
+  any dir listed in curriculum.json),
+  fix a first-success path, or runs /enhance-module.
 license: MIT
 metadata:
   version: "1.1"
@@ -17,6 +18,7 @@ Do this procedure. Do not invent a new template. The contract is [AGENTS.md](../
 
 ## Allowed targets
 
+The `dir` values in [curriculum.json](../../../curriculum.json). If the user names a tool that has **no** folder and no curriculum row, stop and ask. Do not add a curriculum row unless the human named the folder.
 `01-linux` · `02-ansible` · `03-docker` · `04-kubernetes` · `05-terraform` · `06-prometheus` · `07-grafana` · `08-github-actions` · `09-gitlab`
 
 If the user names a tool that has **no** folder, stop and ask. Do not create a new module.
@@ -32,7 +34,7 @@ If the user names a tool that has **no** folder, stop and ask. Do not create a n
 
 ## Steps
 
-1. Resolve the folder from the list above. If ambiguous, ask once.
+1. Resolve the folder from curriculum.json. If ambiguous, ask once.
 
 2. Read [AGENTS.md](../../../AGENTS.md), then [references/gotchas.md](references/gotchas.md).
 
@@ -56,4 +58,4 @@ If the user names a tool that has **no** folder, stop and ask. Do not create a n
 
 8. Read [references/checklist.md](references/checklist.md) and walk every item. Set `Last verified` only if you actually ran the first-success commands; otherwise leave the date and say unverified.
 
-Do not commit or push unless the user asked. Do not edit the root module table to advertise folders you did not create.
+Do not commit or push unless the user asked. Do not add a folder to curriculum.json to advertise work you did not create.

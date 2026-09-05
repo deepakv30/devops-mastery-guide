@@ -14,12 +14,10 @@ jobs:
           node-version: 22
           cache: npm
       - name: Module honesty checks
-        run: |
-          set -e
-          for m in 01-linux 02-ansible 03-docker 04-kubernetes 05-terraform 06-prometheus 07-grafana 08-github-actions 09-git; do
-            .agents/skills/enhance-module/scripts/check-module.sh "$m"
-          done
+        run: .agents/skills/enhance-module/scripts/check-module.sh
       - run: npm ci
+      - name: Generated indexes match curriculum
+        run: node scripts/sync-indexes.mjs --check
       - run: npm run build
         env:
           SITE_BASE: /devops-mastery-guide

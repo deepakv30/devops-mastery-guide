@@ -20,11 +20,11 @@ Walk this list against the module you changed. Use `scripts/check-module.sh` as 
 
 - [ ] Every relative markdown link resolves
 - [ ] No “see `examples/`” unless that folder has the file
-- [ ] Root README module table still matches folders that exist
+- [ ] `curriculum.json` lists this folder; `npm run sync -- --check` is clean
 - [ ] `Last verified` bumped only if first success was run
 
 ## Bands
 
 - [ ] Beginner install is the laptop path
 - [ ] kubeadm / kube-prometheus-stack / AWS / Vault / OIDC / Thanos are not in Beginner
-- [ ] No extra tool module was created beyond the allowed list
+- [ ] No extra folder was added to curriculum.json unless the human named it

@@ -1,6 +1,6 @@
 # Concept map
 
-How the nine tools in this repo relate. Read this once after Linux, and again before a capstone.
+How the tools in this repo relate. Read this once after Linux, and again before a capstone.
 
 ## The system they form
 
