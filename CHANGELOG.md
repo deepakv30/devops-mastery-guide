@@ -10,7 +10,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
-- **09 Git** module (`09-git/`): local first success (`git init` / add / commit / log), a disk remote, ignore file, and exercises. Catalog number 09; learning-path order is after Linux on apps and machines. Existing 01–08 folders were not renamed.
+- **09-gitlab** module: GitLab CI/CD (pipeline, stages, jobs, runners, artifacts, rules, needs, environments). Follows the same beginner → Intermediate → Production contract as the other eight modules. Examples and cheatsheet included. Root README, concept map, and capstone 2 now point at it.
 - Agent Skills layout under `.agents/skills/` ([spec](https://agentskills.io/home)) and the `enhance-module` skill so later agents can deepen a module without dropping the teaching contract.
 - Grok workflow `.grok/workflows/enhance-module.rhai` (enhance, then a read-only review). Advisory only — no CI fail.
 - Learning-path manifests in `learning-paths/` (from-zero, apps, machines, observe) and `curriculum.json`.

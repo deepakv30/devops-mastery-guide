@@ -5,7 +5,7 @@ A hands-on path from first Linux commands to shipping and observing applications
 This repo contains the modules in the table below and the capstones listed under [Capstone projects](#capstone-projects). Topics listed under [Planned, not written yet](#planned-not-written-yet) are not in the tree. Status board: [ROADMAP.md](./ROADMAP.md).
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
-[![Last Updated](https://img.shields.io/badge/Last%20Updated-2026--09--04-brightgreen)](./CHANGELOG.md)
+[![Last Updated](https://img.shields.io/badge/Last%20Updated-2026--08--22-brightgreen)](./CHANGELOG.md)
 
 ## Choose a path
 
@@ -56,14 +56,15 @@ flowchart LR
   Docker --> K8s[Kubernetes]
   Ansible --> TF[Terraform]
   TF --> K8s
-  Git --> GHA[GitHub Actions]
-  Docker --> GHA
+  Docker --> GHA[GitHub Actions]
+  Docker --> GL[GitLab CI]
   GHA --> K8s
+  GL --> K8s
   K8s --> Prom[Prometheus]
   Prom --> Graf[Grafana]
 ```
 
-Linux is the OS everything else runs on. Git records the files you will share. Ansible configures machines. Docker packages an app. Kubernetes runs those packages. Terraform creates the machines and clusters. GitHub Actions ships changes on a git event. Prometheus collects numbers; Grafana shows them. Details and “which tool when”: [Concept map](./docs/CONCEPT_MAP.md).
+Linux is the OS everything else runs on. Ansible configures machines. Docker packages an app. Kubernetes runs those packages. Terraform creates the machines and clusters. GitHub Actions and GitLab CI both ship changes from a YAML pipeline in the repo. Prometheus collects numbers; Grafana shows them. Details and “which tool when”: [Concept map](./docs/CONCEPT_MAP.md).
 
 ## Modules
 

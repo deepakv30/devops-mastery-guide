@@ -18,6 +18,7 @@ flowchart TB
     Docker[Docker packages the app]
     K8s[Kubernetes runs the packages]
     GHA[GitHub Actions builds and deploys]
+    GL[GitLab CI builds and deploys]
   end
   subgraph see [Observability]
     Prom[Prometheus scrapes metrics]
@@ -32,6 +33,8 @@ flowchart TB
   Docker --> K8s
   GHA --> Docker
   GHA --> K8s
+  GL --> Docker
+  GL --> K8s
   K8s --> Prom
   Prom --> Graf
   Linux --> Docker
@@ -44,7 +47,7 @@ flowchart TB
 - **Terraform** creates the computers, networks, and managed services from a desired-state file.
 - **Docker** freezes an app plus its libraries into an image you can run anywhere that has a container runtime.
 - **Kubernetes** keeps a desired number of those containers running, reachable, and replaceable.
-- **GitHub Actions** runs commands when git events happen — usually “test, build image, deploy.”
+- **GitHub Actions** and **GitLab CI** both run commands when git events happen — usually “test, build image, deploy.” Pick the one your team already uses; the ideas transfer.
 - **Prometheus** pulls numbers from running software on a timer and stores them as time series.
 - **Grafana** queries those numbers and draws graphs or fires an alert.
 
@@ -58,7 +61,8 @@ flowchart TB
 | Create a VPC, VM, or cluster you can recreate | Terraform | Clicking the cloud console |
 | Run the same app on your laptop and in CI | Docker | “It works on my machine” install notes |
 | Keep N copies running, restart them, expose a stable name | Kubernetes | `docker run` on one host for production |
-| Run tests / build / deploy on every push | GitHub Actions | Remembering to run the script |
+| Run tests / build / deploy on every push (GitHub) | GitHub Actions | Remembering to run the script |
+| Run tests / build / deploy on every push (GitLab) | GitLab CI | Remembering to run the script |
 | Know the error rate over the last 5 minutes | Prometheus | SSH and `tail` as the only signal |
 | Show that error rate to humans or page someone | Grafana (or Alertmanager) | A screenshot of a terminal |
 
@@ -75,12 +79,13 @@ These pairs are the whole mental model. Definitions live in the [glossary](./GLO
 | Kubernetes | manifests (Deployment, Service, …) | etcd via the API server | Pod |
 | Terraform | `.tf` files | the state file | resource |
 | GitHub Actions | workflow YAML | run history on GitHub | job, step |
+| GitLab CI | `.gitlab-ci.yml` | pipeline history on GitLab | stage, job |
 | Prometheus | scrape config / ServiceMonitor | the TSDB | time series |
 | Grafana | dashboard JSON / provisioning | Grafana’s database | panel |
 
 ## Two paths through the same map
 
-**App path (most readers):** Linux → Git → Docker → Kubernetes → GitHub Actions → Prometheus → Grafana.
+**App path (most readers):** Linux → Docker → Kubernetes → GitHub Actions *or* GitLab CI → Prometheus → Grafana.
 
 You take an app, box it, run it, ship it, watch it.
 

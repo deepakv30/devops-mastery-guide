@@ -6,20 +6,20 @@ Provision (or *pretend* to provision) a server, configure it with Ansible, and o
 |---|---|
 | Levels | Local path = Intermediate · AWS + Vault + GitLab = Production |
 | Time | ~45 min local · several hours if you use real AWS and Vault |
-| Prerequisites | [Ansible](../../02-ansible/README.md) and [Terraform](../../05-terraform/README.md) first success |
+| Prerequisites | [Ansible](../../02-ansible/README.md) and [Terraform](../../05-terraform/README.md) first success; [GitLab CI/CD](../../09-gitlab/README.md) helps for the pipeline reading |
 | You will be able to | (1) explain the handoff “Terraform writes inventory, Ansible uses it” (2) run the localhost playbook (3) say why this project uses GitLab when module 08 uses GitHub Actions |
 
-**Last verified:** 2026-08-16
+**Last verified:** 2026-08-22
 
 ## Why this project uses GitLab
 
-Module 08 teaches **GitHub Actions**. This capstone keeps a **GitLab CI** pipeline (`.gitlab-ci.yml`) on purpose: the same ideas (stages, artifacts, a manual apply) show up under a different YAML dialect.
+Module 08 teaches **GitHub Actions**. Module 09 teaches **GitLab CI/CD**. This capstone keeps a **GitLab CI** pipeline (`.gitlab-ci.yml`) on purpose: the same ideas (stages, artifacts, a manual apply) show up under a different YAML dialect.
 
-You do **not** need a GitLab account for the local path. Treat `.gitlab-ci.yml` as a reading exercise until you have Terraform + Ansible working on your machine.
+You do **not** need a GitLab account for the local path. Treat `.gitlab-ci.yml` as a reading exercise until you have Terraform + Ansible working on your machine. After you complete the [GitLab module](../../09-gitlab/README.md) first success, the file here will look familiar.
 
 ```text
-GitHub Actions (module 08)     GitLab CI (this folder)
---------------------------     -----------------------
+GitHub Actions (module 08)     GitLab CI (module 09 + this folder)
+--------------------------     ------------------------------------
 jobs: / steps:                 stages: + one key per job
 actions/checkout               implicit checkout
 environment:                   environment:
@@ -110,13 +110,14 @@ Prefer OIDC/JWT from CI over a long-lived AppRole secret, as that page says.
 | `apply` | Manual, `main`/`develop` only — uses that plan |
 | `configure` | Vault login + `ansible-playbook` |
 
-The configure job assumes variables (`VAULT_ROLE_ID`, …) and an inventory path that a real apply would produce. It is a map, not a pipeline you can green without GitLab + AWS + Vault.
+The configure job assumes variables (`VAULT_ROLE_ID`, …) and an inventory path that a real apply would produce. It is a map, not a pipeline you can green without GitLab + AWS + Vault. After the [GitLab module](../../09-gitlab/README.md) you will recognise stages, artifacts, `when: manual`, and `environment:`.
 
 ## How this connects
 
 - [Terraform](../../05-terraform/README.md) — desired state and the state file
 - [Ansible](../../02-ansible/README.md) — idempotent config after the box exists
 - [GitHub Actions](../../08-github-actions/README.md) — compare job shape with this `.gitlab-ci.yml`
+- [GitLab CI/CD](../../09-gitlab/README.md) — the full teaching module for the dialect used here
 - Capstone 1 — ships an *app* to Kubernetes; this one ships *machines*
 
 **When not to use this stack:** configuring Kubernetes apps day-to-day. That is manifests / Helm / GitOps, not Ansible over SSH to every node.
