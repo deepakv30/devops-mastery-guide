@@ -154,14 +154,14 @@ Do not rebase a branch other people already have. Their commits still point at t
 GitHub is one kind of remote. A bare repo on this disk is another. Run:
 
 ```bash
-bash 09-git/examples/local-remote.sh
+bash 02-git/examples/local-remote.sh
 ```
 
 from the guide root (or pass the script’s path). It creates `/tmp/git-local-remote-lab/work` and `/tmp/git-local-remote-lab/origin.git`, commits once, and `git push`es to that path. **Expected output:** a line `SUCCESS: origin is /tmp/git-local-remote-lab/origin.git (a directory, not GitHub)`, then `git remote -v` showing that path twice (fetch and push), then one `git log` line. No network.
 
 `git fetch` downloads objects. It does not change your working tree. `git pull` is fetch plus merge (unless you configured pull to rebase).
 
-A GitHub account is useful later for [GitHub Actions](../08-github-actions/README.md). It is not required to finish this module.
+A GitHub account is useful later for [GitHub Actions](../05-github-actions/README.md). It is not required to finish this module.
 
 ## Production
 
@@ -183,7 +183,7 @@ Rotate the credential. History rewrite (`git filter-repo`, `git rebase -i`) is a
 
 ### Host policy is not a Git object
 
-Protected branches, required reviews, and “no force-push to main” are settings on GitHub/GitLab. Git on your laptop will still create any commit you ask for. The host refuses the *push*. That is why first success never needed a host, and why CI lives in [GitHub Actions](../08-github-actions/README.md), not here.
+Protected branches, required reviews, and “no force-push to main” are settings on GitHub/GitLab. Git on your laptop will still create any commit you ask for. The host refuses the *push*. That is why first success never needed a host, and why CI lives in [GitHub Actions](../05-github-actions/README.md), not here.
 
 ### SSH or HTTPS, not a token in the URL
 
@@ -204,7 +204,7 @@ To talk to a host: SSH (`git@github.com:owner/repo.git` plus a key) or HTTPS plu
 ## How this connects
 
 - **Previous:** [Linux](../01-linux/README.md) — Git versions files on that machine. First success uses the same throwaway-directory habit as `/tmp/linux-lab`.
-- **Next:** [Docker](../03-docker/README.md) (apps path) and [Ansible](../02-ansible/README.md) (machines path) write files that belong in a repo. [GitHub Actions](../08-github-actions/README.md) runs on a git event; a workflow file does nothing until the commit is on the host GitHub can see.
+- **Next:** [Docker](../03-docker/README.md) (apps path) and [Ansible](../08-ansible/README.md) (machines path) write files that belong in a repo. [GitHub Actions](../05-github-actions/README.md) runs on a git event; a workflow file does nothing until the commit is on the host GitHub can see.
 - **When not to use this:** Scratch files in `/tmp`, generated binaries, secrets, and Terraform state. A 10-second edit you will throw away does not need a commit.
 
 ## Practice

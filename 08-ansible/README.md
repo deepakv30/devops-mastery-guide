@@ -209,8 +209,8 @@ Variable precedence is a list, not a merge you can guess. `--extra-vars` wins. R
 
 ## How this connects
 
-- **Previous:** [Linux](../01-linux/README.md) — packages, files, services, and SSH are what playbooks change. [Git](../09-git/README.md) — the playbook belongs in a repo.
-- **Next:** [Terraform](../05-terraform/README.md) — Terraform creates the box; Ansible configures it. [Docker](../03-docker/README.md) — the `community.docker` collection can build and run containers the same way `apt` installs packages.
+- **Previous:** [Linux](../01-linux/README.md) — packages, files, services, and SSH are what playbooks change. [Git](../02-git/README.md) — the playbook belongs in a repo.
+- **Next:** [Terraform](../09-terraform/README.md) — Terraform creates the box; Ansible configures it. [Docker](../03-docker/README.md) — the `community.docker` collection can build and run containers the same way `apt` installs packages.
 - **When not to use this:** Do not use Ansible to provision cloud APIs if Terraform is the team’s IaC. Do not use it as a poor Kubernetes controller; use kubectl, Helm, or GitOps for cluster objects.
 
 ## Practice

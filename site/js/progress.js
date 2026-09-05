@@ -19,6 +19,12 @@
 
   var KEY = 'dmg:progress:v1';
   var listeners = [];
+  var ID_ALIASES = {
+    '09-git': '02-git',
+    '08-github-actions': '05-github-actions',
+    '02-ansible': '08-ansible',
+    '05-terraform': '09-terraform'
+  };
 
   function emptyModule() {
     return {
@@ -66,7 +72,13 @@
       state.pathId = typeof raw.pathId === 'string' ? raw.pathId : '';
       if (raw.modules && typeof raw.modules === 'object') {
         Object.keys(raw.modules).forEach(function (id) {
+          if (ID_ALIASES[id]) return;
           state.modules[id] = normalizeModule(raw.modules[id]);
+        });
+        Object.keys(raw.modules).forEach(function (id) {
+          var next = ID_ALIASES[id];
+          if (!next || state.modules[next]) return;
+          state.modules[next] = normalizeModule(raw.modules[id]);
         });
       }
       state.updatedAt = ts(raw.updatedAt) || 0;

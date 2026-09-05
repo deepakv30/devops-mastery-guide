@@ -7,14 +7,14 @@ What is in this repository versus what is only planned. The [module table](./REA
 | Item | Status | Notes |
 |---|---|---|
 | 01 Linux | Complete | Beginner → Production in `01-linux/README.md` |
-| 02 Ansible | Complete | Beginner → Production in `02-ansible/README.md` |
+| 02 Git | Complete | First success is local `git init`; no GitHub account |
 | 03 Docker | Complete | Beginner → Production in `03-docker/README.md` |
 | 04 Kubernetes | Complete | Split: `beginner.md` / `intermediate.md` / `advanced.md` |
-| 05 Terraform | Complete | First success uses the `local` provider |
+| 05 GitHub Actions | Complete | Workflows are examples; they run after you push to *your* repo |
 | 06 Prometheus | Complete | First success is Docker Compose, not Helm |
 | 07 Grafana | Complete | Same Docker stack as Prometheus |
-| 08 GitHub Actions | Complete | Workflows are examples; they run after you push to *your* repo |
-| 09 Git | Complete | First success is local `git init`; no GitHub account |
+| 08 Ansible | Complete | Beginner → Production in `08-ansible/README.md` |
+| 09 Terraform | Complete | First success uses the `local` provider |
 | Capstone: full CI/CD | Complete (local) | GitHub Actions deploy step is a **stub** |
 | Capstone: Terraform + Ansible + Vault | Complete (local) | Vault and GitLab CI are optional later steps |
 | Learning paths | Complete | `learning-paths/*.json` — from-zero, apps, machines, observe |

@@ -4,7 +4,7 @@
 |---|---|
 | Levels | Beginner → Intermediate → Production |
 | Time | Beginner ~25 min · full module ~3h |
-| Prerequisites | [Git](../09-git/README.md) first success + a GitHub repo you can push to; [Docker](../03-docker/README.md) helps for later examples |
+| Prerequisites | [Git](../02-git/README.md) first success + a GitHub repo you can push to; [Docker](../03-docker/README.md) helps for later examples |
 | You will be able to | (1) explain [workflow](../docs/GLOSSARY.md) vs [job](../docs/GLOSSARY.md) vs step vs [runner](../docs/GLOSSARY.md) (2) add a workflow that runs on push and see the green check (3) say why secrets do not belong in YAML |
 
 **Last verified:** 2026-08-16 · **Tested with:** GitHub Actions (`actions/checkout@v4`, `actions/setup-node@v4`)
@@ -223,7 +223,7 @@ On a production environment you can require a reviewer, a wait timer, or a list 
 
 ## How this connects
 
-- **Previous:** [Git](../09-git/README.md) — a workflow runs on a git event; you already know commit vs remote. [Docker](../03-docker/README.md) and [Kubernetes](../04-kubernetes/README.md) — this is how you build the image, push it, and apply the Deployment.
+- **Previous:** [Git](../02-git/README.md) — a workflow runs on a git event; you already know commit vs remote. [Docker](../03-docker/README.md) and [Kubernetes](../04-kubernetes/README.md) — this is how you build the image, push it, and apply the Deployment.
 - **Next:** [Prometheus](../06-prometheus/README.md) — you just shipped something; watch it. Capstone 1 ([full CI/CD pipeline](../projects/full-cicd-pipeline/README.md)) uses a workflow like these examples.
 - **When not to use this:** A 10-second local test does not need CI yet. Do not use Actions as your production compute platform (long-running servers, extra-minute workloads that belong on a VM or Kubernetes).
 

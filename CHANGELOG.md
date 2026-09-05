@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
+- Module folders now match the default (apps) study order: Git is `02-git/`, GitHub Actions is `05-github-actions/`, Ansible is `08-ansible/`, Terraform is `09-terraform/`. Linux, Docker, Kubernetes, Prometheus, and Grafana keep their numbers. `from-zero` includes Git. Old site URLs redirect.
 - Module registration is `curriculum.json` plus `learning-paths/`. CI, preflight, honesty checks, and the site catalog read that list. `npm run sync` fills the README and How-to-learn tables.
 
 ### Added

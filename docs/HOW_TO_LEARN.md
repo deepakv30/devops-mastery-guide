@@ -42,14 +42,14 @@ You do not need the whole toolchain on day one.
 | You are opening… | Have this ready |
 |---|---|
 | 01 Linux | A Linux shell (Ubuntu 22.04+ or Debian, native / VM / WSL2) with sudo. |
-| 02 Ansible | Linux shell plus ansible on the control machine. Localhost is enough for first success. |
+| 02 Git | Linux shell plus git on the PATH. sudo apt install -y git if missing. No GitHub account for first success. |
 | 03 Docker | Docker Engine or Docker Desktop. Your user in the docker group. |
 | 04 Kubernetes | Docker plus kind plus kubectl. Not kubeadm, not a cloud cluster. |
-| 05 Terraform | terraform or tofu. First success uses the local provider — no cloud account. |
+| 05 GitHub Actions | A GitHub account and a repo you can push to. No self-hosted runner required. |
 | 06 Prometheus | Docker. Kubernetes Operator comes later. |
 | 07 Grafana | Docker. This module has its own compose stack (Grafana + Prometheus). Stop module 06’s stack first — both bind host port 9090. |
-| 08 GitHub Actions | A GitHub account and a repo you can push to. No self-hosted runner required. |
-| 09 Git | Linux shell plus git on the PATH. sudo apt install -y git if missing. No GitHub account for first success. |
+| 08 Ansible | Linux shell plus ansible on the control machine. Localhost is enough for first success. |
+| 09 Terraform | terraform or tofu. First success uses the local provider — no cloud account. |
 <!-- curriculum:install:end -->
 
 Python 3 and a text editor are assumed after Linux.
@@ -75,13 +75,13 @@ You do not need every Intermediate example or any Production section before movi
 ## Recommended order
 
 <!-- curriculum:order:start -->
-- **New to servers:** **01**.
-- **Ship an application:** **01 → 09 → 03 → 04 → 08**.
-- **Configure machines:** **01 → 09 → 02 → 05**.
+- **New to servers:** **01 → 02**.
+- **Ship an application:** **01 → 02 → 03 → 04 → 05**.
+- **Configure machines:** **01 → 02 → 08 → 09**.
 - **See what you shipped:** **06 → 07**.
 - Capstones: only after the modules listed on [projects/README.md](../projects/README.md).
 
-Folder numbers are catalog IDs, not lesson order. JSON for the same routes: [learning-paths/](../learning-paths/).
+Folder numbers follow the default (apps) study order. Other paths skip modules. JSON for the same routes: [learning-paths/](../learning-paths/).
 <!-- curriculum:order:end -->
 
 ## If you get stuck

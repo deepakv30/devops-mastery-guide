@@ -81,7 +81,7 @@ function orderList() {
   });
   lines.push('- Capstones: only after the modules listed on [projects/README.md](../projects/README.md).');
   lines.push('');
-  lines.push('Folder numbers are catalog IDs, not lesson order. JSON for the same routes: [learning-paths/](../learning-paths/).');
+  lines.push('Folder numbers follow the default (apps) study order. Other paths skip modules. JSON for the same routes: [learning-paths/](../learning-paths/).');
   return lines.join('\n');
 }
 

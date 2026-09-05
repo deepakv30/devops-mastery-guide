@@ -380,6 +380,45 @@ function writePage(url, html) {
   fs.writeFileSync(out, html);
 }
 
+/** Old numbered dirs → current dirs. GitHub Pages has no server rewrite. */
+const DIR_REDIRECTS = {
+  '09-git': '02-git',
+  '08-github-actions': '05-github-actions',
+  '02-ansible': '08-ansible',
+  '05-terraform': '09-terraform',
+};
+
+function writeRedirect(fromUrl, toUrl) {
+  const dest = urlPath(toUrl);
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="refresh" content="0;url=${escapeAttr(dest)}">
+  <link rel="canonical" href="${escapeAttr(curriculum.pagesUrl.replace(/\/$/, '') + dest)}">
+  <title>Moved</title>
+  <script>location.replace(${JSON.stringify(dest)});</script>
+</head>
+<body>
+  <p>This page moved to <a href="${escapeAttr(dest)}">${escapeHtml(dest)}</a>.</p>
+</body>
+</html>`;
+  writePage(fromUrl, html);
+}
+
+function writeDirRedirects() {
+  const pages = [...pageMap.values()];
+  for (const [oldDir, newDir] of Object.entries(DIR_REDIRECTS)) {
+    writeRedirect(`/${oldDir}/`, `/${newDir}/`);
+    for (const page of pages) {
+      if (page.url === `/${newDir}/` || page.url.startsWith(`/${newDir}/`)) {
+        const from = `/${oldDir}/${page.url.slice(`/${newDir}/`.length)}`;
+        if (from !== page.url) writeRedirect(from, page.url);
+      }
+    }
+  }
+}
+
 function docPage(sourceRel) {
   const meta = pageMap.get(sourceRel);
   const parsed = parseMarkdown(sourceRel);
@@ -587,5 +626,6 @@ for (const [rel, meta] of pageMap) {
 }
 
 fs.writeFileSync(path.join(DIST, '404.html'), fourOhFour());
+writeDirRedirects();
 
 console.log(`build: wrote ${DIST} (${pageMap.size} mapped pages, base=${SITE_BASE || '/'})`);

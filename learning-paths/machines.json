@@ -8,9 +8,9 @@
   "entry": "01-linux",
   "steps": [
     {"order": 1, "module": "01-linux", "band": "beginner", "minutes": 25, "required": true},
-    {"order": 2, "module": "09-git", "band": "beginner", "minutes": 20, "required": true},
-    {"order": 3, "module": "02-ansible", "band": "beginner", "minutes": 30, "required": true},
-    {"order": 4, "module": "05-terraform", "band": "beginner", "minutes": 30, "required": true},
+    {"order": 2, "module": "02-git", "band": "beginner", "minutes": 20, "required": true},
+    {"order": 3, "module": "08-ansible", "band": "beginner", "minutes": 30, "required": true},
+    {"order": 4, "module": "09-terraform", "band": "beginner", "minutes": 30, "required": true},
     {"order": 5, "module": "projects/terraform-ansible-gitlab-vault", "band": "local", "minutes": 45, "required": false}
   ]
 }

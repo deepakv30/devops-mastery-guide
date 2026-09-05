@@ -72,17 +72,17 @@ Linux is the OS everything else runs on. Ansible configures machines. Docker pac
 | # | Module | Job in one sentence | Levels |
 |---|---|---|---|
 | 01 | [Linux](./01-linux/README.md) | Run, inspect, and fix a Linux machine | Beginner → Production |
-| 02 | [Ansible](./02-ansible/README.md) | Describe server setup as repeatable recipes | Beginner → Production |
+| 02 | [Git](./02-git/README.md) | Record file history so you, a teammate, and CI share one source of truth | Beginner → Production |
 | 03 | [Docker](./03-docker/README.md) | Package an app and its dependencies into an image | Beginner → Production |
 | 04 | [Kubernetes](./04-kubernetes/README.md) | Run and heal many containers as one system | Beginner → Production |
-| 05 | [Terraform](./05-terraform/README.md) | Declare infrastructure and let a tool converge it | Beginner → Production |
+| 05 | [GitHub Actions](./05-github-actions/README.md) | Run build, test, and deploy steps on a git event | Beginner → Production |
 | 06 | [Prometheus](./06-prometheus/README.md) | Pull metrics on a timer and ask questions of them | Beginner → Production |
 | 07 | [Grafana](./07-grafana/README.md) | Turn those metrics into dashboards and alerts | Beginner → Production |
-| 08 | [GitHub Actions](./08-github-actions/README.md) | Run build, test, and deploy steps on a git event | Beginner → Production |
-| 09 | [Git](./09-git/README.md) | Record file history so you, a teammate, and CI share one source of truth | Beginner → Production |
+| 08 | [Ansible](./08-ansible/README.md) | Describe server setup as repeatable recipes | Beginner → Production |
+| 09 | [Terraform](./09-terraform/README.md) | Declare infrastructure and let a tool converge it | Beginner → Production |
 <!-- curriculum:modules:end -->
 
-Folder numbers are catalog IDs, not lesson order. Study order lives in the path files and in [How to learn](./docs/HOW_TO_LEARN.md#recommended-order).
+Folder numbers follow the default (apps) study order. Other paths skip modules. Routes live in the path files and in [How to learn](./docs/HOW_TO_LEARN.md#recommended-order).
 
 ## How to use this repo
 
