@@ -31,6 +31,8 @@ Progress is stored in the browser (`localStorage` key `dmg:progress:v1`). Cleari
 
 Workflow: [`.github/workflows/pages.yml`](../.github/workflows/pages.yml). Set **Settings → Pages → Source** to GitHub Actions. `SITE_BASE` is `/devops-mastery-guide` so project Pages works.
 
+Each page gets a unique meta description (module `job` plus band/exercise title, or the first prose paragraph for docs). The shared layout also emits Open Graph / Twitter Card tags, `theme-color`, favicon, and apple-touch-icon. The share image is `site/img/og-cover.png` (1200×630).
+
 ## Do not
 
 - Hand-edit `site/dist/`

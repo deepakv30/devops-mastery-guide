@@ -197,6 +197,66 @@ function escapeAttr(s) {
   return escapeHtml(s).replace(/'/g, '&#39;');
 }
 
+function firstProse(md, max = 155) {
+  const stripped = String(md)
+    .replace(/```[\s\S]*?```/g, ' ')
+    .replace(/^\|.*$/gm, ' ')
+    .replace(/^>\s?/gm, '')
+    .replace(/^#{1,6}\s+/gm, '')
+    .replace(/!\[[^\]]*\]\([^)]+\)/g, '')
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .replace(/[*_`]/g, '');
+  const para = stripped
+    .split(/\n\s*\n/)
+    .map((s) => s.replace(/\s+/g, ' ').trim())
+    .find((s) => s.length >= 40 && !/^[-*+]/.test(s));
+  if (!para) return '';
+  if (para.length <= max) return para;
+  return `${para.slice(0, max - 1).replace(/\s+\S*$/, '')}…`;
+}
+
+function pageDescription(sourceRel, meta, parsedTitle) {
+  const mod = meta.moduleId ? curriculum.modules.find((m) => m.id === meta.moduleId) : undefined;
+  const proj = curriculum.projects.find((p) => p.id === meta.moduleId || p.dir === path.dirname(sourceRel));
+  const job = mod?.job || proj?.job || '';
+  let prose = '';
+  try {
+    prose = firstProse(read(sourceRel));
+  } catch {
+    prose = '';
+  }
+  if (meta.kind === 'exercise') {
+    const stem = path.basename(sourceRel, '.md').replace(/^\d+-/, '').replace(/-/g, ' ');
+    return `${mod?.title || parsedTitle} exercise — ${stem}. ${job}`.trim();
+  }
+  if (meta.kind === 'module-page') {
+    const band = sourceRel.endsWith('cheatsheet.md')
+      ? 'cheatsheet'
+      : sourceRel.endsWith('beginner.md')
+        ? 'beginner band'
+        : sourceRel.endsWith('intermediate.md')
+          ? 'intermediate band'
+          : sourceRel.endsWith('advanced.md')
+            ? 'production band'
+            : 'notes';
+    return `${mod?.title || parsedTitle} ${band}: ${job || prose}`.trim();
+  }
+  if (meta.kind === 'module') return job || prose || parsedTitle;
+  if (meta.kind === 'project') return job || prose || parsedTitle;
+  if (meta.kind === 'doc') return prose || parsedTitle;
+  return prose || job || parsedTitle;
+}
+
+const seenDescriptions = new Map();
+
+function rememberDescription(url, description) {
+  const prev = seenDescriptions.get(description);
+  if (prev && prev !== url) {
+    fail(`duplicate meta description for ${url} and ${prev}: ${description}`);
+  }
+  seenDescriptions.set(description, url);
+}
+
 function parseMarkdown(sourceRel) {
   currentSource = sourceRel;
   slugger.reset();
@@ -254,8 +314,11 @@ function navItems(currentUrl) {
 }
 
 function layout({ title, description, url, body, sidebar = '', toc = '', moduleId = '', extraHead = '' }) {
-  const canonical = curriculum.pagesUrl.replace(/\/$/, '') + url;
+  const origin = curriculum.pagesUrl.replace(/\/$/, '');
+  const canonical = origin + url;
   const fullTitle = title === 'DevOps Mastery Guide' ? title : `${title} · DevOps Mastery Guide`;
+  const ogImage = `${origin}/img/og-cover.png`;
+  rememberDescription(url, description);
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -263,7 +326,22 @@ function layout({ title, description, url, body, sidebar = '', toc = '', moduleI
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>${escapeHtml(fullTitle)}</title>
   <meta name="description" content="${escapeAttr(description)}">
+  <meta name="theme-color" content="#0f766e">
   <link rel="canonical" href="${escapeAttr(canonical)}">
+  <link rel="icon" href="${asset('/img/favicon.svg')}" type="image/svg+xml">
+  <link rel="icon" href="${asset('/img/favicon.png')}" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="${asset('/img/apple-touch-icon.png')}">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="${escapeAttr(fullTitle)}">
+  <meta property="og:description" content="${escapeAttr(description)}">
+  <meta property="og:url" content="${escapeAttr(canonical)}">
+  <meta property="og:image" content="${escapeAttr(ogImage)}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="${escapeAttr(fullTitle)}">
+  <meta name="twitter:description" content="${escapeAttr(description)}">
+  <meta name="twitter:image" content="${escapeAttr(ogImage)}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,650;1,400&display=swap" rel="stylesheet">
@@ -439,7 +517,7 @@ function docPage(sourceRel) {
   </div>`;
   return layout({
     title: parsed.title,
-    description: parsed.title,
+    description: pageDescription(sourceRel, meta, parsed.title),
     url: meta.url,
     body,
   });
@@ -468,7 +546,7 @@ function modulePage(sourceRel) {
   </div>`;
   return layout({
     title: parsed.title,
-    description: mod ? mod.job : parsed.title,
+    description: pageDescription(sourceRel, meta, parsed.title),
     url: meta.url,
     body,
     moduleId: mod ? mod.id : '',
@@ -573,11 +651,19 @@ function catalogPage() {
 function copyStatic() {
   const cssDir = path.join(DIST, 'css');
   const jsDir = path.join(DIST, 'js');
+  const imgDir = path.join(DIST, 'img');
   fs.mkdirSync(cssDir, { recursive: true });
   fs.mkdirSync(jsDir, { recursive: true });
+  fs.mkdirSync(imgDir, { recursive: true });
   fs.copyFileSync(path.join(__dirname, 'css/app.css'), path.join(cssDir, 'app.css'));
   for (const name of ['progress.js', 'header.js', 'copy-code.js', 'mermaid-boot.js', 'app.js']) {
     fs.copyFileSync(path.join(__dirname, 'js', name), path.join(jsDir, name));
+  }
+  const srcImg = path.join(__dirname, 'img');
+  if (fs.existsSync(srcImg)) {
+    for (const name of fs.readdirSync(srcImg)) {
+      fs.copyFileSync(path.join(srcImg, name), path.join(imgDir, name));
+    }
   }
   fs.writeFileSync(path.join(DIST, '.nojekyll'), '');
 }
@@ -603,7 +689,12 @@ function fourOhFour() {
     <h1 class="page-title">Page not found</h1>
     <p class="lede">That URL is not a page in this build. Start at <a href="${urlPath('/')}">home</a> or the <a href="${urlPath('/catalog/')}">catalog</a>.</p>
   </main>`;
-  return layout({ title: 'Not found', description: 'Not found', url: '/404.html', body });
+  return layout({
+    title: 'Not found',
+    description: 'This URL is not a page in the DevOps Mastery Guide. Start at home or open the catalog.',
+    url: '/404.html',
+    body,
+  });
 }
 
 if (fs.existsSync(DIST)) fs.rmSync(DIST, { recursive: true, force: true });

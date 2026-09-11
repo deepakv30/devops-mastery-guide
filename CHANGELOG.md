@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
+- Site layout: unique per-page meta descriptions, `theme-color`, favicon, apple-touch-icon, and Open Graph / Twitter Card tags with a 1200×630 share image (`site/img/og-cover.png`).
 - **09-gitlab** module: GitLab CI/CD (pipeline, stages, jobs, runners, artifacts, rules, needs, environments). Follows the same beginner → Intermediate → Production contract as the other eight modules. Examples and cheatsheet included. Root README, concept map, and capstone 2 now point at it.
 - Agent Skills layout under `.agents/skills/` ([spec](https://agentskills.io/home)) and the `enhance-module` skill so later agents can deepen a module without dropping the teaching contract.
 - Grok workflow `.grok/workflows/enhance-module.rhai` (enhance, then a read-only review). Advisory only — no CI fail.
