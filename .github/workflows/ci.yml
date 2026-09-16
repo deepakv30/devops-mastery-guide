@@ -18,6 +18,7 @@ jobs:
       - run: npm ci
       - name: Generated indexes match curriculum
         run: node scripts/sync-indexes.mjs --check
+      - run: npm test
       - run: npm run build
         env:
           SITE_BASE: /devops-mastery-guide

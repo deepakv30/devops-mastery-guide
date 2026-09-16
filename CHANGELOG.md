@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Fixed
+
+- **Reset progress** clears `dmg:progress:v1` and re-renders home dots and the `0 / N` summary. The control no longer re-binds `onChange` on every paint (that hung the page so the old count stayed on screen). Theme (`dmg:theme`) is unchanged.
+- Legacy module redirects (`/09-git/`, `/08-github-actions/`, `/02-ansible/`, `/05-terraform/`, and their subpages) emit a canonical URL with one GitHub Pages base segment. The build fails if generated HTML contains a doubled base path.
+- Home module table sits in a horizontally scrollable wrapper so ~320–390px viewports do not grow a page-level scrollbar. Desktop table layout is the same.
+
 ### Changed
 
 - Module folders now match the default (apps) study order: Git is `02-git/`, GitHub Actions is `05-github-actions/`, Ansible is `08-ansible/`, Terraform is `09-terraform/`. Linux, Docker, Kubernetes, Prometheus, and Grafana keep their numbers. `from-zero` includes Git. Old site URLs redirect.

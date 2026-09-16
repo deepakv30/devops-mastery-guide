@@ -109,8 +109,10 @@ a:hover { color: var(--accent); }
 
 .wrap {
   width: min(1120px, calc(100% - 40px));
+  max-width: 100%;
   margin: 0 auto;
   padding: 32px 0 80px;
+  min-width: 0;
 }
 
 .hero h1 {
@@ -138,6 +140,7 @@ a:hover { color: var(--accent); }
   justify-content: space-between;
   gap: 12px;
   align-items: baseline;
+  flex-wrap: wrap;
   font-family: var(--mono);
   font-size: 0.78rem;
   color: var(--ink-mute);
@@ -208,6 +211,12 @@ a:hover { color: var(--accent); }
   color: var(--accent);
 }
 
+.table-scroll {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
 .module-table {
   width: 100%;
   border-collapse: collapse;
@@ -227,6 +236,7 @@ a:hover { color: var(--accent); }
   padding: 10px;
   border-bottom: 1px solid var(--line);
   vertical-align: top;
+  overflow-wrap: break-word;
 }
 .dot {
   display: inline-block;
@@ -567,6 +577,13 @@ a:hover { color: var(--accent); }
   background: var(--bg-elev);
   color: var(--ink);
   font: inherit;
+}
+
+@media (max-width: 480px) {
+  .wrap { width: min(1120px, calc(100% - 24px)); }
+  .module-table { font-size: 0.88rem; }
+  .module-table th,
+  .module-table td { padding: 8px 6px; }
 }
 
 @media (max-width: 900px) {

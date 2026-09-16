@@ -119,15 +119,18 @@
     if (fill && mods.length) {
       fill.style.transform = 'scaleX(' + (done / mods.length) + ')';
     }
+  }
+
+  function bindHomeProgress() {
+    if (!window.DMGProgress) return;
     var reset = $('[data-reset-progress]');
     if (reset) {
       reset.addEventListener('click', function () {
         if (window.confirm('Clear progress stored in this browser?')) window.DMGProgress.reset();
       });
     }
-    window.DMGProgress.onChange(function () {
-      paintHomeProgress();
-    });
+    window.DMGProgress.onChange(paintHomeProgress);
+    paintHomeProgress();
   }
 
   function glossarySearch() {
@@ -170,7 +173,7 @@
   document.addEventListener('DOMContentLoaded', function () {
     bindStudyChrome();
     bindPathPicker();
-    paintHomeProgress();
+    bindHomeProgress();
     glossarySearch();
     tocSpy();
   });

@@ -28,6 +28,31 @@ function urlPath(p) {
   return `${SITE_BASE}${clean}`;
 }
 
+/** Absolute page URL. `pagesUrl` already includes the GitHub Pages base path; do not prefix `urlPath`. */
+function canonicalUrl(pageUrl) {
+  const origin = curriculum.pagesUrl.replace(/\/$/, '');
+  const clean = pageUrl.startsWith('/') ? pageUrl : `/${pageUrl}`;
+  return origin + clean;
+}
+
+function doubledSiteBaseNeedles() {
+  const needles = [];
+  if (SITE_BASE) needles.push(`${SITE_BASE}${SITE_BASE}/`);
+  try {
+    const pagesPath = new URL(curriculum.pagesUrl).pathname.replace(/\/$/, '');
+    if (pagesPath && pagesPath !== '/') needles.push(`${pagesPath}${pagesPath}/`);
+  } catch {
+    /* pagesUrl is not absolute in tests */
+  }
+  return [...new Set(needles)];
+}
+
+function assertNoDoubledSiteBase(html, where) {
+  for (const needle of doubledSiteBaseNeedles()) {
+    if (html.includes(needle)) fail(`doubled SITE_BASE (${needle}) in ${where}`);
+  }
+}
+
 function asset(p) {
   return urlPath(p);
 }
@@ -315,7 +340,7 @@ function navItems(currentUrl) {
 
 function layout({ title, description, url, body, sidebar = '', toc = '', moduleId = '', extraHead = '' }) {
   const origin = curriculum.pagesUrl.replace(/\/$/, '');
-  const canonical = origin + url;
+  const canonical = canonicalUrl(url);
   const fullTitle = title === 'DevOps Mastery Guide' ? title : `${title} · DevOps Mastery Guide`;
   const ogImage = `${origin}/img/og-cover.png`;
   rememberDescription(url, description);
@@ -452,6 +477,7 @@ function pager() {
 }
 
 function writePage(url, html) {
+  assertNoDoubledSiteBase(html, url);
   const rel = url === '/' ? 'index.html' : `${url.replace(/^\//, '').replace(/\/$/, '')}/index.html`;
   const out = path.join(DIST, rel);
   fs.mkdirSync(path.dirname(out), { recursive: true });
@@ -468,12 +494,13 @@ const DIR_REDIRECTS = {
 
 function writeRedirect(fromUrl, toUrl) {
   const dest = urlPath(toUrl);
+  const canonical = canonicalUrl(toUrl);
   const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="refresh" content="0;url=${escapeAttr(dest)}">
-  <link rel="canonical" href="${escapeAttr(curriculum.pagesUrl.replace(/\/$/, '') + dest)}">
+  <link rel="canonical" href="${escapeAttr(canonical)}">
   <title>Moved</title>
   <script>location.replace(${JSON.stringify(dest)});</script>
 </head>
@@ -603,10 +630,12 @@ function homePage() {
     <p class="section-label">How the tools fit</p>
     <div class="mermaid-wrap"><pre class="mermaid">${escapeHtml(mermaidSrc)}</pre></div>
     <p class="section-label">Modules</p>
+    <div class="table-scroll">
     <table class="module-table">
       <thead><tr><th>Module</th><th>Job</th><th>Time</th><th></th></tr></thead>
       <tbody>${rows}</tbody>
     </table>
+    </div>
     <p class="section-label">Clone and prove it</p>
     <pre class="clone">git clone ${GITHUB_REPO}.git
 cd devops-mastery-guide
@@ -718,5 +747,14 @@ for (const [rel, meta] of pageMap) {
 
 fs.writeFileSync(path.join(DIST, '404.html'), fourOhFour());
 writeDirRedirects();
+
+function walkHtml(dir) {
+  for (const name of fs.readdirSync(dir)) {
+    const p = path.join(dir, name);
+    if (fs.statSync(p).isDirectory()) walkHtml(p);
+    else if (name.endsWith('.html')) assertNoDoubledSiteBase(fs.readFileSync(p, 'utf8'), path.relative(DIST, p));
+  }
+}
+walkHtml(DIST);
 
 console.log(`build: wrote ${DIST} (${pageMap.size} mapped pages, base=${SITE_BASE || '/'})`);
