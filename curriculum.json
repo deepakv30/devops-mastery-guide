@@ -132,6 +132,18 @@
       "fullHours": 4,
       "install": "terraform or tofu. First success uses the local provider — no cloud account.",
       "preflight": ["terraform"]
+    },
+    {
+      "id": "09-gitlab",
+      "number": "10",
+      "title": "GitLab CI",
+      "job": "Run build, test, and deploy steps from a YAML pipeline in the repo",
+      "dir": "09-gitlab",
+      "beginnerMinutes": 25,
+      "fullHours": 3,
+      "install": "A GitLab.com (or self-managed) project you can push to. Shared runners. Nothing to install on the laptop for first success.",
+      "preflight": ["git"],
+      "preflightNote": "needs a GitLab project"
     }
   ],
   "projects": [

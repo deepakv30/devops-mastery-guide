@@ -32,6 +32,10 @@
         var band = input.getAttribute('data-band');
         input.checked = !!(prog.bands && prog.bands[band + 'At']);
       });
+      var quizStatus = $('[data-quiz-status]', chrome);
+      if (quizStatus) {
+        quizStatus.textContent = prog.quizPassedAt ? '· passed' : '';
+      }
     }
 
     chrome.addEventListener('change', function (event) {
@@ -146,6 +150,96 @@
     });
   }
 
+  function escapeHtml(s) {
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function reviewHref(review) {
+    if (!review) return '';
+    var base = (window.DMG_DATA && window.DMG_DATA.base) || '';
+    var m = String(review).match(/^([^/#]+)\/README\.md(?:#(.*))?$/);
+    if (m) return base + '/' + m[1] + '/' + (m[2] ? '#' + m[2] : '');
+    if (review.charAt(0) === '/') return base + review;
+    return review;
+  }
+
+  function renderQuiz(root, quiz, moduleId) {
+    var questions = quiz.questions || [];
+    var fields = questions.map(function (q, i) {
+      var choices = (q.choices || []).map(function (choice, ci) {
+        var id = 'quiz-' + q.id + '-' + ci;
+        return '<label for="' + escapeHtml(id) + '"><input id="' + escapeHtml(id) + '" type="radio" name="' + escapeHtml(q.id) + '" value="' + ci + '"> ' + escapeHtml(choice) + '</label>';
+      }).join('');
+      return '<fieldset class="quiz-q" data-qid="' + escapeHtml(q.id) + '">' +
+        '<legend>' + (i + 1) + '. ' + escapeHtml(q.prompt) + '</legend>' +
+        choices +
+        '<p class="quiz-why" hidden></p>' +
+        '</fieldset>';
+    }).join('');
+    root.innerHTML = '<form data-quiz-form>' + fields +
+      '<div class="quiz-actions"><button class="quiz-submit" type="submit">Check answers</button>' +
+      '<p class="note" data-quiz-result></p></div></form>';
+
+    var form = $('[data-quiz-form]', root);
+    var result = $('[data-quiz-result]', root);
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      var data = new FormData(form);
+      var correct = 0;
+      questions.forEach(function (q) {
+        var field = $('[data-qid="' + q.id + '"]', form);
+        var picked = data.get(q.id);
+        var why = $('.quiz-why', field);
+        var ok = picked !== null && Number(picked) === Number(q.answer);
+        if (ok) correct += 1;
+        field.classList.toggle('is-right', ok);
+        field.classList.toggle('is-wrong', !ok);
+        if (why) {
+          why.hidden = false;
+          var review = q.review ? ' <a href="' + escapeHtml(reviewHref(q.review)) + '">Review</a>' : '';
+          why.innerHTML = (ok ? 'Correct. ' : 'Not quite. ') + escapeHtml(q.why || '') + review;
+        }
+      });
+      var passed = questions.length > 0 && correct === questions.length;
+      if (result) {
+        result.textContent = passed
+          ? 'All ' + questions.length + ' correct. Marked passed in this browser.'
+          : correct + ' / ' + questions.length + ' correct. Retry after a look at the review links.';
+      }
+      if (passed && window.DMGProgress) window.DMGProgress.setQuizPassed(moduleId, true);
+    });
+  }
+
+  function bindQuiz() {
+    var mount = $('[data-quiz]');
+    if (!mount) return;
+    var moduleId = mount.getAttribute('data-quiz');
+    var root = $('[data-quiz-root]', mount);
+    if (!root) return;
+    var quizPath = (window.DMG_DATA && window.DMG_DATA.quizzes && window.DMG_DATA.quizzes[moduleId]) || 'quiz.json';
+    var base = (window.DMG_DATA && window.DMG_DATA.base) || '';
+    var href = quizPath.charAt(0) === '/' ? base + quizPath : quizPath;
+    fetch(href)
+      .then(function (res) {
+        if (!res.ok) throw new Error('quiz ' + res.status);
+        return res.json();
+      })
+      .then(function (quiz) {
+        if (!quiz || !Array.isArray(quiz.questions) || !quiz.questions.length) {
+          root.textContent = 'No questions in this quiz file.';
+          return;
+        }
+        renderQuiz(root, quiz, moduleId);
+      })
+      .catch(function () {
+        root.textContent = 'Quiz failed to load. The questions live in this module’s quiz.json on GitHub.';
+      });
+  }
+
   function tocSpy() {
     var links = $all('.toc-nav a');
     if (!links.length || !('IntersectionObserver' in window)) return;
@@ -174,6 +268,7 @@
     bindStudyChrome();
     bindPathPicker();
     bindHomeProgress();
+    bindQuiz();
     glossarySearch();
     tocSpy();
   });

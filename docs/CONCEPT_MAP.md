@@ -47,7 +47,7 @@ flowchart TB
 - **Terraform** creates the computers, networks, and managed services from a desired-state file.
 - **Docker** freezes an app plus its libraries into an image you can run anywhere that has a container runtime.
 - **Kubernetes** keeps a desired number of those containers running, reachable, and replaceable.
-- **GitHub Actions** and **GitLab CI** both run commands when git events happen — usually “test, build image, deploy.” Pick the one your team already uses; the ideas transfer.
+- **[GitHub Actions](../05-github-actions/README.md)** and **[GitLab CI](../09-gitlab/README.md)** both run commands when git events happen — usually “test, build image, deploy.” Pick the one your team already uses; the ideas transfer.
 - **Prometheus** pulls numbers from running software on a timer and stores them as time series.
 - **Grafana** queries those numbers and draws graphs or fires an alert.
 
@@ -61,8 +61,8 @@ flowchart TB
 | Create a VPC, VM, or cluster you can recreate | Terraform | Clicking the cloud console |
 | Run the same app on your laptop and in CI | Docker | “It works on my machine” install notes |
 | Keep N copies running, restart them, expose a stable name | Kubernetes | `docker run` on one host for production |
-| Run tests / build / deploy on every push (GitHub) | GitHub Actions | Remembering to run the script |
-| Run tests / build / deploy on every push (GitLab) | GitLab CI | Remembering to run the script |
+| Run tests / build / deploy on every push (GitHub) | [GitHub Actions](../05-github-actions/README.md) | Remembering to run the script |
+| Run tests / build / deploy on every push (GitLab) | [GitLab CI](../09-gitlab/README.md) | Remembering to run the script |
 | Know the error rate over the last 5 minutes | Prometheus | SSH and `tail` as the only signal |
 | Show that error rate to humans or page someone | Grafana (or Alertmanager) | A screenshot of a terminal |
 

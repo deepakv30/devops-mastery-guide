@@ -23,6 +23,9 @@ Open [http://127.0.0.1:4173/](http://127.0.0.1:4173/). `npm run build` writes `s
 | `/glossary/` | `docs/GLOSSARY.md` |
 | `/catalog/` | module index |
 | `/01-linux/` … | each module `README.md` and split files. Old numbered URLs (`/09-git/`, `/08-github-actions/`, `/02-ansible/`, `/05-terraform/`) redirect. |
+| `/09-gitlab/` | GitLab CI module (`09-gitlab/`, catalog number 10) |
+| `/01-linux/quiz.json` (and git/docker/kubernetes) | copied from the module folder; the overview page has a Check yourself form |
+| `/robots.txt`, `/sitemap.xml` | generated at build; sitemap lists published page URLs |
 | `/projects/` | `projects/README.md` and capstone READMEs |
 
 Progress is stored in the browser (`localStorage` key `dmg:progress:v1`). **Reset progress** on home clears that key (not the theme). Clearing site data also clears it. There is no account.
