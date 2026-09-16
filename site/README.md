@@ -25,7 +25,9 @@ Open [http://127.0.0.1:4173/](http://127.0.0.1:4173/). `npm run build` writes `s
 | `/01-linux/` … | each module `README.md` and split files. Old numbered URLs (`/09-git/`, `/08-github-actions/`, `/02-ansible/`, `/05-terraform/`) redirect. |
 | `/projects/` | `projects/README.md` and capstone READMEs |
 
-Progress is stored in the browser (`localStorage` key `dmg:progress:v1`). Clearing the site data clears it. There is no account.
+Progress is stored in the browser (`localStorage` key `dmg:progress:v1`). **Reset progress** on home clears that key (not the theme). Clearing site data also clears it. There is no account.
+
+Legacy numbered URLs write `rel=canonical` from `curriculum.pagesUrl` plus the destination path. Do not prefix `urlPath()` there — `pagesUrl` already includes `/devops-mastery-guide`. The build rejects HTML that contains a doubled base path.
 
 ## GitHub Pages
 

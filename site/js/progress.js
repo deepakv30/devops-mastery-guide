@@ -88,15 +88,19 @@
     }
   }
 
+  function notify(state) {
+    listeners.slice().forEach(function (fn) {
+      try { fn(state); } catch (_) { /* listener */ }
+    });
+  }
+
   function write(state) {
     state.schemaVersion = 1;
     state.updatedAt = Date.now();
     try {
       localStorage.setItem(KEY, JSON.stringify(state));
     } catch (_) { /* quota / private mode */ }
-    listeners.forEach(function (fn) {
-      try { fn(state); } catch (_) { /* listener */ }
-    });
+    notify(state);
   }
 
   function ensure(state, id) {
@@ -157,10 +161,7 @@
     },
     reset: function () {
       try { localStorage.removeItem(KEY); } catch (_) { /* ignore */ }
-      var empty = emptyState();
-      listeners.forEach(function (fn) {
-        try { fn(empty); } catch (_) { /* listener */ }
-      });
+      notify(emptyState());
     },
     onChange: function (fn) {
       if (typeof fn !== 'function') return function () {};
