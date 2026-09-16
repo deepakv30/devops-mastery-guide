@@ -4,7 +4,7 @@
 |---|---|
 | Levels | Beginner → Intermediate → Production |
 | Time | Beginner ~25 min · full module ~3h |
-| Prerequisites | Git + a GitLab project you can push to (GitLab.com free tier works); [GitHub Actions](../08-github-actions/README.md) is useful for comparison |
+| Prerequisites | Git + a GitLab project you can push to (GitLab.com free tier works); [GitHub Actions](../05-github-actions/README.md) is useful for comparison |
 | You will be able to | (1) explain pipeline vs stage vs job vs runner (2) add a `.gitlab-ci.yml` that runs on push and see a green pipeline (3) say why CI/CD variables do not belong in the YAML |
 
 **Last verified:** 2026-08-22 · **Tested with:** GitLab CI (shared runners on GitLab.com, YAML syntax current as of docs.gitlab.com/ci)
@@ -29,7 +29,7 @@ flowchart LR
   Job --> Runner
 ```
 
-The event starts the pipeline. Stages run sequentially. Jobs in the same stage share no disk by default unless you pass **artifacts**. Compare this shape with [GitHub Actions](../08-github-actions/README.md) (workflow → job → step).
+The event starts the pipeline. Stages run sequentially. Jobs in the same stage share no disk by default unless you pass **artifacts**. Compare this shape with [GitHub Actions](../05-github-actions/README.md) (workflow → job → step).
 
 ## Skip to
 
@@ -202,7 +202,7 @@ The capstone [Terraform + Ansible + Vault](../projects/terraform-ansible-gitlab-
 
 ## How this connects
 
-- **Previous:** [GitHub Actions](../08-github-actions/README.md) — same CI ideas, different YAML and UI. Read both; the comparison table above is the map.
+- **Previous:** [GitHub Actions](../05-github-actions/README.md) — same CI ideas, different YAML and UI. Read both; the comparison table above is the map.
 - **Next:** [Prometheus](../06-prometheus/README.md) / observability once you ship, or the [Terraform + Ansible + Vault capstone](../projects/terraform-ansible-gitlab-vault/README.md) which already contains a real `.gitlab-ci.yml`.
 - **When not to use this:** A 10-second local test does not need a pipeline yet. Do not use GitLab runners as permanent production compute (long-running servers belong on VMs or Kubernetes).
 

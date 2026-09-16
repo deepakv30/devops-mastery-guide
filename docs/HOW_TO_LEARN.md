@@ -20,7 +20,7 @@ Do not start a Production section until you can do the “you should already be 
 2. **Run** **First success** from the directory the page names. Type the commands; do not treat the block as decoration.
 3. **Check** your output against **Expected output**. Small differences (IPs, versions, timestamps) are normal. If it failed, use that note, then the pitfall table.
 4. **Keep evidence:** the command, working directory, exit code, and a line of output that proves it worked.
-5. **Continue** only when you can explain what each command did. Do the Basic exercises the same day (`exercises/` on Linux, Git, Docker, and Kubernetes; inline Practice on the other modules until those folders exist). Intermediate and Production wait for a second sitting.
+5. **Continue** only when you can explain what each command did. Do the Basic exercises the same day (`exercises/` on Linux, Git, Docker, and Kubernetes; inline Practice on the other modules until those folders exist). Linux, Git, Docker, and Kubernetes also have a short quiz on the module page (`quiz.json`). Intermediate and Production wait for a second sitting.
 
 A module’s beginner band is sized for about 15–45 minutes of focused work, not a weekend.
 
@@ -50,6 +50,7 @@ You do not need the whole toolchain on day one.
 | 07 Grafana | Docker. This module has its own compose stack (Grafana + Prometheus). Stop module 06’s stack first — both bind host port 9090. |
 | 08 Ansible | Linux shell plus ansible on the control machine. Localhost is enough for first success. |
 | 09 Terraform | terraform or tofu. First success uses the local provider — no cloud account. |
+| 10 GitLab CI | A GitLab.com (or self-managed) project you can push to. Shared runners. Nothing to install on the laptop for first success. |
 <!-- curriculum:install:end -->
 
 Python 3 and a text editor are assumed after Linux.

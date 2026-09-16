@@ -151,6 +151,15 @@
       var m = this.get(id);
       return !!(m.bands && m.bands.beginnerAt);
     },
+    setQuizPassed: function (id, passed) {
+      if (!id) return;
+      var state = read();
+      ensure(state, id).quizPassedAt = passed === false ? null : Date.now();
+      write(state);
+    },
+    isQuizPassed: function (id) {
+      return !!this.get(id).quizPassedAt;
+    },
     setPath: function (pathId) {
       var state = read();
       state.pathId = String(pathId || '');

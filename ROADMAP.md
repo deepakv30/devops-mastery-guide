@@ -15,6 +15,7 @@ What is in this repository versus what is only planned. The [module table](./REA
 | 07 Grafana | Complete | Same Docker stack as Prometheus |
 | 08 Ansible | Complete | Beginner → Production in `08-ansible/README.md` |
 | 09 Terraform | Complete | First success uses the `local` provider |
+| 10 GitLab CI | Complete | Folder `09-gitlab/`. First success is push a `.gitlab-ci.yml` to *your* GitLab project. Alternative to GitHub Actions. |
 | Capstone: full CI/CD | Complete (local) | GitHub Actions deploy step is a **stub** |
 | Capstone: Terraform + Ansible + Vault | Complete (local) | Vault and GitLab CI are optional later steps |
 | Learning paths | Complete | `learning-paths/*.json` — from-zero, apps, machines, observe |
@@ -37,8 +38,8 @@ When a folder exists, it moves into the table above and into the root README mod
 
 | Item | Status |
 |---|---|
-| Static learning site (home, module reader, glossary, progress) | This change |
-| App-path `exercises/` and `quiz.json` (Linux, Git, Docker, Kubernetes) | This change |
+| Static learning site (home, module reader, glossary, progress, robots.txt, sitemap.xml) | This change |
+| App-path `exercises/` and live quizzes (Linux, Git, Docker, Kubernetes `quiz.json`) | This change |
 | Remaining-module exercises and quizzes | Not written yet |
 | Command palette, placement quiz | Not written yet |
 | Learner agent skills (`start-learning`, `learn`, `course-guide`) | Not written yet |

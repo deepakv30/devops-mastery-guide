@@ -75,6 +75,30 @@ test('reset notifies existing listeners with empty state', () => {
   assert.equal(progress.isBeginnerDone('01-linux'), false);
 });
 
+test('setQuizPassed stores a timestamp and can be cleared', () => {
+  const { progress } = loadProgress();
+  assert.equal(progress.get('01-linux').quizPassedAt, null);
+  assert.equal(progress.isQuizPassed('01-linux'), false);
+
+  progress.setQuizPassed('01-linux', true);
+  const passedAt = progress.get('01-linux').quizPassedAt;
+  assert.ok(passedAt > 0);
+  assert.equal(progress.isQuizPassed('01-linux'), true);
+
+  progress.setQuizPassed('01-linux', false);
+  assert.equal(progress.get('01-linux').quizPassedAt, null);
+  assert.equal(progress.isQuizPassed('01-linux'), false);
+});
+
+test('reset clears quizPassedAt', () => {
+  const { progress } = loadProgress();
+  progress.setQuizPassed('03-docker', true);
+  assert.equal(progress.isQuizPassed('03-docker'), true);
+  progress.reset();
+  assert.equal(progress.get('03-docker').quizPassedAt, null);
+  assert.equal(progress.isQuizPassed('03-docker'), false);
+});
+
 test('listeners registered during notify are not called in the same reset', { timeout: 1000 }, () => {
   const { progress } = loadProgress();
   let calls = 0;

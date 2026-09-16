@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+
+- Site build writes `robots.txt` and `sitemap.xml` into `site/dist` (homepage, catalog, docs, modules, exercises, projects). GitHub Pages deploys the whole `dist` folder, so they are served next to the HTML.
+- Module quizzes for Linux, Git, Docker, and Kubernetes: `quiz.json` is copied onto Pages, a Check yourself form is on those module overviews, and a pass sets `quizPassedAt` in browser progress. Modules without `quiz.json` have no quiz UI.
+- **GitLab CI** (`09-gitlab/`) is registered in `curriculum.json` as module 10 and listed in the catalog. It was already a full module (README, cheatsheet, examples); the live site now publishes it. Optional on the apps path after GitHub Actions.
+
+### Changed
+
+- README Last Updated badge is **2026-09-16**.
+
 ### Fixed
 
 - **Reset progress** clears `dmg:progress:v1` and re-renders home dots and the `0 / N` summary. The control no longer re-binds `onChange` on every paint (that hung the page so the old count stayed on screen). Theme (`dmg:theme`) is unchanged.

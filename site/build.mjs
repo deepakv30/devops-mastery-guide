@@ -142,6 +142,10 @@ function dirFor(id) {
   fail(`unknown curriculum id ${id}`);
 }
 
+function hasQuiz(mod) {
+  return Boolean(mod && fs.existsSync(path.join(ROOT, mod.dir, 'quiz.json')));
+}
+
 addPage('docs/HOW_TO_LEARN.md', '/how-to-learn/', 'How to learn', 'doc');
 addPage('docs/CONCEPT_MAP.md', '/concept-map/', 'Concept map', 'doc');
 addPage('docs/GLOSSARY.md', '/glossary/', 'Glossary', 'doc');
@@ -445,13 +449,14 @@ function bandTabs(mod, currentRel) {
       <a href="#production">Production</a>
       <a href="#practice">Practice</a>
       ${pageMap.has(`${mod.dir}/cheatsheet.md`) ? `<a href="${urlPath(pageMap.get(`${mod.dir}/cheatsheet.md`).url)}">Cheatsheet</a>` : ''}
+      ${hasQuiz(mod) ? `<a href="${urlPath(`/${mod.dir}/`)}#quiz">Quiz</a>` : ''}
     </nav>`;
   }
   return `<nav class="band-tabs" aria-label="Module pages">${candidates.map((c) => {
     const page = pageMap.get(c.file);
     const cls = c.file === currentRel ? 'active' : '';
     return `<a class="${cls}" href="${urlPath(page.url)}">${c.label}</a>`;
-  }).join('')}</nav>`;
+  }).join('')}${hasQuiz(mod) ? `<a href="${urlPath(`/${mod.dir}/`)}#quiz">Quiz</a>` : ''}</nav>`;
 }
 
 function studyChrome(mod) {
@@ -465,8 +470,18 @@ function studyChrome(mod) {
       <label><input type="checkbox" data-checkpoint="exercises"> Did a basic exercise</label>
       <label><input type="checkbox" data-band="beginner"> Mark beginner done</label>
     </div>
+    ${hasQuiz(mod) ? `<p class="note"><a href="#quiz">Module quiz</a> <span data-quiz-status></span></p>` : ''}
     <p class="note">Stored in this browser only.</p>
   </aside>`;
+}
+
+function quizSection(mod, sourceRel) {
+  if (!mod || !sourceRel.endsWith('README.md') || !hasQuiz(mod)) return '';
+  return `<section class="quiz" id="quiz" data-quiz="${escapeAttr(mod.id)}">
+    <h2>Check yourself</h2>
+    <p class="note">Questions shipped with this module. Progress stays in this browser.</p>
+    <div data-quiz-root>Loading quiz…</div>
+  </section>`;
 }
 
 function pager() {
@@ -566,6 +581,7 @@ function modulePage(sourceRel) {
         ${mod ? bandTabs(mod, sourceRel) : ''}
         ${mod && sourceRel.endsWith('README.md') ? studyChrome(mod) : ''}
         <article class="prose">${parsed.html}</article>
+        ${mod ? quizSection(mod, sourceRel) : ''}
         ${pager()}
       </div>
     </main>
@@ -695,12 +711,27 @@ function copyStatic() {
     }
   }
   fs.writeFileSync(path.join(DIST, '.nojekyll'), '');
+  copyQuizzes();
+}
+
+function copyQuizzes() {
+  for (const mod of curriculum.modules) {
+    const src = path.join(ROOT, mod.dir, 'quiz.json');
+    if (!fs.existsSync(src)) continue;
+    const destDir = path.join(DIST, mod.dir);
+    fs.mkdirSync(destDir, { recursive: true });
+    fs.copyFileSync(src, path.join(destDir, 'quiz.json'));
+  }
 }
 
 function writeDataJs() {
   const moduleUrls = {};
   for (const m of curriculum.modules) moduleUrls[m.id] = `/${m.dir}/`;
   for (const p of curriculum.projects) moduleUrls[p.id] = `/${p.dir}/`;
+  const quizzes = {};
+  for (const m of curriculum.modules) {
+    if (hasQuiz(m)) quizzes[m.id] = `/${m.dir}/quiz.json`;
+  }
   const payload = {
     base: SITE_BASE,
     repo: GITHUB_REPO,
@@ -708,9 +739,28 @@ function writeDataJs() {
     projects: curriculum.projects,
     paths: learningPaths,
     moduleUrls,
+    quizzes,
   };
   const js = `window.DMG_DATA = ${JSON.stringify(payload)};\n`;
   fs.writeFileSync(path.join(DIST, 'js/data.js'), js);
+}
+
+function writeSeo() {
+  const origin = curriculum.pagesUrl.replace(/\/$/, '');
+  const urls = new Set(['/', '/catalog/']);
+  for (const page of pageMap.values()) urls.add(page.url);
+  const loc = (pageUrl) => origin + (pageUrl.startsWith('/') ? pageUrl : `/${pageUrl}`);
+  const sorted = [...urls].sort((a, b) => a.localeCompare(b));
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${sorted.map((u) => `  <url>\n    <loc>${escapeHtml(loc(u))}</loc>\n  </url>`).join('\n')}
+</urlset>
+`;
+  fs.writeFileSync(path.join(DIST, 'sitemap.xml'), xml);
+  fs.writeFileSync(
+    path.join(DIST, 'robots.txt'),
+    `User-agent: *\nAllow: /\n\nSitemap: ${loc('/sitemap.xml')}\n`,
+  );
 }
 
 function fourOhFour() {
@@ -747,6 +797,7 @@ for (const [rel, meta] of pageMap) {
 
 fs.writeFileSync(path.join(DIST, '404.html'), fourOhFour());
 writeDirRedirects();
+writeSeo();
 
 function walkHtml(dir) {
   for (const name of fs.readdirSync(dir)) {

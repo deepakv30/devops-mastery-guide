@@ -5,7 +5,7 @@ A hands-on path from first Linux commands to shipping and observing applications
 This repo contains the modules in the table below and the capstones listed under [Capstone projects](#capstone-projects). Topics listed under [Planned, not written yet](#planned-not-written-yet) are not in the tree. Status board: [ROADMAP.md](./ROADMAP.md).
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
-[![Last Updated](https://img.shields.io/badge/Last%20Updated-2026--08--22-brightgreen)](./CHANGELOG.md)
+[![Last Updated](https://img.shields.io/badge/Last%20Updated-2026--09--16-brightgreen)](./CHANGELOG.md)
 
 ## Choose a path
 
@@ -80,6 +80,7 @@ Linux is the OS everything else runs on. Ansible configures machines. Docker pac
 | 07 | [Grafana](./07-grafana/README.md) | Turn those metrics into dashboards and alerts | Beginner → Production |
 | 08 | [Ansible](./08-ansible/README.md) | Describe server setup as repeatable recipes | Beginner → Production |
 | 09 | [Terraform](./09-terraform/README.md) | Declare infrastructure and let a tool converge it | Beginner → Production |
+| 10 | [GitLab CI](./09-gitlab/README.md) | Run build, test, and deploy steps from a YAML pipeline in the repo | Beginner → Production |
 <!-- curriculum:modules:end -->
 
 Folder numbers follow the default (apps) study order. Other paths skip modules. Routes live in the path files and in [How to learn](./docs/HOW_TO_LEARN.md#recommended-order).
